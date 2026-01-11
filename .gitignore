@@ -1,0 +1,16 @@
+# Nix/Home Manager artifacts
+result
+result-*
+
+# Secret files (If you use them)
+*.age
+*.sops
+.env
+
+# Temporary files
+*.swp
+*~
+.DS_Store
+
+# Git ignore itself
+.direnv/
