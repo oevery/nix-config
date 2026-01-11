@@ -20,6 +20,20 @@
     };
   };
 
+  programs.gh = {
+    enable = true;
+    settings = {
+      git_protocol = "https";
+      prompt = "enabled";
+      aliases = {
+        co = "pr checkout";
+        pv = "pr view";
+        rv = "repo view --web";
+      };
+      spinner = true;
+    };
+  };
+
   programs.gpg.enable = true;
 
   services.gpg-agent = {
