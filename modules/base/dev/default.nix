@@ -70,7 +70,8 @@
         usage = "latest";
         node = "lts";
         pnpm = "latest";
-        ni = "latest";
+        "npm:@antfu/ni" = "latest";
+        "npm:sfw" = "latest";
       };
     };
   };
