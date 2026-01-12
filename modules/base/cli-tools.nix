@@ -87,4 +87,9 @@
       "--cmd cd"
     ];
   };
+
+  programs.tealdeer = {
+    enable = true;
+    enableAutoUpdates = true;
+  };
 }
