@@ -67,10 +67,19 @@
         npm.package_manager = "pnpm";
       };
       tools = {
+        usage = "latest";
         node = "lts";
         pnpm = "latest";
-        usage = "latest";
+        ni = "latest";
       };
     };
   };
+
+  # configuration for .nirc file used by ni
+  home.file.".nirc".text = ''
+    defaultAgent=pnpm
+    globalAgent=pnpm
+    runAgent=node
+    useSfw=true
+  '';
 }
