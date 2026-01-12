@@ -2,7 +2,8 @@
 
 {
   home.packages = with pkgs; [
-    nerd-fonts.fira-code
+    monaspace
+    noto-fonts-color-emoji
   ];
   fonts.fontconfig.enable = true;
 }
