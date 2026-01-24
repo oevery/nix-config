@@ -6,6 +6,8 @@
     gh
     mise
 
+    sqlite
+
     nixd # A feature-rich nix language server
     nixfmt # Nix code formatter following the Nixpkgs RFC
   ];
