@@ -4,12 +4,16 @@
   home.packages = with pkgs; [
     git
     gh
+
+    rustup
     mise
 
     sqlite
 
     nixd # A feature-rich nix language server
     nixfmt # Nix code formatter following the Nixpkgs RFC
+
+    pkg-config
   ];
 
   programs.git = {
@@ -70,6 +74,7 @@
       };
       tools = {
         usage = "latest";
+        rust = "latest";
         node = "lts";
         pnpm = "latest";
         "npm:@antfu/ni" = "latest";
