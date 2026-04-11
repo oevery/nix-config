@@ -12,15 +12,13 @@
 
     nixd # A feature-rich nix language server
     nixfmt # Nix code formatter following the Nixpkgs RFC
-
-    pkg-config
   ];
 
   programs.git = {
     enable = true;
     settings = {
-      user.email = "oevery";
-      user.name = "i@oevery.me";
+      user.email = "i@oevery.me";
+      user.name = "oevery";
       init.defaultBranch = "main";
       pull.rebase = true;
     };
