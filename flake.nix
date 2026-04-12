@@ -45,6 +45,12 @@
             gpgKey = "87DD35546E137CA5";
           };
         };
+
+        "oevery@oevery-desktop" = mkHome {
+          settings = commonSettings // {
+            gpgKey = "8A57E8A748ACB570";
+          };
+        };
       };
     };
 }
