@@ -34,7 +34,7 @@
           extraSpecialArgs = { inherit inputs; };
           modules = [
             ./home.nix
-            { myOpts = settings; }
+            { myOpts = removeAttrs settings [ "system" ]; }
           ];
         };
     in
