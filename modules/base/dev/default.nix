@@ -17,8 +17,6 @@
   programs.git = {
     enable = true;
     settings = {
-      user.email = "i@oevery.me";
-      user.name = "oevery";
       init.defaultBranch = "main";
       pull.rebase = true;
     };

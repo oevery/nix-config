@@ -20,22 +20,31 @@
       ...
     }@inputs:
     let
-      username = "oevery";
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      mkHome =
+        {
+          username,
+          email,
+          gitName,
+          system ? "x86_64-linux",
+        }:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${system};
+          extraSpecialArgs = { inherit inputs; };
+          modules = [
+            ./home.nix
+            {
+              myOpts = { inherit username email gitName; };
+            }
+          ];
+        };
     in
     {
-      homeConfigurations."${username}" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
-        # extraSpecialArgs = { inherit system; };
-        extraSpecialArgs = { inherit inputs username; };
-
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
-        modules = [ ./home.nix ];
+      homeConfigurations = {
+        "oevery" = mkHome {
+          username = "oevery";
+          email = "i@oevery.me";
+          gitName = "oevery";
+        };
       };
     };
 }
