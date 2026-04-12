@@ -20,30 +20,30 @@
       ...
     }@inputs:
     let
+      commonSettings = {
+        username = "oevery";
+        email = "i@oevery.me";
+        gitName = "oevery";
+        system = "x86_64-linux";
+      };
+
       mkHome =
-        {
-          username,
-          email,
-          gitName,
-          system ? "x86_64-linux",
-        }:
+        { settings }:
         home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
+          pkgs = nixpkgs.legacyPackages.${settings.system};
           extraSpecialArgs = { inherit inputs; };
           modules = [
             ./home.nix
-            {
-              myOpts = { inherit username email gitName; };
-            }
+            { myOpts = settings; }
           ];
         };
     in
     {
       homeConfigurations = {
-        "oevery" = mkHome {
-          username = "oevery";
-          email = "i@oevery.me";
-          gitName = "oevery";
+        "oevery@homelab" = mkHome {
+          settings = commonSettings // {
+            gpgKey = "87DD35546E137CA5";
+          };
         };
       };
     };

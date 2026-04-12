@@ -10,6 +10,10 @@
     username = lib.mkOption { type = lib.types.str; };
     email = lib.mkOption { type = lib.types.str; };
     gitName = lib.mkOption { type = lib.types.str; };
+    gpgKey = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+    };
   };
 
   config = {
@@ -26,6 +30,10 @@
       settings = {
         user.email = config.myOpts.email;
         user.name = config.myOpts.gitName;
+      };
+      signing = {
+        gpgKey = config.myOpts.gpgKey;
+        signByDefault = config.myOpts.gpgKey != null;
       };
     };
   };

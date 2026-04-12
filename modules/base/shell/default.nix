@@ -8,7 +8,7 @@ let
     bgrep = "batgrep";
 
     flu = "nix flake update --flake ~/.config/home-manager";
-    hms = "home-manager switch --flake ~/.config/home-manager";
+    hms = "home-manager switch --flake ~/.config/home-manager#$(whoami)@$(hostname)";
     gc = "nix-collect-garbage -d";
   };
 in
