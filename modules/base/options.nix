@@ -32,7 +32,7 @@
         user.name = config.myOpts.gitName;
       };
       signing = {
-        gpgKey = config.myOpts.gpgKey;
+        key = config.myOpts.gpgKey;
         signByDefault = config.myOpts.gpgKey != null;
       };
     };
