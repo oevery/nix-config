@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   commonAliases = {
@@ -14,20 +19,24 @@ let
 in
 
 {
-  home.packages = with pkgs; [
-    zsh
-    nushell
-    nix-your-shell
-  ];
+  home.packages =
+    (lib.optionals pkgs.stdenv.isLinux (
+      with pkgs;
+      [
+        zsh
+      ]
+    ))
+    ++ (with pkgs; [
+      nushell
+      nix-your-shell
+    ]);
 
   programs.zsh = {
     enable = true;
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    shellAliases = commonAliases // {
-      sysup = "sudo apt update && sudo apt upgrade";
-    };
+    shellAliases = commonAliases;
     plugins = [
       {
         name = "zsh-autopair";

@@ -1,27 +1,27 @@
 # --- ZSH Autosuggestions configuration ---
-# manual rebind to avoid conflicts with fzf-tab
+# 手动重新绑定，避免与 fzf-tab 冲突
 export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-# limit the size of the suggestion buffer to improve performance
+# 限制建议缓冲区大小，提升性能
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 
-# --- FZF-TAB configuration ---
-# disable menu completion to let fzf-tab handle it
+# --- FZF-TAB 配置 ---
+# 关闭菜单式补全，交由 fzf-tab 接管
 zstyle ':completion:*' menu no
-# set ls colors for completion listings
+# 为补全列表设置 LS_COLORS 颜色
 zstyle ':completion:*:*' list-colors "${(s.:.)LS_COLORS}"
-# cd command preview with eza
+# 使用 eza 预览 cd 目标目录
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons --group-directories-first $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always --icons --group-directories-first $realpath'
-# environment variable preview
+# 环境变量补全时显示变量值
 zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' \
 	fzf-preview 'echo ${(P)word}'
-# default file preview with bat
+# 默认文件预览使用 bat
 zstyle ':fzf-tab:complete:*' fzf-preview 'bat --color=always --style=numbers,changes --line-range=:500 $realpath'
-# bind autosuggest accept to Ctrl+Space
+# 将接受自动建议绑定到 Ctrl+Space
 bindkey '^ ' autosuggest-accept
 
-# --- YSU (You Should Use) configuration ---
-# positions the message after the command line
+# --- YSU (You Should Use) 配置 ---
+# 提示信息显示在命令行之后
 export YSU_MESSAGE_POSITION="after"
-# show suggestions for all commands
+# 为所有命令显示建议
 # export YSU_MODE="ALL"

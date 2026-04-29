@@ -2,24 +2,24 @@
 
 {
   home.packages = with pkgs; [
-    # system monitoring
-    btop # a modern replacement for 'top'
+    # 系统监控
+    btop # 现代化的 top 替代品
 
-    # Text Processing
-    eza # a modern replacement for 'ls'
-    bat # a modern replacement for 'cat'
-    fzf # a general-purpose command-line fuzzy finder
-    vivid # syntax highlighter for the terminal
-    zoxide # a smarter cd command
+    # 文本与命令行效率工具
+    eza # 现代化的 ls 替代品
+    bat # 现代化的 cat 替代品
+    fzf # 通用命令行模糊查找器
+    vivid # 终端配色与高亮主题工具
+    zoxide # 更智能的 cd 命令
 
-    # disk
-    duf # disk usage free, a better `df` in rust
-    dust # a more intuitive version of `du` in rust
-    gdu # disk usage analyzer(replacement of `du`)
+    # 磁盘工具
+    duf # Rust 实现的更友好 df
+    dust # Rust 实现的更直观 du
+    gdu # 磁盘占用分析器（du 替代）
 
-    # misc
-    fastfetch # system information tool
-    tealdeer # a very fast implementation of tldr in rust
+    # 杂项工具
+    fastfetch # 系统信息展示工具
+    tealdeer # Rust 实现的高速 tldr 客户端
   ];
 
   programs.eza = {

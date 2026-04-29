@@ -1,10 +1,11 @@
 {
   config,
+  lib,
   pkgs,
   inputs,
   ...
 }:
-{
+lib.mkIf pkgs.stdenv.isLinux {
   nix.package = pkgs.nix;
   nix.nixPath = [ "nixpkgs=${pkgs.path}" ];
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
