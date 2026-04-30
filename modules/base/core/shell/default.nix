@@ -13,7 +13,8 @@ let
     bgrep = "batgrep";
 
     flu = "nix flake update --flake ~/.config/home-manager";
-    hms = "home-manager switch --flake ~/.config/home-manager#$(whoami)@$(hostname)";
+    hc = ''SYS="$(nix eval --impure --raw --expr builtins.currentSystem)"; nix eval --json ".#checks.''${SYS}"'';
+    hms = "hc && home-manager switch --flake ~/.config/home-manager#$(whoami)@$(hostname)";
     gc = "nix-collect-garbage -d";
   };
 in

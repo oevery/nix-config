@@ -123,6 +123,42 @@ nix run nix-darwin#darwin-rebuild -- switch --flake .#macbook-air
 
 后续可继续使用同一命令更新系统层配置。
 
+### 3.3 macOS 软件安装：是否必须使用 Homebrew？
+
+结论：本仓库通过 `darwin/gui` 模块启用 Homebrew，并统一纳入声明式管理。
+
+推荐优先级：
+
+1. 能用 `nixpkgs` 的软件优先放到 Nix/Home Manager（可复现、跨机一致）。
+2. `nixpkgs` 不方便或缺失的 GUI 应用，再用 Homebrew Cask 补充。
+
+原因：
+
+- Nix 负责开发环境与跨平台一致性。
+- Homebrew 负责补齐 macOS 生态中的 GUI/App Store 应用。
+- 在 `darwin/gui` 中启用 Homebrew 的成本很低（磁盘与内存开销可忽略），但可减少后续手动维护成本。
+
+默认策略（Nix + Homebrew）：
+
+- 系统/CLI 用 Nix。
+- GUI 与部分 Apple 生态应用用 Homebrew。
+
+追新策略（当前仓库）：
+
+- 主包集统一使用 `nixpkgs-unstable`，优先获得新版本软件与修复。
+- `home-manager` 与 `nix-darwin` 也跟随上游主线分支，减少跨分支兼容负担。
+- 代价是波动更高，建议通过锁文件与定期验证控制升级风险。
+
+`nix-darwin` 中可声明式管理 Homebrew。
+
+本仓库当前在 `modules/darwin/gui/homebrew.nix` 维护 Homebrew 配置；当主机启用 `darwin/gui` 模块时会自动接入。如需自定义，可直接编辑该文件。
+
+应用方式：
+
+```bash
+nix run nix-darwin#darwin-rebuild -- switch --flake .#macbook-air
+```
+
 如果你是本地已有仓库，直接进入目录即可：
 
 ```bash
@@ -166,16 +202,23 @@ nix eval --raw path:$PWD#homeConfigurations."$(whoami)@$(hostname)".activationPa
 再查看仓库内置检查项：
 
 ```bash
-nix eval --json path:$PWD#checks
+SYS="$(nix eval --impure --raw --expr builtins.currentSystem)"
+nix eval --json ".#checks.${SYS}"
 ```
 
 macOS 也可单独检查 nix-darwin 输出是否可求值：
 
 ```bash
-nix eval --raw path:$PWD#darwinConfigurations.macbook-air.system.build.toplevel.drvPath
+nix eval --raw path:$PWD#darwinConfigurations.macbook-air.config.system.build.toplevel.drvPath
 ```
 
 若以上命令正常返回 derivation 或 JSON，说明配置链路基本正常。
+
+也可使用标准 flake 检查（推荐）：
+
+```bash
+nix flake check
+```
 
 ### 6. 日常更新
 
@@ -183,14 +226,46 @@ nix eval --raw path:$PWD#darwinConfigurations.macbook-air.system.build.toplevel.
 
 ```bash
 flu
+hc
+```
+
+应用配置建议按平台执行：
+
+- Linux（Home Manager）：直接执行 `hms`（已内置 `hc` 预检）
+- macOS（nix-darwin）：直接执行 `drs`（已内置 `hc` 预检；优先用当前 `hostname`，失败回退到 hosts 里的预置主机）
+
+```bash
+# Linux
 hms
+```
+
+```bash
+# macOS
+drs
+```
+
+macOS 调试场景可使用：
+
+```bash
+drst
+```
+
+可选强校验（更全面但更慢）：
+
+```bash
+nix flake check --show-trace
 ```
 
 如果你尚未加载这些 alias，可使用原生命令：
 
 ```bash
 nix flake update --flake ~/.config/home-manager
+SYS="$(nix eval --impure --raw --expr builtins.currentSystem)"
+nix eval --json ".#checks.${SYS}"
+# Linux
 home-manager switch --flake ~/.config/home-manager#$(whoami)@$(hostname)
+# macOS
+nix run nix-darwin#darwin-rebuild -- switch --flake ~/.config/home-manager#$(hostname)
 ```
 
 ## 新增主机

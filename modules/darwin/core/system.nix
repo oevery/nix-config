@@ -18,8 +18,6 @@
         "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
         "https://cache.nixos.org/"
       ];
-      # 自动去重 /nix/store，节省磁盘空间。
-      auto-optimise-store = true;
       # 保留构建输出与 derivation，便于调试和复用。
       keep-outputs = true;
       keep-derivations = true;
@@ -38,6 +36,9 @@
         host.username
       ];
     };
+
+    # 使用官方推荐选项自动优化 /nix/store，避免旧选项断言失败。
+    optimise.automatic = true;
 
     # 每周定时清理 7 天前的旧代。
     gc = {

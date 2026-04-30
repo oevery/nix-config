@@ -7,11 +7,11 @@
     # 源码获取走 GitHub，避免镜像 git 仓库排队
     nixpkgs.url = "git+https://github.com/NixOS/nixpkgs.git?ref=nixpkgs-unstable&shallow=1";
     home-manager = {
-      url = "git+https://github.com/nix-community/home-manager.git?ref=release-25.11&shallow=1";
+      url = "git+https://github.com/nix-community/home-manager.git?ref=master&shallow=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-darwin = {
-      url = "git+https://github.com/nix-darwin/nix-darwin.git?ref=nix-darwin-25.11&shallow=1";
+      url = "git+https://github.com/nix-darwin/nix-darwin.git?ref=master&shallow=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -27,6 +27,7 @@
     let
       myLib = import ./lib { lib = nixpkgs.lib; };
       hosts = import ./hosts { inherit myLib; };
+      systems = nixpkgs.lib.unique (map (settings: settings.system) (builtins.attrValues hosts));
       resolveHostModules = modules: map (name: myLib.moduleRegistry.${name}) modules;
 
       mkHome =
@@ -96,11 +97,35 @@
     {
       inherit homeConfigurations;
       inherit darwinConfigurations;
-      checks =
-        (nixpkgs.lib.mapAttrs (_: hmCfg: hmCfg.activationPackage) homeConfigurations)
-        // (nixpkgs.lib.mapAttrs' (name: darwinCfg: {
-          name = "darwin-${name}";
-          value = darwinCfg.system.build.toplevel;
-        }) darwinConfigurations);
+      formatter = nixpkgs.lib.genAttrs systems (system: nixpkgs.legacyPackages.${system}.nixfmt);
+      checks = nixpkgs.lib.genAttrs systems (
+        system:
+        let
+          hostKeys = builtins.attrNames (
+            nixpkgs.lib.filterAttrs (_: settings: settings.system == system) hosts
+          );
+          homeChecks = builtins.listToAttrs (
+            map (hostKey: {
+              name = "home-${builtins.replaceStrings [ "@" ] [ "-" ] hostKey}";
+              value = homeConfigurations.${hostKey}.activationPackage;
+            }) hostKeys
+          );
+          darwinChecks = builtins.listToAttrs (
+            map
+              (
+                hostKey:
+                let
+                  hostName = builtins.elemAt (nixpkgs.lib.splitString "@" hostKey) 1;
+                in
+                {
+                  name = "darwin-${hostName}";
+                  value = darwinConfigurations.${hostName}.system.build.toplevel;
+                }
+              )
+              (builtins.attrNames (nixpkgs.lib.filterAttrs (_: settings: settings.system == system) darwinHosts))
+          );
+        in
+        homeChecks // darwinChecks
+      );
     };
 }
