@@ -4,8 +4,8 @@
   inputs = {
     # 指定 Home Manager 与 Nixpkgs 的来源。
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # 源码获取走 GitHub，避免镜像 git 仓库排队；版本固定在 25.11 周期。
-    nixpkgs.url = "git+https://github.com/NixOS/nixpkgs.git?ref=nixos-25.11&shallow=1";
+    # 源码获取走 GitHub，避免镜像 git 仓库排队
+    nixpkgs.url = "git+https://github.com/NixOS/nixpkgs.git?ref=nixpkgs-unstable&shallow=1";
     home-manager = {
       url = "git+https://github.com/nix-community/home-manager.git?ref=release-25.11&shallow=1";
       inputs.nixpkgs.follows = "nixpkgs";
