@@ -37,6 +37,7 @@ let
       modules ? [
         "base/core"
       ],
+      ...
     }@host:
     let
       isStr = builtins.isString;

@@ -126,13 +126,23 @@
       darwinHosts = nixpkgs.lib.filterAttrs (
         _: settings: settings.system == "aarch64-darwin" || settings.system == "x86_64-darwin"
       ) hosts;
+      darwinNames = nixpkgs.lib.mapAttrsToList (
+        hostKey: settings:
+        assert nixpkgs.lib.assertMsg (
+          settings ? darwinName && builtins.isString settings.darwinName && settings.darwinName != ""
+        ) "darwin host ${hostKey} must define a non-empty string darwinName.";
+        settings.darwinName
+      ) darwinHosts;
+      _darwinNameUnique =
+        assert nixpkgs.lib.assertMsg (
+          builtins.length darwinNames == builtins.length (nixpkgs.lib.unique darwinNames)
+        ) "darwinName must be unique across all darwin hosts.";
+        true;
       darwinConfigurations = nixpkgs.lib.mapAttrs' (
         hostKey: settings:
-        let
-          hostName = builtins.elemAt (nixpkgs.lib.splitString "@" hostKey) 1;
-        in
+        assert _darwinNameUnique;
         {
-          name = hostName;
+          name = settings.darwinName;
           value = mkDarwin settings;
         }
       ) darwinHosts;
@@ -155,16 +165,10 @@
           );
           darwinChecks = builtins.listToAttrs (
             map
-              (
-                hostKey:
-                let
-                  hostName = builtins.elemAt (nixpkgs.lib.splitString "@" hostKey) 1;
-                in
-                {
-                  name = "darwin-${hostName}";
-                  value = darwinConfigurations.${hostName}.config.system.build.toplevel;
-                }
-              )
+              (hostKey: {
+                name = "darwin-${darwinHosts.${hostKey}.darwinName}";
+                value = darwinConfigurations.${darwinHosts.${hostKey}.darwinName}.config.system.build.toplevel;
+              })
               (builtins.attrNames (nixpkgs.lib.filterAttrs (_: settings: settings.system == system) darwinHosts))
           );
         in

@@ -13,6 +13,11 @@
     settings = {
       # 启用 flakes 与新命令接口。
       experimental-features = "nix-command flakes";
+      # 同时声明 Apple Silicon 与 Intel Darwin 平台，提升缓存命中率。
+      extra-platforms = [
+        "aarch64-darwin"
+        "x86_64-darwin"
+      ];
       # 使用清华镜像并保留官方缓存，提高下载成功率。
       substituters = [
         "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
