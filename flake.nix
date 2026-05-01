@@ -14,6 +14,15 @@
       url = "git+https://github.com/nix-darwin/nix-darwin.git?ref=master&shallow=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-homebrew.url = "git+https://github.com/zhaofengli/nix-homebrew.git?ref=main&shallow=1";
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
   };
 
   outputs =
@@ -22,6 +31,9 @@
       nixpkgs,
       home-manager,
       nix-darwin,
+      nix-homebrew,
+      homebrew-core,
+      homebrew-cask,
       ...
     }@inputs:
     let
@@ -47,6 +59,10 @@
 
       mkDarwin =
         settings:
+        let
+          enableDarwinGui = builtins.elem "darwin/gui" settings.modules;
+          isAppleSilicon = nixpkgs.lib.hasPrefix "aarch64-" settings.system;
+        in
         nix-darwin.lib.darwinSystem {
           system = settings.system;
           specialArgs = {
@@ -56,6 +72,33 @@
           };
           modules = [
             ./modules/darwin/core/system.nix
+          ]
+          ++ nixpkgs.lib.optionals enableDarwinGui [
+            nix-homebrew.darwinModules.nix-homebrew
+            {
+              nix-homebrew = {
+                enable = true;
+                enableRosetta = isAppleSilicon;
+                user = settings.username;
+                autoMigrate = true;
+                taps = {
+                  "homebrew/homebrew-core" = homebrew-core;
+                  "homebrew/homebrew-cask" = homebrew-cask;
+                };
+                mutableTaps = false;
+              };
+            }
+            (
+              { config, ... }:
+              {
+                homebrew.taps = builtins.attrNames config.nix-homebrew.taps;
+              }
+            )
+          ]
+          ++ nixpkgs.lib.optionals enableDarwinGui [
+            ./modules/darwin/gui/homebrew.nix
+          ]
+          ++ [
             home-manager.darwinModules.home-manager
             {
               users.users.${settings.username}.home = "/Users/${settings.username}";
@@ -119,7 +162,7 @@
                 in
                 {
                   name = "darwin-${hostName}";
-                  value = darwinConfigurations.${hostName}.system.build.toplevel;
+                  value = darwinConfigurations.${hostName}.config.system.build.toplevel;
                 }
               )
               (builtins.attrNames (nixpkgs.lib.filterAttrs (_: settings: settings.system == system) darwinHosts))

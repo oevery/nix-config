@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "brew-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1776478798,
+        "narHash": "sha256-ERStG27tf83VbCfYMxtDSs+sa8FUMJ/3jSu/QfX9rKE=",
+        "owner": "Homebrew",
+        "repo": "brew",
+        "rev": "3aae056b8d072624255bc8fd27febb7f327b2265",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Homebrew",
+        "ref": "5.1.7",
+        "repo": "brew",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -20,6 +37,38 @@
         "shallow": true,
         "type": "git",
         "url": "https://github.com/nix-community/home-manager.git"
+      }
+    },
+    "homebrew-cask": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1777647921,
+        "narHash": "sha256-uCQcKl+WKr21frr1FTaSouUv/FiE3oORhMDQuC5MdF8=",
+        "owner": "homebrew",
+        "repo": "homebrew-cask",
+        "rev": "0347da83d4b1d9c45df9adb4c1a8deebc0f9a6bf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "homebrew",
+        "repo": "homebrew-cask",
+        "type": "github"
+      }
+    },
+    "homebrew-core": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1777650799,
+        "narHash": "sha256-hdhv8uHGPsrgol0I8pfppzcWlL87m8OHyS9H+BDy6JU=",
+        "owner": "homebrew",
+        "repo": "homebrew-core",
+        "rev": "29dc0b6c5ec426276a4ce655e34d56cbca0e337d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "homebrew",
+        "repo": "homebrew-core",
+        "type": "github"
       }
     },
     "nix-darwin": {
@@ -44,6 +93,26 @@
         "url": "https://github.com/nix-darwin/nix-darwin.git"
       }
     },
+    "nix-homebrew": {
+      "inputs": {
+        "brew-src": "brew-src"
+      },
+      "locked": {
+        "lastModified": 1777250621,
+        "narHash": "sha256-WynkkG0hdZ5niYPJUbVg7oMfu8MVwGGzKZ6lKmfa+O8=",
+        "ref": "main",
+        "rev": "aeb2069920742d0d6570089e8b3b8620050bacf2",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/zhaofengli/nix-homebrew.git"
+      },
+      "original": {
+        "ref": "main",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/zhaofengli/nix-homebrew.git"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1777425547,
@@ -64,7 +133,10 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "homebrew-cask": "homebrew-cask",
+        "homebrew-core": "homebrew-core",
         "nix-darwin": "nix-darwin",
+        "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs"
       }
     }
