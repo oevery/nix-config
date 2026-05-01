@@ -103,3 +103,27 @@ nix eval --raw path:$PWD#darwinConfigurations.oevery-mac.config.system.build.top
 2. 在 `hosts/default.nix` 注册该主机。
 3. 若为 macOS，设置唯一 `darwinName`。
 4. 使用 `nix flake check` 或求值命令验证配置。
+
+### 生成 hosts gpgKey（简短教程）
+
+- 1. 没有 key 时，先原生生成一个（推荐 Ed25519，默认不过期）：
+
+```bash
+gpg --quick-generate-key "Your Name <you@example.com>" ed25519 sign 0
+```
+
+`0` 表示永不过期；如需设置有效期，可替换为 `1y`、`2y` 等。
+
+- 2. 查看可用的私钥 Key ID（取 `sec` 行后的长 ID）：
+
+```bash
+gpg --list-secret-keys --keyid-format LONG --with-colons you@example.com | awk -F: '$1=="sec"{print $5}'
+```
+
+- 3. 将输出的 Key ID 写入对应 `hosts/*.nix`：
+
+```nix
+gpgKey = "YOUR_KEY_ID";
+```
+
+- 4. 如果你已经有 key，可以直接执行第 2 步提取 Key ID，不必重新生成。

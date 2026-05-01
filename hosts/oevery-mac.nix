@@ -5,7 +5,7 @@ mkHost (
   // {
     system = "aarch64-darwin";
     darwinName = "oevery-mac";
-    gpgKey = null;
+    gpgKey = "FF2F947EF8595DC8";
     modules = [
       "base/core"
       "base/gui"
