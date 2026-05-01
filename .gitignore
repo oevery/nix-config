@@ -6,6 +6,7 @@ result-*
 *.age
 *.sops
 .env
+.private/git-profiles.nix
 
 # Temporary files
 *.swp

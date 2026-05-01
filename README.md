@@ -76,6 +76,10 @@ Linux `nix.conf` 参考模板见 [docs/linux-nix-conf.md](docs/linux-nix-conf.md
 - 优先用 Nix/Home Manager 管理 CLI 与开发环境。
 - macOS 下用 Homebrew 补充 GUI 或 Nix 不便安装的应用。
 
+### Git 身份隔离（私有配置）
+
+- 自定义 Git profiles 说明见 [docs/git-custom-profiles.md](docs/git-custom-profiles.md)。
+
 ## 验证与排障
 
 标准检查：
