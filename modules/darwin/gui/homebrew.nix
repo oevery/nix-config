@@ -26,11 +26,14 @@
 
       # 效率工具
       # "raycast" # 快捷启动
-      # "stats" # 系统监控
+      "stats" # 系统监控
       # "alt-tab" # 窗口切换
 
       # 浏览器
       "google-chrome"
+
+      # 密码管理
+      "bitwarden"
 
       # 通讯协作（如微信/QQ/Telegram，casks 更稳，mas 可能因地区/账号失败）
       "wechat"
