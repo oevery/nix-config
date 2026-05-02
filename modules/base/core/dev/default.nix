@@ -81,8 +81,8 @@
         usage = "latest";
         rust = "latest";
         node = "lts";
-        pnpm = "latest";
-        java = "zulu-17";
+        pnpm = "10";
+        java = "temurin-21";
         "npm:@antfu/ni" = "latest";
         "npm:sfw" = "latest";
       };
