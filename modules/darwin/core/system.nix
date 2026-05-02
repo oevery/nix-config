@@ -69,26 +69,79 @@
       mru-spaces = false;
       # 不显示最近应用。
       show-recents = false;
+
+      # 仅保留指定应用。
+      persistent-apps = [
+        "/System/Applications/Apps.app"
+        "/System/Applications/System Settings.app"
+        "/Applications/Google Chrome.app"
+        "/Applications/Visual Studio Code.app"
+      ];
+
+      # Dock 右侧保留 Developer 文件夹。
+      persistent-others = [
+        "/Users/${host.username}/Developer"
+      ];
     };
 
     finder = {
-      # 总是显示文件扩展名。
-      AppleShowAllExtensions = true;
       # 显示路径栏与状态栏，便于定位与统计。
       ShowPathbar = true;
       ShowStatusBar = true;
       # 默认列表视图。
       FXPreferredViewStyle = "Nlsv";
+      # 默认排序相关：按名称排序时文件夹置顶（窗口与桌面）。
+      _FXSortFoldersFirst = true;
+      _FXSortFoldersFirstOnDesktop = true;
     };
 
     NSGlobalDomain = {
+      # 总是显示文件扩展名（全局域键，放这里才稳定生效）。
+      AppleShowAllExtensions = true;
+      # 启用 24 小时制时间显示。
+      AppleICUForce24HourTime = true;
       # 关闭按住键弹出重音菜单，恢复按住连发行为。
       ApplePressAndHoldEnabled = false;
       # 更快的键盘重复速度。
       InitialKeyRepeat = 15;
       KeyRepeat = 2;
-      # 使用传统滚动方向（非自然滚动）。
-      "com.apple.swipescrolldirection" = false;
+      # 使用自然滚动
+      "com.apple.swipescrolldirection" = true;
+    };
+
+    # 自定义 macOS 偏好项（defaults 域）。
+    CustomUserPreferences = {
+      # Finder：不在网络磁盘上创建 .DS_Store。
+      "com.apple.desktopservices" = {
+        DSDontWriteNetworkStores = true;
+      };
+
+      # 关闭系统 Spotlight 快捷键（Cmd+Space / Option+Cmd+Space），避免与 Raycast 冲突。
+      "com.apple.symbolichotkeys" = {
+        AppleSymbolicHotKeys = {
+          # 系统设置 > 键盘快捷键 > Spotlight：显示 App
+          "160" = {
+            enabled = 0;
+          };
+          # 系统设置 > 键盘快捷键 > Spotlight：显示“聚焦”搜索（Cmd+Space）
+          "64" = {
+            enabled = 0;
+          };
+          # 系统设置 > 键盘快捷键 > Spotlight：显示“访达”搜索窗口（Option+Cmd+Space）
+          "65" = {
+            enabled = 0;
+          };
+        };
+      };
+
+      # 菜单栏时钟。
+      "com.apple.menuextra.clock" = {
+        IsAnalog = 0; # 0=数字时钟, 1=模拟时钟
+        ShowAMPM = 0; # 0=不显示 AM/PM, 1=显示 AM/PM
+        ShowDate = 0; # 0=不显示日期, 1=空间允许时显示, 2=始终显示
+        ShowDayOfWeek = 0; # 0=不显示星期, 1=显示星期
+        FlashDateSeparators = 0; # 0=分隔符不闪烁, 1=分隔符闪烁
+      };
     };
 
     trackpad = {

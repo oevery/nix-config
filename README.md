@@ -76,6 +76,19 @@ Linux `nix.conf` 参考模板见 [docs/linux-nix-conf.md](docs/linux-nix-conf.md
 - 优先用 Nix/Home Manager 管理 CLI 与开发环境。
 - macOS 下用 Homebrew 补充 GUI 或 Nix 不便安装的应用。
 
+### 设计哲学
+
+- 开发语言与运行时优先由 mise 管理：便于按项目切换版本（如 Node/Java/Rust 生态工具链）。
+- 通用 CLI 优先由 Nix 管理：可复现、可回滚、跨主机一致。
+- macOS 特有 CLI 先评估 Nix 可用性：若 Nix 方案稳定则优先 Nix；若 Homebrew 维护更及时或兼容性更好，则使用 Homebrew。
+- GUI 应用优先 Homebrew cask：安装与升级路径更贴近 macOS 生态，减少 App Bundle 适配成本。
+
+当前实践示例：
+
+- 运行时：mise（Node、pnpm、Java zulu-17 等）
+- 通用/开发 CLI：Nix（watchman、adb、ios-deploy、cocoapods 等）
+- GUI：Homebrew cask（VS Code、DBeaver、Android Studio、微信开发者工具等）
+
 ### Git 身份隔离（私有配置）
 
 - 自定义 Git profiles 说明见 [docs/git-custom-profiles.md](docs/git-custom-profiles.md)。

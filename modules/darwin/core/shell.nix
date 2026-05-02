@@ -15,9 +15,10 @@ lib.mkIf pkgs.stdenv.isDarwin {
     # 当应用关联异常时，重建 Launch Services 索引。
     lsreset = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user";
     # 使用主机配置中的稳定 darwinName，避免与运行时 hostname 耦合。
-    drs = "hc && sudo nix run nix-darwin#darwin-rebuild -- switch --flake ~/.config/home-manager#${darwinTarget}";
+    # 使用 sudo -H，确保 root 使用 /var/root 作为 HOME，避免用户态 HOME 所有权警告。
+    drs = "hc && sudo -H nix run nix-darwin#darwin-rebuild -- switch --flake ~/.config/home-manager#${darwinTarget}";
     # 调试版：带 --show-trace。
-    drst = "hc && sudo nix run nix-darwin#darwin-rebuild -- switch --show-trace --flake ~/.config/home-manager#${darwinTarget}";
+    drst = "hc && sudo -H nix run nix-darwin#darwin-rebuild -- switch --show-trace --flake ~/.config/home-manager#${darwinTarget}";
   };
 
   home.sessionVariables = {

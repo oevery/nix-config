@@ -1,19 +1,23 @@
 {
-  config,
   pkgs,
-  inputs,
   ...
 }:
 
 {
   home.packages = with pkgs; [
+    # 通用开发基础
     git
     gh
 
     rustup
     mise
 
+    # 跨平台 CLI 工具优先由 Nix 管理，保证可复现与一键回滚
     sqlite
+    watchman # 文件变更监听（前端/跨端开发常用）
+    android-tools # adb / fastboot
+    cmake # 原生模块/桌面应用构建工具
+    pkg-config # 本地库编译参数发现工具
 
     nixd # 功能完善的 Nix 语言服务器
     nixfmt # 遵循 Nixpkgs RFC 的 Nix 格式化工具
@@ -78,6 +82,7 @@
         rust = "latest";
         node = "lts";
         pnpm = "latest";
+        java = "zulu-17";
         "npm:@antfu/ni" = "latest";
         "npm:sfw" = "latest";
       };

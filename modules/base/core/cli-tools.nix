@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -8,6 +8,7 @@
     # 文本与命令行效率工具
     eza # 现代化的 ls 替代品
     bat # 现代化的 cat 替代品
+    fd # 快速文件查找工具（fzf 默认命令依赖）
     fzf # 通用命令行模糊查找器
     vivid # 终端配色与高亮主题工具
     zoxide # 更智能的 cd 命令
