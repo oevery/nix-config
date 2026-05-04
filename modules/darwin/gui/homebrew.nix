@@ -52,6 +52,7 @@
       "qq"
       "telegram"
       "uuremote" # 网易 UU 远程桌面
+      "spark" # Spark 邮件客户端
       # "rustdesk" # 开源远程桌面
 
       # 媒体娱乐
