@@ -12,7 +12,7 @@ build-users-group = nixbld
 # 启用 nix-command 与 flakes
 experimental-features = nix-command flakes
 # 中国大陆网络环境可使用清华镜像
-substituters = https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store https://cache.nixos.org/
+substituters = https://mirror.sjtu.edu.cn/nix-channels/store https://cache.nixos.org/
 # 允许以下用户操作 Nix daemon
 trusted-users = root oevery
 # 启用沙箱构建，提高可复现性

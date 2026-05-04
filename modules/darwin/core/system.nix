@@ -18,9 +18,9 @@
         "aarch64-darwin"
         "x86_64-darwin"
       ];
-      # 使用清华镜像并保留官方缓存，提高下载成功率。
+      # 使用交大二进制缓存（包含 darwin 二进制包），并保留官方缓存作为回退。
       substituters = [
-        "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+        "https://mirror.sjtu.edu.cn/nix-channels/store"
         "https://cache.nixos.org/"
       ];
       # 保留构建输出与 derivation，便于调试和复用。
