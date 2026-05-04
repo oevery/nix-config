@@ -16,11 +16,11 @@
     };
     nix-homebrew.url = "git+https://github.com/zhaofengli/nix-homebrew.git?ref=main&shallow=1";
     homebrew-core = {
-      url = "github:homebrew/homebrew-core";
+      url = "git+https://github.com/homebrew/homebrew-core.git?shallow=1";
       flake = false;
     };
     homebrew-cask = {
-      url = "github:homebrew/homebrew-cask";
+      url = "git+https://github.com/homebrew/homebrew-cask.git?shallow=1";
       flake = false;
     };
   };
