@@ -62,6 +62,9 @@
       # "obs" # 直播与录屏
       # "iina" # 本地媒体播放器
 
+      # 办公软件
+      "wpsoffice" # 金山 WPS Office
+
       # 知识管理
       # "obsidian" # 本地 Markdown 知识库
     ];
