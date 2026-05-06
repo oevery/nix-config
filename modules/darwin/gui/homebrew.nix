@@ -54,6 +54,7 @@
       "uuremote" # 网易 UU 远程桌面
       "readdle-spark" # Spark 邮件客户端
       "termius" # SSH 客户端
+      "microsoft-remote-desktop" # Microsoft 官方远程桌面 (Remote Desktop)
       # "rustdesk" # 开源远程桌面
 
       # 媒体娱乐
