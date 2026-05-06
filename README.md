@@ -89,10 +89,6 @@ Linux `nix.conf` 参考模板见 [docs/linux-nix-conf.md](docs/linux-nix-conf.md
 - 通用/开发 CLI：Nix（watchman、adb、ios-deploy、cocoapods 等）
 - GUI：Homebrew cask（VS Code、DBeaver、Android Studio、微信开发者工具等）
 
-### Git 身份隔离（私有配置）
-
-- 自定义 Git profiles 说明见 [docs/git-custom-profiles.md](docs/git-custom-profiles.md)。
-
 ## 验证与排障
 
 标准检查：
@@ -123,7 +119,7 @@ nix eval --raw path:$PWD#darwinConfigurations.oevery-mac.config.system.build.top
 
 ### 生成 hosts gpgKey（简短教程）
 
-- 1. 没有 key 时，先原生生成一个（推荐 Ed25519，默认不过期）：
+1. 没有 key 时，先原生生成一个（推荐 Ed25519，默认不过期）：
 
 ```bash
 gpg --quick-generate-key "Your Name <you@example.com>" ed25519 sign 0
@@ -131,16 +127,16 @@ gpg --quick-generate-key "Your Name <you@example.com>" ed25519 sign 0
 
 `0` 表示永不过期；如需设置有效期，可替换为 `1y`、`2y` 等。
 
-- 2. 查看可用的私钥 Key ID（取 `sec` 行后的长 ID）：
+1. 查看可用的私钥 Key ID（取 `sec` 行后的长 ID）：
 
 ```bash
 gpg --list-secret-keys --keyid-format LONG --with-colons you@example.com | awk -F: '$1=="sec"{print $5}'
 ```
 
-- 3. 将输出的 Key ID 写入对应 `hosts/*.nix`：
+1. 将输出的 Key ID 写入对应 `hosts/*.nix`：
 
 ```nix
 gpgKey = "YOUR_KEY_ID";
 ```
 
-- 4. 如果你已经有 key，可以直接执行第 2 步提取 Key ID，不必重新生成。
+1. 如果你已经有 key，可以直接执行第 2 步提取 Key ID，不必重新生成。
