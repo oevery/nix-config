@@ -89,6 +89,15 @@ Linux `nix.conf` 参考模板见 [docs/linux-nix-conf.md](docs/linux-nix-conf.md
 - 通用/开发 CLI：Nix（watchman、adb、ios-deploy、cocoapods 等）
 - GUI：Homebrew cask（VS Code、DBeaver、Android Studio、微信开发者工具等）
 
+### Git 本地扩展配置
+
+- 仓库内仍保留默认个人 Git 身份，保证多平台开箱可用。
+- Git 配置文件本质上是 INI 风格格式；这里使用 `.gitconfig` 后缀，便于编辑器高亮和识别。
+- Home Manager 会额外生成 `~/.config/git/local.gitconfig` 与 `~/.config/git/work.gitconfig`。
+- 主 Git 配置只 include `~/.config/git/local.gitconfig`，再由这个本地文件继续声明默认的 `includeIf` 规则。
+- 默认会把 `~/Developer/work/` 下的仓库导向 `~/.config/git/work.gitconfig`，适合填写公司身份。
+- 这些文件不会被当前 flake import，只会作为 Git 运行时 include 的本地文件读取，避免 Flake 看不见 `.gitignore` 私有文件的问题。
+
 ## 验证与排障
 
 标准检查：
