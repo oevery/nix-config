@@ -33,12 +33,10 @@ Linux（Home Manager）：
 nix run github:nix-community/home-manager -- switch --flake .#$(whoami)@$(hostname)
 ```
 
-macOS（nix-darwin）：
+macOS（nix-darwin，需要 sudo）：
 
 ```bash
-# 以普通用户运行 darwin-rebuild；不要在命令前加 sudo。
-# darwin-rebuild 在需要时会提示你提升权限（sudo）。
-nix run nix-darwin#darwin-rebuild -- switch --flake .#oevery-mac
+sudo nix run nix-darwin#darwin-rebuild -- switch --flake .#oevery-mac
 ```
 
 ## 日常使用
