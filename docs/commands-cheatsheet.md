@@ -33,8 +33,9 @@ drs
 # 调试版 alias
 drst
 
-# 原生命令（需要 sudo）
-sudo nix run nix-darwin#darwin-rebuild -- switch --flake ~/.config/home-manager#oevery-mac
+# 原生命令（以普通用户运行）
+# 不要在命令前加 sudo；darwin-rebuild 在需要时会提示提升权限。
+nix run nix-darwin#darwin-rebuild -- switch --flake ~/.config/home-manager#oevery-mac
 ```
 
 ## Quick Eval

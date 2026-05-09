@@ -91,15 +91,19 @@
                 taps = {
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
-                  "brewforge/chinese" = brewforge-chinese; # third-party tap for chinese casks (e.g. easytier-gui)
+                  "brewforge/homebrew-chinese" = brewforge-chinese; # nix-homebrew key = dir path (repo name)
                 };
                 mutableTaps = false;
               };
             }
             (
-              { config, ... }:
+              { ... }:
               {
-                homebrew.taps = builtins.attrNames config.nix-homebrew.taps;
+                homebrew.taps = [
+                  "homebrew/core"
+                  "homebrew/cask"
+                  "brewforge/chinese"
+                ];
               }
             )
           ]

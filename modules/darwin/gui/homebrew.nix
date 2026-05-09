@@ -61,7 +61,10 @@
       "uuremote" # 网易 UU 远程桌面
       "windows-app" # 微软远程桌面
       # "rustdesk" # 开源远程桌面
-      "easytier-gui" # EasyTier 桌面 GUI（来自 brewforge/chinese tap）
+      "brewforge/chinese/easytier-gui" # EasyTier 桌面 GUI（来自 brewforge/chinese tap）
+      # 注意：Homebrew cask 安装的 GUI 应用通常放在 /Applications 或 ~/Applications。
+      # 如果 macOS 报“已损坏，无法打开”，请先参考 docs/easytier-quarantine.md 中的
+      # 排查步骤（包括检查 com.apple.quarantine 与使用 sudo xattr -r -d com.apple.quarantine "/Applications/easytier-gui.app"）。
 
       # 媒体娱乐
       "neteasemusic" # 网易云音乐
