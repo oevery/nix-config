@@ -1,7 +1,7 @@
 {
   description = "Home Manager configuration";
 
-  inputs = {
+    inputs = {
     # 指定 Home Manager 与 Nixpkgs 的来源。
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # 源码获取走 GitHub，避免镜像 git 仓库排队
@@ -23,6 +23,12 @@
       url = "git+https://github.com/homebrew/homebrew-cask.git?shallow=1";
       flake = false;
     };
+    # Third-party Homebrew tap used for some Chinese casks (e.g. easytier-gui)
+    # Correct repository: https://github.com/Brewforge/homebrew-chinese
+    brewforge-chinese = {
+      url = "git+https://github.com/Brewforge/homebrew-chinese.git?shallow=1";
+      flake = false;
+    };
   };
 
   outputs =
@@ -34,6 +40,7 @@
       nix-homebrew,
       homebrew-core,
       homebrew-cask,
+      brewforge-chinese,
       ...
     }@inputs:
     let
@@ -84,6 +91,7 @@
                 taps = {
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
+                  "brewforge/chinese" = brewforge-chinese; # third-party tap for chinese casks (e.g. easytier-gui)
                 };
                 mutableTaps = false;
               };

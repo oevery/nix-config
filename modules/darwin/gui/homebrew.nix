@@ -13,7 +13,8 @@
       cleanup = "zap";
     };
 
-    # 常见命令行工具（按需增减）。
+    # 常见命令行工具（按需增减）。注意：常见 CLI 工具优先放到 Nix 的 base 模块中
+    # 将可移植、跨平台且与开发环境相关的命令行工具放在 modules/base/core/cli-tools.nix 的 home.packages
     brews = [
       "mas"
       "mole" # Mac 清理与优化工具（CLI）
@@ -22,6 +23,8 @@
 
     # GUI 应用分组：已安装与候选项都按用途归类，便于按需启用。
     # 原则：GUI 优先 Homebrew，减少 Nix 对 App Bundle/系统集成的适配成本。
+    # 以下 casks 包含部分来自第三方 tap（例如 brewforge/chinese）
+    # 如果添加第三方 tap，请确保 flake.nix 中将该 tap 注册到 nix-homebrew.taps
     casks = [
       # 终端与开发
       # "iterm2" # 终端
@@ -51,11 +54,14 @@
       "wechat"
       "qq"
       "telegram"
-      "uuremote" # 网易 UU 远程桌面
       "readdle-spark" # Spark 邮件客户端
       "termius" # SSH 客户端
+
+      # 远程
+      "uuremote" # 网易 UU 远程桌面
       "windows-app" # 微软远程桌面
       # "rustdesk" # 开源远程桌面
+      "easytier-gui" # EasyTier 桌面 GUI（来自 brewforge/chinese tap）
 
       # 媒体娱乐
       "neteasemusic" # 网易云音乐
