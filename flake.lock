@@ -20,10 +20,10 @@
     "brewforge-chinese": {
       "flake": false,
       "locked": {
-        "lastModified": 1778259434,
-        "narHash": "sha256-Su9chSMzgWI+1fmJFJTYhhOv3EO5v3+K08WcaI1t6Qk=",
+        "lastModified": 1778306444,
+        "narHash": "sha256-IOeaLsmqsGeLry5ooRkAl2ohZkYMSHPMLwxvjIOH1BA=",
         "ref": "refs/heads/main",
-        "rev": "9c25b45c242fd36850b1e49d134703a82efa5f3c",
+        "rev": "09615f24d8cb9c8ed3d7325784e91bc42e6dbf5a",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/Brewforge/homebrew-chinese.git"
@@ -59,10 +59,10 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1778290279,
-        "narHash": "sha256-Z400aV5MfhiEU/z80eygrFoKrZ7IDov68tJiniQ09Uw=",
+        "lastModified": 1778314800,
+        "narHash": "sha256-p3UQKa1B5j0x8mhU9bLVyF5wDtfADfZdjtCp4phf1QI=",
         "ref": "refs/heads/main",
-        "rev": "1d49b3ccba1d059a7a3c951a48313e50f0694c8f",
+        "rev": "61c5a2fd96b275800ce00f37022c61bb0c95d4e5",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-cask.git"
@@ -76,10 +76,10 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1778289676,
-        "narHash": "sha256-c8zFSoPQuwinVuZXnzSPIQ/sGqLu0svsMjV5Na0Dha4=",
+        "lastModified": 1778319278,
+        "narHash": "sha256-nqwkqx2y8woJtzA5v9eNT5Dcrsi/CezL55GoQhyl/M8=",
         "ref": "refs/heads/main",
-        "rev": "0092f4a4741d32f5758b69c862b1cc823e036934",
+        "rev": "5077c72387d93b904e9f1fd256bf17d611e6cd77",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-core.git"
