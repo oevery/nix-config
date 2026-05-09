@@ -22,6 +22,14 @@
     # 杂项工具
     fastfetch # 系统信息展示工具
     tealdeer # Rust 实现的高速 tldr 客户端
+
+    # 常用命令行实用工具
+    jq
+    yq
+    delta
+    lazygit
+    universal-ctags
+    glow
   ];
 
   programs.eza = {

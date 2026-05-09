@@ -39,9 +39,10 @@
       "raycast" # 快捷启动
       "stats" # 系统监控
       # "mos" # 鼠标滚动平滑与方向增强
-      # "alt-tab" # 窗口切换
+      "alt-tab" # 窗口切换
       # "rectangle" # 窗口管理
       "pixpin" # 截图与标注
+      "keka" # 压缩/解压 GUI 工具（Keka）
 
       # 浏览器
       "google-chrome"

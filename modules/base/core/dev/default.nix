@@ -28,6 +28,20 @@
     settings = {
       init.defaultBranch = "main";
       pull.rebase = true;
+      # Set core.pager instead of pager (pager must be an attribute set)
+      core = {
+        pager = "delta";
+      };
+
+      interactive = {
+        diffFilter = "delta --color-only";
+      };
+
+      # Delta-specific git config options (use hyphenated keys as git expects)
+      delta = {
+        "syntax-theme" = "TwoDark";
+        "line-numbers" = true;
+      };
     };
   };
 
