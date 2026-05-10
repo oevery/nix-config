@@ -95,7 +95,7 @@
         usage = "latest";
         rust = "latest";
         node = "lts";
-        pnpm = "latest";
+        pnpm = "10";
         python = "3.11";
         java = "temurin-21";
         "npm:@antfu/ni" = "latest";
