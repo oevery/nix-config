@@ -11,6 +11,7 @@
 
     rustup
     mise
+    rtk
 
     # 跨平台 CLI 工具优先由 Nix 管理，保证可复现与一键回滚
     sqlite
