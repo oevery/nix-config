@@ -27,11 +27,11 @@ in
 
   # `home.sessionVariables` 会转义 shell 特殊字符，这里改用额外 shell 片段实现按天轮转。
   home.sessionVariablesExtra = ''
-    export COPILOT_OTEL_FILE_EXPORTER_PATH="$HOME/.local/share/copilot/copilot-otel-$(date +%Y%m%d).jsonl"
+    export COPILOT_OTEL_FILE_EXPORTER_PATH="$HOME/.copilot/otel/copilot-otel-$(date +%Y%m%d).jsonl"
   '';
 
   home.activation.ensureCopilotOtelDir = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "$HOME/.local/share/copilot"
+    mkdir -p "$HOME/.copilot/otel"
   '';
 
   home.packages =
