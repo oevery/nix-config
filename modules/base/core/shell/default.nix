@@ -19,6 +19,13 @@ let
 in
 
 {
+  home.sessionVariables = {
+    # 导出 Copilot OTEL 遥测。
+    COPILOT_OTEL_ENABLED = "true";
+    COPILOT_OTEL_EXPORTER_TYPE = "file";
+    COPILOT_OTEL_FILE_EXPORTER_PATH = "$HOME/.local/state/tokentracker/copilot-otel.jsonl";
+  };
+
   home.packages =
     (lib.optionals pkgs.stdenv.isLinux (
       with pkgs;
@@ -27,7 +34,7 @@ in
       ]
     ))
     ++ (with pkgs; [
-      nushell
+      # nushell
       nix-your-shell
     ]);
 
@@ -57,11 +64,11 @@ in
     initContent = builtins.readFile ./zsh-extra.sh;
   };
 
-  programs.nushell = {
-    enable = true;
-    configFile.source = ./config.nu;
-    shellAliases = commonAliases;
-  };
+  # programs.nushell = {
+  #   enable = true;
+  #   configFile.source = ./config.nu;
+  #   shellAliases = commonAliases;
+  # };
 
   programs.nix-your-shell = {
     enable = true;
