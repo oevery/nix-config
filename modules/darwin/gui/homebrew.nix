@@ -16,6 +16,7 @@
       "mas"
       "mole" # Mac 清理与优化工具（CLI）
       "ios-deploy" # iOS 真机安装与调试（避免 Nix 在 macOS 上的私有框架构建限制）
+      "mm7894215/tokentracker/tokentracker" # AI token 用量采集 CLI
     ];
 
     # 第三方 cask 需先在 flake.nix 中注册对应 tap。
