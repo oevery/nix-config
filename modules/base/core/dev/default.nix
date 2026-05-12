@@ -4,24 +4,32 @@
 }:
 
 {
-  home.packages = with pkgs; [
-    git
-    gh
+  home.packages =
+    with pkgs;
+    (
+      [
+        git
+        gh
 
-    rustup
-    mise
-    rtk
+        rustup
+        mise
+        rtk
 
-    # 跨平台 CLI 统一交给 Nix 管理。
-    sqlite
-    watchman # 文件变更监听（前端/跨端开发常用）
-    android-tools # adb / fastboot
-    cmake # 原生模块/桌面应用构建工具
-    pkg-config # 本地库编译参数发现工具
+        # 使用 Nix 管理 gnupg，确保 gpg 与 gpg-agent 的一致性
+        gnupg
 
-    nixd # 功能完善的 Nix 语言服务器
-    nixfmt # 遵循 Nixpkgs RFC 的 Nix 格式化工具
-  ];
+        # 跨平台 CLI 统一交给 Nix 管理。
+        sqlite
+        watchman # 文件变更监听（前端/跨端开发常用）
+        android-tools # adb / fastboot
+        cmake # 原生模块/桌面应用构建工具
+        pkg-config # 本地库编译参数发现工具
+
+        nixd # 功能完善的 Nix 语言服务器
+        nixfmt # 遵循 Nixpkgs RFC 的 Nix 格式化工具
+      ]
+      ++ lib.optional stdenv.isDarwin pinentry_mac
+    );
 
   programs.git = {
     enable = true;
@@ -35,6 +43,11 @@
 
       interactive = {
         diffFilter = "delta --color-only";
+      };
+
+      # 确保 git 使用由 Nix 管理的 gpg 二进制，避免路径/版本不一致导致的签名失败
+      gpg = {
+        program = "${pkgs.gnupg}/bin/gpg";
       };
 
       delta = {
@@ -63,7 +76,20 @@
   services.gpg-agent = {
     enable = true;
     enableZshIntegration = true;
-    pinentry.package = if pkgs.stdenv.isDarwin then pkgs.pinentry_mac else pkgs.pinentry-curses;
+    # 优先在桌面环境使用图形化 pinentry（gnome3/gtk/qt），如果不可用则回退到 curses（TTY）版。
+    pinentry.package =
+      let
+        linuxPinentry =
+          if pkgs.lib.hasAttr "pinentry-gnome3" pkgs then
+            pkgs.pinentry-gnome3
+          else if pkgs.lib.hasAttr "pinentry-gtk" pkgs then
+            pkgs.pinentry-gtk
+          else if pkgs.lib.hasAttr "pinentry-qt" pkgs then
+            pkgs.pinentry-qt
+          else
+            pkgs.pinentry-curses;
+      in
+      if pkgs.stdenv.isDarwin then pkgs.pinentry_mac else linuxPinentry;
     defaultCacheTtl = 10800;
     maxCacheTtl = 86400;
   };
