@@ -20,10 +20,10 @@ in
 
 {
   home.sessionVariables = {
-    # 导出 Copilot OTEL 遥测。
+    # 按天轮转导出 Copilot OTEL 遥测。
     COPILOT_OTEL_ENABLED = "true";
     COPILOT_OTEL_EXPORTER_TYPE = "file";
-    COPILOT_OTEL_FILE_EXPORTER_PATH = "$HOME/.local/state/tokentracker/copilot-otel.jsonl";
+    COPILOT_OTEL_FILE_EXPORTER_PATH = "$HOME/.local/state/copilot/copilot-otel-$(date +%Y%m%d).jsonl";
   };
 
   home.packages =
