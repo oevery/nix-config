@@ -90,6 +90,23 @@
         "url": "https://github.com/homebrew/homebrew-core.git"
       }
     },
+    "mm7894215-tokentracker": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778552808,
+        "narHash": "sha256-TEdXArTOEv1gWw6mcsdrSOon//BH8KjVp3N4nB7dIJw=",
+        "ref": "refs/heads/main",
+        "rev": "9b2220846a31ac3033e7c9875f05284c7bfcfd5b",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/mm7894215/homebrew-tokentracker.git"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/mm7894215/homebrew-tokentracker.git"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -155,6 +172,7 @@
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
+        "mm7894215-tokentracker": "mm7894215-tokentracker",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs"

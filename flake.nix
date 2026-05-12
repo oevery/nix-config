@@ -1,7 +1,7 @@
 {
   description = "Home Manager configuration";
 
-    inputs = {
+  inputs = {
     # 指定 Home Manager 与 Nixpkgs 的来源。
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # 源码获取走 GitHub，避免镜像 git 仓库排队
@@ -29,6 +29,12 @@
       url = "git+https://github.com/Brewforge/homebrew-chinese.git?shallow=1";
       flake = false;
     };
+    # 第三方 Homebrew tap：tokentracker
+    # - 提供 cask: mm7894215/tokentracker/tokentracker（AI token 用量采集/监控工具）
+    mm7894215-tokentracker = {
+      url = "git+https://github.com/mm7894215/homebrew-tokentracker.git?shallow=1";
+      flake = false;
+    };
   };
 
   outputs =
@@ -41,6 +47,7 @@
       homebrew-core,
       homebrew-cask,
       brewforge-chinese,
+      mm7894215-tokentracker,
       ...
     }@inputs:
     let
@@ -88,11 +95,28 @@
                 enableRosetta = isAppleSilicon;
                 user = settings.username;
                 autoMigrate = true;
+                # 将第三方 tap 映射给 nix-homebrew。映射 key 使用 Homebrew tap 名称（如 "mm7894215/tokentracker"），
+                # value 为对应的 inputs 引用（上面定义的 mm7894215-tokentracker）。
+                # 该映射用于在启用 darwin/gui 的主机上注册并管理这些 tap/cask。
                 taps = {
+                  # 映射 key 必须和 homebrew 实际使用的 tap 名称一致（owner/repo），例如：
+                  # "homebrew/core"、"homebrew/cask"、"brewforge/chinese"、"mm7894215/tokentracker"。
+                  # 使用正确的 owner/repo 名称可以让 nix-homebrew 在 /opt/homebrew/Library/Taps
+                  # 下创建对应的只读路径，从而避免 Homebrew 在运行时尝试 `git clone`（在只读位置会触发 Permission denied）。
+                  # 映射 key 必须为 GitHub 上的实际仓库路径 owner/repo（repo 为真实仓库名），
+                  # 例如 homebrew 的 core 仓库为 homebrew/homebrew-core，brewforge 的仓库为 brewforge/homebrew-chinese。
+                  # 这样 nix-homebrew 会在 /opt/homebrew/Library/Taps/<owner>/<repo> 下创建只读路径，
+                  # 避免 Homebrew 在运行时尝试 `git clone`（在只读位置会触发 Permission denied）。
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
-                  "brewforge/homebrew-chinese" = brewforge-chinese; # nix-homebrew key = dir path (repo name)
+                  "brewforge/homebrew-chinese" = brewforge-chinese;
+                  "mm7894215/homebrew-tokentracker" = mm7894215-tokentracker;
                 };
+                # 保持 mutableTaps = false（只读映射）。历史上 brewforge-chinese 的问题是因为
+                # 映射 key 使用了 "brewforge/homebrew-chinese"（不符合 Homebrew 的 owner/repo 命名），
+                # 导致 Homebrew 在运行时尝试 `git clone` 到 /opt/homebrew/Library/Taps，从而触发 Permission denied。
+                # 修复方法是把映射 key 改为 Homebrew 期望的 owner/repo（例如 "brewforge/chinese"），
+                # 使 nix-homebrew 在 /opt/homebrew/Library/Taps 下提供对应的只读路径，而无需允许 Homebrew 直接写入。
                 mutableTaps = false;
               };
             }
@@ -103,6 +127,7 @@
                   "homebrew/core"
                   "homebrew/cask"
                   "brewforge/chinese"
+                  "mm7894215/tokentracker"
                 ];
               }
             )

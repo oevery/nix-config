@@ -23,8 +23,10 @@
 
     # GUI 应用分组：已安装与候选项都按用途归类，便于按需启用。
     # 原则：GUI 优先 Homebrew，减少 Nix 对 App Bundle/系统集成的适配成本。
-    # 以下 casks 包含部分来自第三方 tap（例如 brewforge/chinese）
-    # 如果添加第三方 tap，请确保 flake.nix 中将该 tap 注册到 nix-homebrew.taps
+    # 以下 casks 包含部分来自第三方 tap（例如 brewforge/chinese）。
+    # 注意：若添加来自第三方的 cask（如 mm7894215/tokentracker），需在 flake.nix 中把相应 Tap
+    # 注册为 nix-homebrew 的 inputs 并在 nix-homebrew.taps 中映射（见 flake.nix），以便 nix-darwin
+    # 在 darwin-rebuild 时能正确注册该 tap 并管理 cask 的安装/更新。
     casks = [
       # 终端与开发
       # "iterm2" # 终端
@@ -34,6 +36,8 @@
       "reqable" # API 调试与代理抓包
       "dbeaver-community" # 数据库管理与 SQL 客户端
       "android-studio" # Android 开发与模拟器
+      # AI / 监控
+      "mm7894215/tokentracker/tokentracker" # AI token 用量采集与监控工具（来自 mm7894215/tokentracker tap）
 
       # 效率工具
       "raycast" # 快捷启动
