@@ -20,11 +20,19 @@ in
 
 {
   home.sessionVariables = {
-    # 按天轮转导出 Copilot OTEL 遥测。
+    # 导出 Copilot OTEL 遥测。
     COPILOT_OTEL_ENABLED = "true";
     COPILOT_OTEL_EXPORTER_TYPE = "file";
-    COPILOT_OTEL_FILE_EXPORTER_PATH = "$HOME/.local/state/copilot/copilot-otel-$(date +%Y%m%d).jsonl";
   };
+
+  # `home.sessionVariables` 会转义 shell 特殊字符，这里改用额外 shell 片段实现按天轮转。
+  home.sessionVariablesExtra = ''
+    export COPILOT_OTEL_FILE_EXPORTER_PATH="$HOME/.local/share/copilot/copilot-otel-$(date +%Y%m%d).jsonl"
+  '';
+
+  home.activation.ensureCopilotOtelDir = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "$HOME/.local/share/copilot"
+  '';
 
   home.packages =
     (lib.optionals pkgs.stdenv.isLinux (
