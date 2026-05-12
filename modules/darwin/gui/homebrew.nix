@@ -1,32 +1,24 @@
 { ... }:
 
 {
-  # 在 macOS 上以“声明式”方式管理 Homebrew。
-  # 推荐策略：Nix 管开发环境，Homebrew 补少量 GUI/App Store 应用。
+  # macOS 下的 Homebrew GUI/App Store 应用。
   homebrew = {
     enable = true;
 
-    # 首次启用后，执行 darwin-rebuild 时自动更新与清理。
     onActivation = {
       autoUpdate = true;
       upgrade = true;
       cleanup = "zap";
     };
 
-    # 常见命令行工具（按需增减）。注意：常见 CLI 工具优先放到 Nix 的 base 模块中
-    # 将可移植、跨平台且与开发环境相关的命令行工具放在 modules/base/core/cli-tools.nix 的 home.packages
+    # 少量 macOS 专用 CLI。
     brews = [
       "mas"
       "mole" # Mac 清理与优化工具（CLI）
       "ios-deploy" # iOS 真机安装与调试（避免 Nix 在 macOS 上的私有框架构建限制）
     ];
 
-    # GUI 应用分组：已安装与候选项都按用途归类，便于按需启用。
-    # 原则：GUI 优先 Homebrew，减少 Nix 对 App Bundle/系统集成的适配成本。
-    # 以下 casks 包含部分来自第三方 tap（例如 brewforge/chinese）。
-    # 注意：若添加来自第三方的 cask（如 mm7894215/tokentracker），需在 flake.nix 中把相应 Tap
-    # 注册为 nix-homebrew 的 inputs 并在 nix-homebrew.taps 中映射（见 flake.nix），以便 nix-darwin
-    # 在 darwin-rebuild 时能正确注册该 tap 并管理 cask 的安装/更新。
+    # 第三方 cask 需先在 flake.nix 中注册对应 tap。
     casks = [
       # 终端与开发
       # "iterm2" # 终端
@@ -37,7 +29,8 @@
       "dbeaver-community" # 数据库管理与 SQL 客户端
       "android-studio" # Android 开发与模拟器
       # AI / 监控
-      "mm7894215/tokentracker/tokentracker" # AI token 用量采集与监控工具（来自 mm7894215/tokentracker tap）
+      "mm7894215/tokentracker/tokentracker" # AI token 用量监控
+      # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
 
       # 效率工具
       "raycast" # 快捷启动
@@ -66,10 +59,8 @@
       "uuremote" # 网易 UU 远程桌面
       "windows-app" # 微软远程桌面
       # "rustdesk" # 开源远程桌面
-      "brewforge/chinese/easytier-gui" # EasyTier 桌面 GUI（来自 brewforge/chinese tap）
-      # 注意：Homebrew cask 安装的 GUI 应用通常放在 /Applications 或 ~/Applications。
-      # 如果 macOS 报“已损坏，无法打开”，请先参考 docs/easytier-quarantine.md 中的
-      # 排查步骤（包括检查 com.apple.quarantine 与使用 sudo xattr -r -d com.apple.quarantine "/Applications/easytier-gui.app"）。
+      "brewforge/chinese/easytier-gui" # EasyTier 桌面 GUI
+      # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
 
       # 媒体娱乐
       "neteasemusic" # 网易云音乐
@@ -83,12 +74,10 @@
       # "obsidian" # 本地 Markdown 知识库
     ];
 
-    # 推荐放 masApps 的应用：
-    # 1. 苹果自家或强依赖 iCloud 的应用
-    # 2. 你明确希望走 App Store 更新的应用
+    # 更适合走 App Store 的应用。
     masApps = {
-      # "Xcode" = 497799835; # 苹果官方开发工具，强烈推荐 masApps
-      # "Numbers" = 409203825;     # 苹果自家办公套件（如有需求可解注）
+      # "Xcode" = 497799835;
+      # "Numbers" = 409203825;
       # "Keynote" = 409183694;
       # "Pages" = 409201541;
       # "GarageBand" = 682658836;

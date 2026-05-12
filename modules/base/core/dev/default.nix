@@ -5,7 +5,6 @@
 
 {
   home.packages = with pkgs; [
-    # 通用开发基础
     git
     gh
 
@@ -13,7 +12,7 @@
     mise
     rtk
 
-    # 跨平台 CLI 工具优先由 Nix 管理，保证可复现与一键回滚
+    # 跨平台 CLI 统一交给 Nix 管理。
     sqlite
     watchman # 文件变更监听（前端/跨端开发常用）
     android-tools # adb / fastboot
@@ -29,7 +28,7 @@
     settings = {
       init.defaultBranch = "main";
       pull.rebase = true;
-      # Set core.pager instead of pager (pager must be an attribute set)
+      # Home Manager 中 `pager` 需放在 `core` 下。
       core = {
         pager = "delta";
       };
@@ -38,7 +37,6 @@
         diffFilter = "delta --color-only";
       };
 
-      # Delta-specific git config options (use hyphenated keys as git expects)
       delta = {
         "syntax-theme" = "TwoDark";
         "line-numbers" = true;
@@ -72,11 +70,9 @@
 
   programs.direnv = {
     enable = true;
-    # 为 Nix shell 环境提供高性能缓存
     nix-direnv.enable = true;
     enableZshIntegration = true;
     mise.enable = true;
-    # 可选：降低 direnv 在终端中的提示噪音
     config.global.warn_timeout = "1m";
   };
 
@@ -105,7 +101,7 @@
     };
   };
 
-  # ni 使用的 .nirc 配置文件
+  # ni 默认使用 pnpm。
   home.file.".nirc".text = ''
     defaultAgent=pnpm
     globalAgent=pnpm

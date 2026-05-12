@@ -44,7 +44,6 @@ in
         if [ ! -e "${localGitConfigDir}/local.gitconfig" ]; then
           cat > "${localGitConfigDir}/local.gitconfig" <<EOF
     # Local Git include rules.
-    # Add more includeIf/include entries here when needed.
 
     [includeIf "${workGitDirPattern}"]
     	path = ${workGitConfigPath}
@@ -57,16 +56,6 @@ in
     # [user]
     #   name = Your Work Name
     #   email = you@company.com
-    #   signingkey = WORK_KEY_ID
-    #
-    # [commit]
-    #   gpgsign = true
-    #
-    # [core]
-    #   sshCommand = ssh -i ~/.ssh/id_ed25519_work
-    #
-    # [url "git@github.com:"]
-    #   insteadOf = https://github.com/
     EOF
           chmod 600 "${localGitConfigDir}/work.gitconfig"
         fi

@@ -17,7 +17,7 @@ nix flake check
 ## Linux (Home Manager)
 
 ```bash
-# 走 alias（推荐）
+# 推荐
 hms
 
 # 原生命令
@@ -27,13 +27,13 @@ home-manager switch --flake ~/.config/home-manager#$(whoami)@$(hostname)
 ## macOS (nix-darwin)
 
 ```bash
-# 走 alias（推荐）
+# 推荐
 drs
 
-# 调试版 alias
+# 调试
 drst
 
-# 原生命令（需要 sudo）
+# 原生命令
 sudo nix run nix-darwin#darwin-rebuild -- switch --flake ~/.config/home-manager#oevery-mac
 ```
 

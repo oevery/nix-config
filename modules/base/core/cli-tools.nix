@@ -2,10 +2,9 @@
 
 {
   home.packages = with pkgs; [
-    # 系统监控
     btop # 现代化的 top 替代品
 
-    # 文本与命令行效率工具
+    # 命令行效率工具
     eza # 现代化的 ls 替代品
     bat # 现代化的 cat 替代品
     ripgrep # 快速递归文本搜索工具 (rg)
@@ -19,11 +18,10 @@
     dust # Rust 实现的更直观 du
     gdu # 磁盘占用分析器（du 替代）
 
-    # 杂项工具
+    # 其他常用工具
     fastfetch # 系统信息展示工具
     tealdeer # Rust 实现的高速 tldr 客户端
 
-    # 常用命令行实用工具
     jq
     yq
     delta
