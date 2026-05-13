@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 
 {
   # macOS 下的 Homebrew GUI/App Store 应用。
@@ -17,6 +17,10 @@
       "mole" # Mac 清理与优化工具（CLI）
       "ios-deploy" # iOS 真机安装与调试（避免 Nix 在 macOS 上的私有框架构建限制）
       # "mm7894215/tokentracker/tokentracker" # AI token 用量采集 CLI
+      # 在 macOS 上使用 Colima 作为容器运行时
+      "colima" # 在 macOS 上运行容器的轻量方案（基于 lima）
+      "docker" # Docker CLI（客户端）
+      "docker-compose" # Docker Compose
     ];
 
     # 第三方 cask 需先在 flake.nix 中注册对应 tap。
@@ -86,4 +90,15 @@
       # "iMovie" = 408981434;
     };
   };
+
+  home.activation.ensureDockerComposePlugin = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if command -v brew >/dev/null 2>&1; then
+      compose_prefix="$(brew --prefix docker-compose 2>/dev/null || true)"
+
+      if [ -n "$compose_prefix" ] && [ -x "$compose_prefix/bin/docker-compose" ]; then
+        mkdir -p "$HOME/.docker/cli-plugins"
+        ln -sfn "$compose_prefix/bin/docker-compose" "$HOME/.docker/cli-plugins/docker-compose"
+      fi
+    fi
+  '';
 }
