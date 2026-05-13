@@ -4,6 +4,7 @@ mkHost (
   common
   // {
     system = "aarch64-darwin";
+    homeConfigurationName = "oevery-mac";
     darwinName = "oevery-mac";
     gpgKey = "FF2F947EF8595DC8";
     modules = [

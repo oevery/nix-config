@@ -30,6 +30,7 @@ let
   mkHost =
     {
       system,
+      homeConfigurationName,
       username,
       email,
       gitName,
@@ -44,12 +45,14 @@ let
       validModules = lib.all (group: builtins.elem group allowedModules) modules;
       baseRequired = lib.all (v: v) [
         (isStr system)
+        (isStr homeConfigurationName)
         (isStr username)
         (isStr email)
         (isStr gitName)
       ];
     in
-    assert lib.assertMsg baseRequired "mkHost: system/username/email/gitName must be strings.";
+    assert lib.assertMsg baseRequired
+      "mkHost: system/homeConfigurationName/username/email/gitName must be strings.";
     assert lib.assertMsg (gpgKey == null || isStr gpgKey) "mkHost: gpgKey must be null or string.";
     assert lib.assertMsg validModules "mkHost: modules contains unsupported value.";
     host;

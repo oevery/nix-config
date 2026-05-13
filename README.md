@@ -30,7 +30,7 @@ cd ~/.config/home-manager
 Linux（Home Manager）：
 
 ```bash
-nix run github:nix-community/home-manager -- switch --flake .#$(whoami)@$(hostname)
+nix run github:nix-community/home-manager -- switch --flake .#<homeConfigurationName>
 ```
 
 macOS（nix-darwin，需要 sudo）：
@@ -53,16 +53,21 @@ sudo nix run nix-darwin#darwin-rebuild -- switch --flake .#oevery-mac
 hc
 ```
 
+`hc` 会检查当前 host 对应的配置：Linux 只检查当前 `homeConfigurationName`，macOS 同时检查当前 `homeConfigurationName` 和 `darwinName`。
+
 完整命令速查见 [docs/commands-cheatsheet.md](docs/commands-cheatsheet.md)。
 
 ## 配置约定
 
 ### Key 约定
 
-- `homeConfigurations` 使用 `user@host` 作为 key。
+- `homeConfigurations` 使用显式的 `homeConfigurationName` 作为 key。
 - `darwinConfigurations` 使用稳定的 `darwinName` 作为 key，不依赖运行时 `hostname`。
 
-当前示例 Darwin 目标为：`oevery-mac`（定义在 `hosts/oevery-mac.nix`）。
+当前示例主机：
+
+- Linux 默认 Home Manager 配置：`homeConfigurationName = "oevery"`
+- macOS 配置：`homeConfigurationName = "oevery-mac"`，`darwinName = "oevery-mac"`
 
 ### 平台配置
 
@@ -95,22 +100,23 @@ nix flake check
 快速验证输出：
 
 ```bash
-nix eval --raw path:$PWD#homeConfigurations."$(whoami)@$(hostname)".activationPackage.drvPath
+nix eval --raw path:$PWD#homeConfigurations.<homeConfigurationName>.activationPackage.drvPath
 nix eval --raw path:$PWD#darwinConfigurations.oevery-mac.config.system.build.toplevel.drvPath
 ```
 
 常见问题：
 
-- 找不到 Linux 主机配置：检查 `hosts/default.nix` 是否注册了 `user@host`。
-- Darwin 找不到目标：检查对应 `hosts/*.nix` 是否定义唯一 `darwinName` 并已在 `hosts/default.nix` 注册。
+- 找不到 Linux 主机配置：检查 `hosts/default.nix` 是否注册了对应的 `homeConfigurationName`。
+- Darwin 找不到目标：检查对应 `hosts/*.nix` 是否定义唯一 `darwinName`，并且已在 `hosts/default.nix` 注册。
 - `modules` 字段报错：`hosts/*.nix` 的 `modules` 只能使用仓库允许的模块键。
 
 ## 新增主机
 
 1. 在 `hosts/` 新建主机文件，使用 `mkHost` 定义数据。
 2. 在 `hosts/default.nix` 注册该主机。
-3. 若为 macOS，设置唯一 `darwinName`。
-4. 使用 `nix flake check` 或求值命令验证配置。
+3. 为每台主机设置唯一的 `homeConfigurationName`。
+4. 若为 macOS，再设置唯一 `darwinName`。
+5. 使用 `nix flake check` 或求值命令验证配置。
 
 ### 生成 hosts gpgKey
 

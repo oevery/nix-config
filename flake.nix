@@ -21,12 +21,12 @@
       url = "git+https://github.com/homebrew/homebrew-cask.git?shallow=1";
       flake = false;
     };
-    # 第三方 Homebrew tap（如 easytier-gui）
+    # 第三方 Homebrew tap（例如 easytier-gui）。
     brewforge-chinese = {
       url = "git+https://github.com/Brewforge/homebrew-chinese.git?shallow=1";
       flake = false;
     };
-    # 第三方 Homebrew tap：tokentracker
+    # 第三方 Homebrew tap：tokentracker。
     mm7894215-tokentracker = {
       url = "git+https://github.com/mm7894215/homebrew-tokentracker.git?shallow=1";
       flake = false;
@@ -49,41 +49,74 @@
     let
       myLib = import ./lib { lib = nixpkgs.lib; };
       hosts = import ./hosts { inherit myLib; };
-      systems = nixpkgs.lib.unique (map (settings: settings.system) (builtins.attrValues hosts));
       resolveHostModules = modules: map (name: myLib.moduleRegistry.${name}) modules;
+      makeSpecialArgs = settings: {
+        inherit inputs myLib;
+        host = removeAttrs settings [ "system" ];
+      };
+      homeHosts = hosts;
+      darwinHosts = nixpkgs.lib.filterAttrs (
+        _: settings: settings.system == "aarch64-darwin" || settings.system == "x86_64-darwin"
+      ) hosts;
+      hostSystems =
+        hostSet: nixpkgs.lib.unique (map (settings: settings.system) (builtins.attrValues hostSet));
+      uniqueAttr =
+        attrName: hostSet:
+        let
+          values = map (settings: settings.${attrName}) (builtins.attrValues hostSet);
+        in
+        assert nixpkgs.lib.assertMsg (
+          builtins.all (name: builtins.isString name && name != "") values
+          && builtins.length values == builtins.length (nixpkgs.lib.unique values)
+        ) "${attrName} must be a non-empty unique string across all hosts.";
+        true;
+      renderNamedOutputs =
+        attrName: hostSet: transform:
+        let
+          _ = uniqueAttr attrName hostSet;
+        in
+        nixpkgs.lib.mapAttrs' (_hostKey: settings: {
+          name = settings.${attrName};
+          value = transform settings;
+        }) hostSet;
+
+      darwinTaps = {
+        "homebrew/homebrew-core" = homebrew-core;
+        "homebrew/homebrew-cask" = homebrew-cask;
+        "brewforge/homebrew-chinese" = brewforge-chinese;
+        "mm7894215/homebrew-tokentracker" = mm7894215-tokentracker;
+      };
+
+      darwinTapNames = [
+        "homebrew/core"
+        "homebrew/cask"
+        "brewforge/chinese"
+        "mm7894215/tokentracker"
+      ];
+
+      mkHostModules = settings: [ ./home.nix ] ++ resolveHostModules settings.modules;
 
       mkHome =
         settings:
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${settings.system};
-          extraSpecialArgs = {
-            inherit inputs;
-            inherit myLib;
-            host = removeAttrs settings [ "system" ];
-          };
-          modules = [
-            ./home.nix
-          ]
-          ++ resolveHostModules settings.modules;
+          extraSpecialArgs = makeSpecialArgs settings;
+          modules = mkHostModules settings;
         };
 
       mkDarwin =
         settings:
         let
-          enableDarwinGui = builtins.elem "darwin/gui" settings.modules;
+          enableDarwinGuiModules = builtins.elem "darwin/gui" settings.modules;
           isAppleSilicon = nixpkgs.lib.hasPrefix "aarch64-" settings.system;
         in
         nix-darwin.lib.darwinSystem {
           system = settings.system;
-          specialArgs = {
-            inherit inputs;
-            inherit myLib;
-            host = removeAttrs settings [ "system" ];
-          };
+          specialArgs = makeSpecialArgs settings;
           modules = [
             ./modules/darwin/core/system.nix
           ]
-          ++ nixpkgs.lib.optionals enableDarwinGui [
+          ++ nixpkgs.lib.optionals enableDarwinGuiModules [
             nix-homebrew.darwinModules.nix-homebrew
             {
               nix-homebrew = {
@@ -91,14 +124,7 @@
                 enableRosetta = isAppleSilicon;
                 user = settings.username;
                 autoMigrate = true;
-                # key 用 GitHub 仓库路径，value 用对应 input。
-                taps = {
-                  # 例如 homebrew/homebrew-core、brewforge/homebrew-chinese。
-                  "homebrew/homebrew-core" = homebrew-core;
-                  "homebrew/homebrew-cask" = homebrew-cask;
-                  "brewforge/homebrew-chinese" = brewforge-chinese;
-                  "mm7894215/homebrew-tokentracker" = mm7894215-tokentracker;
-                };
+                taps = darwinTaps;
                 # 只读管理 taps，避免 Homebrew 运行时改写 Tap 目录。
                 mutableTaps = false;
               };
@@ -106,16 +132,11 @@
             (
               { ... }:
               {
-                homebrew.taps = [
-                  "homebrew/core"
-                  "homebrew/cask"
-                  "brewforge/chinese"
-                  "mm7894215/tokentracker"
-                ];
+                homebrew.taps = darwinTapNames;
               }
             )
           ]
-          ++ nixpkgs.lib.optionals enableDarwinGui [
+          ++ nixpkgs.lib.optionals enableDarwinGuiModules [
             ./modules/darwin/gui/homebrew.nix
           ]
           ++ [
@@ -126,73 +147,35 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                extraSpecialArgs = {
-                  inherit inputs;
-                  inherit myLib;
-                  host = removeAttrs settings [ "system" ];
-                };
+                extraSpecialArgs = makeSpecialArgs settings;
                 users.${settings.username} = {
-                  imports = [
-                    ./home.nix
-                  ]
-                  ++ resolveHostModules settings.modules;
+                  imports = mkHostModules settings;
                 };
               };
             }
           ];
         };
 
-      homeConfigurations = nixpkgs.lib.mapAttrs (_: settings: mkHome settings) hosts;
-      darwinHosts = nixpkgs.lib.filterAttrs (
-        _: settings: settings.system == "aarch64-darwin" || settings.system == "x86_64-darwin"
-      ) hosts;
-      darwinNames = nixpkgs.lib.mapAttrsToList (
-        hostKey: settings:
-        assert nixpkgs.lib.assertMsg (
-          settings ? darwinName && builtins.isString settings.darwinName && settings.darwinName != ""
-        ) "darwin host ${hostKey} must define a non-empty string darwinName.";
-        settings.darwinName
-      ) darwinHosts;
-      _darwinNameUnique =
-        assert nixpkgs.lib.assertMsg (
-          builtins.length darwinNames == builtins.length (nixpkgs.lib.unique darwinNames)
-        ) "darwinName must be unique across all darwin hosts.";
-        true;
-      darwinConfigurations = nixpkgs.lib.mapAttrs' (
-        hostKey: settings:
-        assert _darwinNameUnique;
-        {
-          name = settings.darwinName;
-          value = mkDarwin settings;
-        }
-      ) darwinHosts;
+      homeConfigurations = renderNamedOutputs "homeConfigurationName" homeHosts mkHome;
+      darwinConfigurations = renderNamedOutputs "darwinName" darwinHosts mkDarwin;
     in
     {
       inherit homeConfigurations;
       inherit darwinConfigurations;
-      formatter = nixpkgs.lib.genAttrs systems (system: nixpkgs.legacyPackages.${system}.nixfmt);
-      checks = nixpkgs.lib.genAttrs systems (
-        system:
-        let
-          hostKeys = builtins.attrNames (
-            nixpkgs.lib.filterAttrs (_: settings: settings.system == system) hosts
-          );
-          homeChecks = builtins.listToAttrs (
-            map (hostKey: {
-              name = "home-${builtins.replaceStrings [ "@" ] [ "-" ] hostKey}";
-              value = homeConfigurations.${hostKey}.activationPackage;
-            }) hostKeys
-          );
-          darwinChecks = builtins.listToAttrs (
-            map
-              (hostKey: {
-                name = "darwin-${darwinHosts.${hostKey}.darwinName}";
-                value = darwinConfigurations.${darwinHosts.${hostKey}.darwinName}.config.system.build.toplevel;
-              })
-              (builtins.attrNames (nixpkgs.lib.filterAttrs (_: settings: settings.system == system) darwinHosts))
-          );
-        in
-        homeChecks // darwinChecks
+      formatter = nixpkgs.lib.genAttrs (hostSystems hosts) (
+        system: nixpkgs.legacyPackages.${system}.nixfmt
       );
+      checks =
+        let
+          homeChecks = nixpkgs.lib.mapAttrs' (_hostKey: settings: {
+            name = "home-${settings.homeConfigurationName}";
+            value = homeConfigurations.${settings.homeConfigurationName}.activationPackage;
+          }) homeHosts;
+          darwinChecks = nixpkgs.lib.mapAttrs' (_hostKey: settings: {
+            name = "darwin-${settings.darwinName}";
+            value = darwinConfigurations.${settings.darwinName}.config.system.build.toplevel;
+          }) darwinHosts;
+        in
+        homeChecks // darwinChecks;
     };
 }
