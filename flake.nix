@@ -49,12 +49,12 @@
     let
       myLib = import ./lib { lib = nixpkgs.lib; };
       hosts = import ./hosts { inherit myLib; };
+      systems = hostSystems hosts;
       resolveHostModules = modules: map (name: myLib.moduleRegistry.${name}) modules;
       makeSpecialArgs = settings: {
         inherit inputs myLib;
         host = removeAttrs settings [ "system" ];
       };
-      homeHosts = hosts;
       darwinHosts = nixpkgs.lib.filterAttrs (
         _: settings: settings.system == "aarch64-darwin" || settings.system == "x86_64-darwin"
       ) hosts;
@@ -156,26 +156,30 @@
           ];
         };
 
-      homeConfigurations = renderNamedOutputs "homeConfigurationName" homeHosts mkHome;
+      homeConfigurations = renderNamedOutputs "homeConfigurationName" hosts mkHome;
       darwinConfigurations = renderNamedOutputs "darwinName" darwinHosts mkDarwin;
     in
     {
       inherit homeConfigurations;
       inherit darwinConfigurations;
-      formatter = nixpkgs.lib.genAttrs (hostSystems hosts) (
+      formatter = nixpkgs.lib.genAttrs systems (
         system: nixpkgs.legacyPackages.${system}.nixfmt
       );
-      checks =
+      checks = nixpkgs.lib.genAttrs systems (
+        system:
         let
+          systemHomeHosts = nixpkgs.lib.filterAttrs (_: settings: settings.system == system) hosts;
+          systemDarwinHosts = nixpkgs.lib.filterAttrs (_: settings: settings.system == system) darwinHosts;
           homeChecks = nixpkgs.lib.mapAttrs' (_hostKey: settings: {
             name = "home-${settings.homeConfigurationName}";
             value = homeConfigurations.${settings.homeConfigurationName}.activationPackage;
-          }) homeHosts;
+          }) systemHomeHosts;
           darwinChecks = nixpkgs.lib.mapAttrs' (_hostKey: settings: {
             name = "darwin-${settings.darwinName}";
             value = darwinConfigurations.${settings.darwinName}.config.system.build.toplevel;
-          }) darwinHosts;
+          }) systemDarwinHosts;
         in
-        homeChecks // darwinChecks;
+        homeChecks // darwinChecks
+      );
     };
 }

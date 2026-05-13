@@ -6,20 +6,6 @@
 }:
 
 let
-  hcCommand =
-    if host ? darwinName then
-      ''
-        SYS="$(nix eval --impure --raw --expr builtins.currentSystem)"
-        nix build --no-link \
-          ".#checks.''${SYS}.home-${host.homeConfigurationName}" \
-          ".#checks.''${SYS}.darwin-${host.darwinName}"
-      ''
-    else
-      ''
-        SYS="$(nix eval --impure --raw --expr builtins.currentSystem)"
-        nix build --no-link ".#checks.''${SYS}.home-${host.homeConfigurationName}"
-      '';
-
   commonAliases = {
     cat = "bat";
     catp = "bat -p";
@@ -27,7 +13,7 @@ let
     bgrep = "batgrep";
 
     flu = "nix flake update --flake ~/.config/home-manager";
-    hc = hcCommand;
+    hc = ''SYS="$(nix eval --impure --raw --expr builtins.currentSystem)"; nix eval --json ".#checks.''${SYS}"'';
     hms = "hc && home-manager switch --flake ~/.config/home-manager#${host.homeConfigurationName}";
     gc = "nix-collect-garbage -d";
   };
@@ -67,6 +53,7 @@ in
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     shellAliases = commonAliases;
+    initContent = builtins.readFile ./zsh-extra.sh;
     plugins = [
       {
         name = "zsh-autopair";
@@ -84,7 +71,6 @@ in
         file = "share/fzf-tab/fzf-tab.plugin.zsh";
       }
     ];
-    initContent = builtins.readFile ./zsh-extra.sh;
   };
 
   # programs.nushell = {
