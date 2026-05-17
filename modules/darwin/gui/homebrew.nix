@@ -78,7 +78,7 @@
       "onlyoffice" # OnlyOffice 本地办公套件，兼容 Microsoft Office 格式。
 
       # 知识管理。
-      # "obsidian" # 本地 Markdown 知识库。
+      "obsidian" # 本地 Markdown 知识库。
     ];
 
     # 更适合通过 App Store 安装的应用。
