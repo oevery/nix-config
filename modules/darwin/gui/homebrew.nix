@@ -31,6 +31,7 @@
       "hbuilderx" # uni-app 开发 IDE。
       "wechatwebdevtools" # 微信开发者工具（小程序/公众号）。
       "reqable" # API 调试与代理抓包。
+      "iloader" # 用户友好的 iOS sideloader
       "dbeaver-community" # 数据库管理与 SQL 客户端。
       "android-studio" # Android 开发与模拟器。
       # AI / 监控。
