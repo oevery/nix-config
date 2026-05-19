@@ -76,6 +76,7 @@
       # 办公软件。
       "wpsoffice" # 金山 WPS Office。
       "onlyoffice" # OnlyOffice 本地办公套件，兼容 Microsoft Office 格式。
+      "onedrive" # OneDrive 文件同步客户端。
 
       # 知识管理。
       "obsidian" # 本地 Markdown 知识库。
