@@ -41,10 +41,10 @@
         ]
       },
       "locked": {
-        "lastModified": 1779143091,
-        "narHash": "sha256-qxiUVquHM09KOV1aD4We9q0ooPWO4qOc0v9J9NDWSAo=",
+        "lastModified": 1779157263,
+        "narHash": "sha256-VbiyZkRf8/qr7ObmlyfOHJsNAW5tyZ4MB1+cUwAwdrw=",
         "ref": "master",
-        "rev": "736c2084ea750a049ecdbdd7ff5817d2eeeef444",
+        "rev": "866412a19866b4a8e32d2306a118040afa2b840c",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/nix-community/home-manager.git"
@@ -59,10 +59,10 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1779154661,
-        "narHash": "sha256-HlWkgnpI6xBJNRz6gOhiNWMK97VnBI12Vi1EyXulqD4=",
+        "lastModified": 1779200331,
+        "narHash": "sha256-/VxobQpEHLB2+3Vtlj7jy6ZvbZVjbugHWlkb0Q5KOlE=",
         "ref": "refs/heads/main",
-        "rev": "7684d10a585b4737d6db680b812f91efb843f62e",
+        "rev": "9d46f3f49af6a553d81b3853844d83ee3a41d510",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-cask.git"
@@ -76,10 +76,10 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1779146959,
-        "narHash": "sha256-GU3LodzIDoMp6niMplaMFAnaxrfphjzh7jmIPl9TOCk=",
+        "lastModified": 1779199471,
+        "narHash": "sha256-kJ+tVEUZSrleOivhDbPSi8yrAc17BestmYhgMC2AGCw=",
         "ref": "refs/heads/main",
-        "rev": "364234b375a0b793f3e12e813dee7fa67ec7e3f7",
+        "rev": "2048212c5e28f58c7599569acb91dadbca739207",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-core.git"
@@ -93,10 +93,10 @@
     "mm7894215-tokentracker": {
       "flake": false,
       "locked": {
-        "lastModified": 1779030924,
-        "narHash": "sha256-LOkMPWX8unOcrKNJX1zyNL5caAB7d7BYTqYboeFywrE=",
+        "lastModified": 1779189849,
+        "narHash": "sha256-CrBRGm4GPmYSZOqAaMVI8GmFCWG5d7AUhivN36rc0QY=",
         "ref": "refs/heads/main",
-        "rev": "b78eb6c37a041026ec62ded24cec273569ed8915",
+        "rev": "69f4e66e1f597e034edceb55ee023506a1327dae",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/mm7894215/homebrew-tokentracker.git"
