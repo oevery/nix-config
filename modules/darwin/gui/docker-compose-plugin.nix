@@ -1,7 +1,7 @@
 { lib, ... }:
 
-{
-  home.activation.ensureDockerComposePlugin = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+let
+  mkDockerComposePlugin = ''
     if command -v brew >/dev/null 2>&1; then
       compose_prefix="$(brew --prefix docker-compose 2>/dev/null || true)"
 
@@ -11,4 +11,7 @@
       fi
     fi
   '';
+in
+{
+  home.activation.ensureDockerComposePlugin = lib.hm.dag.entryAfter [ "writeBoundary" ] mkDockerComposePlugin;
 }
