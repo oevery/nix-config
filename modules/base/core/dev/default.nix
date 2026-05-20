@@ -118,9 +118,10 @@
         usage = "latest";
         rust = "latest";
         node = "lts";
-        pnpm = "10";
+        pnpm = "latest";
         python = "3.11";
         java = "temurin-21";
+        uv = "latest";
         "npm:@antfu/ni" = "latest";
         "npm:sfw" = "latest";
       };
