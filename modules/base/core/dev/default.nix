@@ -20,7 +20,6 @@
 
         # 跨平台 CLI 统一交给 Nix 管理。
         sqlite
-        watchman # 文件变更监听。
         android-tools # adb / fastboot。
         cmake # 原生模块和桌面应用构建工具。
         pkg-config # 本地库编译参数发现工具。
