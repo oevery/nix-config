@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "rsp": {
+      "source": "oevery/rsp",
+      "sourceType": "github",
+      "skillPath": "skills/rsp/SKILL.md",
+      "computedHash": "846ffd4e3493fc156c94ff67d7e791959eb5114c06a482588457fc35ea257de4"
+    }
+  }
+}

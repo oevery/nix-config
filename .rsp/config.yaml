@@ -1,0 +1,26 @@
+# RSP project configuration
+# Uncomment any section below to override defaults.
+#
+# Built-in defaults:
+#   statuses:            draft, ready, in-progress, blocked, done
+#   priorities:          low, medium, high, critical
+#   required_sections:   Spec, Plan
+#
+# statuses:
+#   - draft
+#   - ready
+#   - in-progress
+#   - blocked
+#   - done
+#
+# priorities:
+#   - low
+#   - medium
+#   - high
+#   - critical
+#
+required_sections:
+  - Spec
+  - Plan
+  - Tests
+  - Blockers
