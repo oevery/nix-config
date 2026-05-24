@@ -6,13 +6,27 @@
 }:
 
 let
+  shellConfig = import ./nix-config.nix;
+
+  fluScript = pkgs.writeShellScriptBin "flu" ''
+    set -eu
+
+    if ! command -v nix >/dev/null 2>&1; then
+      printf '%s\n' 'flu: nix command not found' >&2
+      exit 127
+    fi
+
+${shellConfig.githubAccessTokensSnippet}
+
+    exec nix flake update --flake "$HOME/.config/home-manager" "$@"
+  '';
+
   commonAliases = {
     cat = "bat";
     catp = "bat -p";
     man = "batman";
     bgrep = "batgrep";
 
-    flu = "nix flake update --flake ~/.config/home-manager";
     hc = ''SYS="$(nix eval --impure --raw --expr builtins.currentSystem)"; nix eval --json ".#checks.''${SYS}"'';
     hms = "hc && home-manager switch --flake ~/.config/home-manager#${host.homeConfigurationName}";
     gc = "nix-collect-garbage -d";
@@ -45,6 +59,7 @@ in
     ++ (with pkgs; [
       # nushell
       nix-your-shell
+      fluScript
     ]);
 
   programs.zsh = {

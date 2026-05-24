@@ -60,6 +60,7 @@
       ) hosts;
       hostSystems =
         hostSet: nixpkgs.lib.unique (map (settings: settings.system) (builtins.attrValues hostSet));
+      darwinSystems = hostSystems darwinHosts;
       uniqueAttr =
         attrName: hostSet:
         let
@@ -163,6 +164,14 @@
     {
       inherit homeConfigurations;
       inherit darwinConfigurations;
+      apps = nixpkgs.lib.genAttrs darwinSystems (
+        system: {
+          darwin-rebuild = {
+            type = "app";
+            program = "${nix-darwin.packages.${system}.darwin-rebuild}/bin/darwin-rebuild";
+          };
+        }
+      );
       formatter = nixpkgs.lib.genAttrs systems (
         system: nixpkgs.legacyPackages.${system}.nixfmt
       );
