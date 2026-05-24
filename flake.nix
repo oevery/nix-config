@@ -113,8 +113,9 @@
         nix-darwin.lib.darwinSystem {
           system = settings.system;
           specialArgs = makeSpecialArgs settings;
-          modules = [
+      modules = [
             ./modules/darwin/core/system.nix
+            ./modules/darwin/core/kilo-cleaner.nix
           ]
           ++ nixpkgs.lib.optionals enableDarwinGuiModules [
             nix-homebrew.darwinModules.nix-homebrew

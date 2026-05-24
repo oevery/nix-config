@@ -6,6 +6,7 @@
     exclude = [
       "default.nix"
       "system.nix"
+      "kilo-cleaner.nix"
     ];
   };
 }

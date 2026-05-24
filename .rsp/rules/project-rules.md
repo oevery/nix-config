@@ -21,3 +21,5 @@ description: Project-specific rules for home-manager
 - `modules/base/` 放跨平台能力，`modules/linux/` 与 `modules/darwin/` 只放平台差异。
 - 新增模块组前先更新 `lib.moduleRegistry`，避免绕过允许模块列表。
 - `home.nix` 保持为薄入口；通用配置应下沉到模块目录，而不是持续堆积在根模块中。
+- `.rsp/features/*.md` 与 `.rsp/archives/*.md` 中的 `## Spec` 使用普通列表表达 `Summary`、`Requirements`、`Constraints`；不要在 `Spec` 小节使用 checkbox。
+- checkbox 仅用于可执行或可验证的跟踪项，例如 `## Plan`、`## Tests`，以及确有状态语义的清单。
