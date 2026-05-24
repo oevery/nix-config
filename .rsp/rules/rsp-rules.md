@@ -26,6 +26,8 @@ RSP = Rules, Specs, Plans.
 - `archives/INDEX.md` is auto-generated. Rebuild it with `rsp archive-index` instead of editing it manually.
 - `design.md` is created by `rsp init` and then owned by the project.
 - `project-rules.md` is optional.
+- Keep durable architecture, boundaries, and cross-cutting technical constraints in `specs/design.md`.
+- Keep stable workflow rules, validation expectations, and local operating constraints in `rules/project-rules.md`.
 
 ## Reading order
 
@@ -68,12 +70,12 @@ Every feature file should contain these sections:
 ## Init constraints
 
 - `rsp init` scaffolds project structure only. It must not create a feature file.
+- `rsp init --with-project-setup` may additionally seed `features/project-setup.md` and the matching `active.d` marker for onboarding.
 - `rsp init` should create `features/`, `active.d/`, `archives/`, and `specs/design.md` up front.
 - `rsp init --agents-mode managed|skip|print` controls whether `AGENTS.md` is updated, skipped, or printed.
 - `managed` should update only the managed AGENTS block.
 - `skip` should leave `AGENTS.md` untouched.
 - `print` should scaffold `.rsp/` and print the managed AGENTS block without writing it.
-- `init` is a reserved workflow name. Do not create a feature named `init`.
 
 ## Agent behavior
 
@@ -89,7 +91,6 @@ Every feature file should contain these sections:
 ## Prohibitions
 
 - Do not manually maintain `specs/INDEX.md` or `archives/INDEX.md`.
-- Do not create a feature named `init`.
 - Do not create `project-rules.md` by default when the project has no durable local rules.
 - Do not use `AGENTS.md` as the long-term storage location for project design or rules.
 - Do not create `specs` files that duplicate information already stored in `design.md` or durable rules files.

@@ -14,6 +14,4 @@ Guidelines:
 - .rsp/rules/project-rules.md is optional
 - Keep project design in .rsp/specs/
 - Add extra spec files only when they have durable value
-- Do not create a feature named 'init'
 <!-- rsp:end -->
-

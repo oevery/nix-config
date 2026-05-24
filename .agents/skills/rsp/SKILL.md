@@ -18,20 +18,23 @@ Use this skill when you are actively operating on an RSP project: initializing R
 
 If the project has no `.rsp/` yet:
 
-1. Run `npx -y @oevery/rsp init`
+1. Run `npx -y @oevery/rsp init --with-project-setup`
 2. Choose `--agents-mode`:
    - `managed`: the project already uses `AGENTS.md` and should gain a thin managed RSP block
    - `skip`: do not modify `AGENTS.md`
    - `print`: print the managed block for manual or AI-assisted insertion
-3. Fill `specs/design.md`
-4. Run `rsp doctor`
+3. If you did not use `--with-project-setup`, create `rsp new project-setup` to capture project bootstrap facts, boundaries, and initial decisions
+4. Fill `features/project-setup.md`
+5. Fill `specs/design.md`
+6. Run `rsp doctor`
 
 If the project already has `.rsp/`:
 
 1. Check `AGENTS.md`
 2. Check `active.d/`
 3. Check `specs/design.md`
-4. Run `rsp doctor` before making structural changes when the setup looks inconsistent
+4. If the project still lacks a durable bootstrap feature, create `rsp new project-setup`
+5. Run `rsp doctor` before making structural changes when the setup looks inconsistent
 
 ## Command-first workflow
 
@@ -73,7 +76,7 @@ Rules:
 ## File placement guide
 
 - `specs/design.md`: project-wide design, boundaries, and durable context
-- `rules/project-rules.md`: canonical optional file for stable local validation steps, directory constraints, or workflow restrictions
+- `rules/project-rules.md`: canonical optional file for stable local validation steps, workflow restrictions, and other long-lived local operating constraints
 - `rules/<name>.md`: other durable rule sets
 - `specs/<name>.md`: additional durable project-level documents only when they do not duplicate `design.md`
 - `features/<name>.md`: active work only
@@ -104,7 +107,7 @@ tags:
 ## Spec
 - Summary: <one-line>
 - Requirements:
-  - [ ] <verifiable item>
+  - <verifiable item>
 - Constraints:
   - <binding constraint>
 
@@ -118,6 +121,22 @@ tags:
 ## Blockers
 -
 ```
+
+## Project setup workflow
+
+Use this when adopting RSP into a repository or when the project lacks a durable bootstrap feature:
+
+1. Prefer `rsp init --with-project-setup`, or create `rsp new project-setup` if RSP is already initialized
+2. Capture the project's purpose, boundaries, inputs, outputs, and platform constraints in the feature spec
+3. Move durable architecture facts and cross-cutting technical constraints into `.rsp/specs/design.md`
+4. Move stable validation rules, workflow constraints, and local operating constraints into `.rsp/rules/project-rules.md` when they are long-lived
+5. Keep `project-setup` open until the initial project model is settled, then start normal feature work
+
+Suggested `project-setup` checkpoints:
+
+- Purpose, scope, and structure are reflected in `.rsp/specs/design.md`
+- Stable local rules are reflected in `.rsp/rules/project-rules.md` when needed
+- `rsp doctor` passes before the feature is closed
 
 ## Audit workflow
 
