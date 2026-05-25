@@ -12,7 +12,7 @@ description: Project-specific rules for home-manager
 ## Validation
 - 优先运行 `nix flake check` 作为全仓标准验证。
 - 需要快速确认输出是否可解析时，优先使用 `nix eval --raw path:$PWD#homeConfigurations.<name>.activationPackage.drvPath` 或对应 Darwin `toplevel.drvPath`。
-- 调整 `.rsp/` 工作流文件后，运行 `npx -y @oevery/rsp check`、`npx -y @oevery/rsp status`，并在需要时重建索引。
+- 调整 `.rsp/` 工作流文件后，先运行 `npx -y @oevery/rsp update`，再运行 `npx -y @oevery/rsp check` 和 `npx -y @oevery/rsp status`。
 
 ## Conventions
 - 所有主机必须通过 `lib.mkHost` 定义，并在 `hosts/default.nix` 中统一注册。

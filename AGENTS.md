@@ -4,14 +4,10 @@
 ## RSP Entry
 
 Read in order:
-1. .rsp/rules/*.md
-2. .rsp/specs/INDEX.md
-3. .rsp/specs/design.md
-4. .rsp/active.d/ and matching .rsp/features/*.md
-
-Guidelines:
-- .rsp/rules/rsp-rules.md is required
-- .rsp/rules/project-rules.md is optional
-- Keep project design in .rsp/specs/
-- Add extra spec files only when they have durable value
+1. .rsp/rules/rsp-rules.md
+2. .rsp/focus.d/
+3. matching .rsp/changes/*.md for the focused entries
+4. .rsp/specs/design.md
+5. .rsp/specs/INDEX.md
+6. only the relevant additional .rsp/rules/*.md and .rsp/specs/*.md files
 <!-- rsp:end -->

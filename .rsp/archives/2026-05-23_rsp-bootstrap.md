@@ -1,37 +1,55 @@
 ---
-status: done
+kind: ops
 priority: high
-tags:
-  - rsp
-  - workflow
-  - bootstrap
 ---
 
-# Feature: rsp-bootstrap
+# Change: rsp-bootstrap
+
+## Proposal
+- Summary: 将初始化后的 `.rsp/` 骨架补齐为可直接使用的项目工作流文档。
+- Why:
+  - 将引导阶段知识保留在这一个变更中，同时把持久事实迁移到 specs 和 rules
+- Scope:
+  - `.rsp/specs/design.md`
+  - `.rsp/rules/project-rules.md`
+- Non-goals:
+  - 保持引导流程轻量，避免重复写入持久项目事实
 
 ## Spec
-- Summary: 将初始化后的 `.rsp/` 骨架补齐为可直接使用的项目工作流文档。
-- Requirements:
-  - `design.md` 反映该仓库真实的架构目的、边界、目录职责与约束。
-  - 项目级规则记录本仓库长期有效的验证方式与实现约定。
-  - `.rsp` 中不再保留初始化模板占位符作为有效内容。
-- Constraints:
-  - 仅写入稳定、长期有效的项目信息，不把 README 的操作步骤复制到设计规格中。
-  - 优先使用 RSP CLI 创建和维护受其管理的文件与索引。
+### 新增
+- 需求：项目引导捕获
+  - 仓库的目的、范围和结构已反映到 `.rsp/specs/design.md`
+
+### 修改
+- 需求：稳定的本地运行约束
+  - 稳定的验证或工作流约束在需要时反映到 `.rsp/rules/project-rules.md`
+
+### 验收
+#### 场景：项目模型已捕获
+- GIVEN an initialized RSP project
+- WHEN project setup is completed
+- THEN `.rsp/specs/design.md` reflects durable project facts
+- AND `.rsp/rules/project-rules.md` exists only when stable local rules are present
+
+## Design
+- 方案：
+  - 将引导阶段知识保留在这一个变更中，同时把持久事实迁移到 specs 和 rules
+- 影响范围：
+  - `.rsp/specs/design.md`
+  - `.rsp/rules/project-rules.md`
+- 约束：
+  - 保持引导流程轻量，避免重复写入持久项目事实
 
 ## Plan
-- [x] Phase 1: 阅读 `.rsp` 骨架、README、flake 入口以及 host/module/lib 结构。
-- [x] Phase 2: 提炼长期设计信息并回填 `design.md` 与 `project-rules.md`。
-- [x] Phase 3: 用 `rsp check`、`rsp status` 和索引重建验证工作流状态。
+- [x] 阅读仓库结构、入口和主要输出
+- [x] 用持久的架构事实填充 `.rsp/specs/design.md`
+- [x] 如存在稳定的本地规则或验证步骤，则补充 `.rsp/rules/project-rules.md`
 
 ## Tests
-- [x] `npx -y @oevery/rsp check`
-- [x] `npx -y @oevery/rsp status`
-- [x] `npx -y @oevery/rsp specs-index`
-
-## Notes (optional)
-- 本仓库当前没有明确的活跃功能开发项，因此使用 `rsp-bootstrap` 记录一次性的工作流落地过程。
-- 项目最稳定的事实来自 `flake.nix`、`lib/`、`hosts/` 与模块分层，而不是 README 中的操作命令。
+- [x] 运行 `rsp doctor`
+- [x] 审阅 `.rsp/specs/design.md` 并确认其与仓库一致
+- [x] 判断该变更是否产生应写入 `.rsp/specs/` 或 `.rsp/rules/` 的持久知识
+- [x] 如有，则只把稳定事实写入最小的正确目标文件后再归档，不要提升任务历史、调试笔记或一次性实现细节
 
 ## Blockers
-- 无。
+- none
