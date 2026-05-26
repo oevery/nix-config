@@ -123,6 +123,7 @@
         uv = "latest";
         "npm:@antfu/ni" = "latest";
         "npm:sfw" = "latest";
+        "npm:@colbymchenry/codegraph" = "latest";
       };
     };
   };

@@ -16,7 +16,7 @@
       "mas"
       "mole" # 系统清理工具。
       "ios-deploy" # iOS 真机安装与调试。
-      "omlx" # 本地 LLM 推理与管理后台。
+      # "omlx" # 本地 LLM 推理与管理后台。
       # "mm7894215/tokentracker/tokentracker" # AI token 用量采集 CLI。
       # 容器运行时由 Colima 提供。
       "colima" # 轻量容器运行时。
@@ -36,6 +36,7 @@
       "dbeaver-community" # 数据库管理与 SQL 客户端。
       "android-studio" # Android 开发与模拟器。
       # AI / 监控。
+      # "lm-studio" # 本地 LLM 下载、管理与推理桌面应用。
       "mm7894215/tokentracker/tokentracker" # AI token 用量监控。
       # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
 
