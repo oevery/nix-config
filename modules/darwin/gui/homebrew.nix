@@ -42,6 +42,7 @@
       # 效率工具。
       "raycast" # 快捷启动。
       "stats" # 系统监控。
+      "thaw" # 菜单栏管理工具。
       # "mos" # 鼠标滚动增强。
       "alt-tab" # 窗口切换。
       # "rectangle" # 窗口管理。
