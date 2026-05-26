@@ -31,6 +31,11 @@
       url = "git+https://github.com/mm7894215/homebrew-tokentracker.git?shallow=1";
       flake = false;
     };
+    # 第三方 Homebrew tap：omlx。
+    jundot-omlx = {
+      url = "git+https://github.com/jundot/omlx.git?shallow=1";
+      flake = false;
+    };
   };
 
   outputs =
@@ -44,6 +49,7 @@
       homebrew-cask,
       brewforge-chinese,
       mm7894215-tokentracker,
+      jundot-omlx,
       ...
     }@inputs:
     let
@@ -86,6 +92,7 @@
         "homebrew/homebrew-cask" = homebrew-cask;
         "brewforge/homebrew-chinese" = brewforge-chinese;
         "mm7894215/homebrew-tokentracker" = mm7894215-tokentracker;
+        "jundot/homebrew-omlx" = jundot-omlx;
       };
 
       darwinTapNames = [
@@ -93,6 +100,7 @@
         "homebrew/cask"
         "brewforge/chinese"
         "mm7894215/tokentracker"
+        "jundot/omlx"
       ];
 
       mkHostModules = settings: [ ./home.nix ] ++ resolveHostModules settings.modules;

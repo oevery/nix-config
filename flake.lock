@@ -90,6 +90,23 @@
         "url": "https://github.com/homebrew/homebrew-core.git"
       }
     },
+    "jundot-omlx": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1779779719,
+        "narHash": "sha256-CMIOITa9vQ3iCxdewYaa2ANEhjAzgIaCkCPO84sz6Bs=",
+        "ref": "refs/heads/main",
+        "rev": "1010fd340741e2c10ce45865ebf08bc038a573af",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/jundot/omlx.git"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/jundot/omlx.git"
+      }
+    },
     "mm7894215-tokentracker": {
       "flake": false,
       "locked": {
@@ -172,6 +189,7 @@
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
+        "jundot-omlx": "jundot-omlx",
         "mm7894215-tokentracker": "mm7894215-tokentracker",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
