@@ -1,4 +1,9 @@
-{ host, lib, pkgs, ... }:
+{
+  host,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cleanerPackage = import ./package.nix {
@@ -10,10 +15,11 @@ in
   home.packages = [ cleanerPackage ];
 
   home.activation.ensureKiloCleanerStateDir = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "$HOME/.local/state/kilo-cleaner"
+    mkdir -p "''${XDG_STATE_HOME:-$HOME/.local/state}/kilo-cleaner"
   '';
 
-} // lib.mkIf pkgs.stdenv.isLinux {
+}
+// lib.mkIf pkgs.stdenv.isLinux {
   systemd.user.services.kilo-cleaner = {
     Unit = {
       Description = "Clean stale kilo and mcp processes";
@@ -23,7 +29,14 @@ in
       Type = "oneshot";
       ExecStart = "${cleanerPackage}/bin/kilo-cleaner";
       Environment = [
-        "PATH=${lib.makeBinPath [ pkgs.coreutils pkgs.findutils pkgs.procps ]}"
+        "PATH=${
+          lib.makeBinPath [
+            pkgs.coreutils
+            pkgs.findutils
+            pkgs.gawk
+            pkgs.procps
+          ]
+        }"
       ];
     };
   };

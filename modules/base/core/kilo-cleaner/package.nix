@@ -1,4 +1,7 @@
-{ pkgs, orphanKiloWithMcpGraceSeconds ? 1800 }:
+{
+  pkgs,
+  orphanKiloWithMcpGraceSeconds ? 1800,
+}:
 
 pkgs.writeShellScriptBin "kilo-cleaner" ''
   set -euo pipefail
@@ -10,13 +13,31 @@ pkgs.writeShellScriptBin "kilo-cleaner" ''
   log_file="$log_dir/cleaner-$(date +%Y%m%d).log"
   exec >>"$log_file" 2>&1
 
-  find "$log_dir" -type f -name 'cleaner-*.log' -mtime +7 -delete 2>/dev/null || true
-
   log() {
-    printf '%s kilo-cleaner: %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*"
+    printf '%s kilo-cleaner %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*"
   }
 
+  if ! find "$log_dir" -type f -name 'cleaner-*.log' -mtime +7 -delete; then
+    log "level=warn action=prune-logs status=failed dir=$log_dir"
+  fi
+
   orphan_kilo_with_mcp_grace_seconds=${toString orphanKiloWithMcpGraceSeconds}
+  terminated=0
+  forced=0
+  skipped=0
+  zombies=0
+  zombie_pids=""
+
+  append_csv() {
+    current="$1"
+    value="$2"
+
+    if [ -z "$current" ]; then
+      printf '%s\n' "$value"
+    else
+      printf '%s,%s\n' "$current" "$value"
+    fi
+  }
 
   ps_snapshot="$(mktemp)"
   trap 'rm -f "$ps_snapshot"' EXIT
@@ -59,10 +80,6 @@ pkgs.writeShellScriptBin "kilo-cleaner" ''
         exit;
       }
     ' "$ps_snapshot"
-  }
-
-  get_etime() {
-    awk -v pid="$1" '$1 == pid { print $4; exit }' "$ps_snapshot"
   }
 
   child_pids() {
@@ -117,41 +134,48 @@ pkgs.writeShellScriptBin "kilo-cleaner" ''
   terminate_process_tree() {
     pid="$1"
     command_line="$2"
-    descendants="$(collect_descendants "$pid" | sort -rn || true)"
+    reason="$3"
+    extra="''${4:-}"
+    descendants="$(collect_descendants "$pid" | sort -rn | paste -sd, - || true)"
+    [ -n "$descendants" ] || descendants="none"
 
-    log "terminate pid=$pid descendants=''${descendants:-none} command=$command_line"
+    log "level=info action=terminate reason=$reason ''${extra:+$extra }pid=$pid descendants=$descendants command=$command_line"
+    terminated=$((terminated + 1))
 
-    for target_pid in $descendants "$pid"; do
+    IFS=',' read -r -a descendant_pids <<< "$descendants"
+    for target_pid in "''${descendant_pids[@]}" "$pid"; do
       [ -n "$target_pid" ] || continue
+      [ "$target_pid" = "none" ] && continue
       kill -TERM "$target_pid" 2>/dev/null || true
     done
 
     sleep 5
 
-    for target_pid in $descendants "$pid"; do
+    for target_pid in "''${descendant_pids[@]}" "$pid"; do
       [ -n "$target_pid" ] || continue
+      [ "$target_pid" = "none" ] && continue
       if kill -0 "$target_pid" 2>/dev/null; then
-        log "force pid=$target_pid root=$pid"
+        log "level=warn action=force reason=$reason ''${extra:+$extra }pid=$target_pid root=$pid"
+        forced=$((forced + 1))
         kill -KILL "$target_pid" 2>/dev/null || true
       fi
     done
   }
 
-  log "start"
-
-  ps axo pid=,ppid=,pgid=,etime=,stat=,command= | while read -r pid ppid pgid etime stat command_line; do
+  while read -r pid ppid pgid etime stat command_line; do
     [ -n "$pid" ] || continue
     [ "$pid" = "$$" ] && continue
 
     case "$stat" in
       Z*)
-        log "zombie pid=$pid ppid=$ppid pgid=$pgid command=$command_line"
+        zombies=$((zombies + 1))
+        zombie_pids="$(append_csv "$zombie_pids" "$pid")"
         continue
         ;;
     esac
 
     if matches_mcp "$command_line" && [ "$ppid" = "1" ]; then
-      terminate_process_tree "$pid" "$command_line"
+      terminate_process_tree "$pid" "$command_line" "orphan-mcp"
       continue
     fi
 
@@ -159,18 +183,19 @@ pkgs.writeShellScriptBin "kilo-cleaner" ''
       if has_mcp_child "$pid"; then
         age_seconds="$(etime_to_seconds "$etime")"
         if [ "$age_seconds" -lt "$orphan_kilo_with_mcp_grace_seconds" ]; then
-          log "skip kilo pid=$pid reason=has-mcp-child age=$age_seconds command=$command_line"
+          skipped=$((skipped + 1))
           continue
         fi
 
-        log "orphan kilo expired pid=$pid age=$age_seconds command=$command_line"
-        terminate_process_tree "$pid" "$command_line"
+        terminate_process_tree "$pid" "$command_line" "orphan-kilo-with-mcp-expired" "age=$age_seconds"
         continue
       fi
 
-      terminate_process_tree "$pid" "$command_line"
+      terminate_process_tree "$pid" "$command_line" "orphan-kilo"
     fi
-  done
+  done < "$ps_snapshot"
 
-  log "done"
+  if [ "$terminated" -gt 0 ] || [ "$forced" -gt 0 ] || [ "$skipped" -gt 0 ] || [ "$zombies" -gt 0 ]; then
+    log "level=info action=summary terminated=$terminated forced=$forced skipped=$skipped zombies=$zombies zombie_pids=''${zombie_pids:-none}"
+  fi
 ''

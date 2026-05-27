@@ -5,8 +5,6 @@ let
     inherit pkgs;
     orphanKiloWithMcpGraceSeconds = host.orphanKiloWithMcpGraceSeconds;
   };
-  homeDirectory = "/Users/${host.username}";
-  logPath = "${homeDirectory}/.local/state/kilo-cleaner/launchd.log";
 in
 {
   launchd.user.agents.kilo-cleaner = {
@@ -23,8 +21,6 @@ in
       KeepAlive = false;
       RunAtLoad = true;
       StartInterval = 21600;
-      StandardOutPath = logPath;
-      StandardErrorPath = logPath;
     };
   };
 }
