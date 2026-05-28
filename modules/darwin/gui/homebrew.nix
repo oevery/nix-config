@@ -60,6 +60,7 @@
       # 通讯协作。
       "wechat"
       "qq"
+      "tencent-meeting" # 腾讯会议。
       "telegram"
       "readdle-spark" # Spark 邮件客户端。
       "termius" # SSH 客户端。
