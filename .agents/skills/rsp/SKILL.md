@@ -1,6 +1,6 @@
 ---
 name: rsp
-description: Use this skill when initializing RSP in a repository, operating an existing .rsp project, auditing or repairing .rsp state, or deciding whether a change needs durable updates before archive.
+description: Use this skill when initializing RSP, operating an existing .rsp project, auditing or repairing .rsp state, or deciding whether a change needs durable updates before archive.
 compatibility:
   agents:
     - any agent that supports the Agent Skills format
@@ -17,83 +17,69 @@ metadata:
 
 # RSP Skill
 
-Load this skill when you need to initialize RSP, operate an existing RSP project, audit or repair `.rsp/`, or decide whether a change needs durable updates before archive.
+Load this skill when you need to initialize RSP, operate `.rsp/`, audit or repair RSP state, or make a durable-update decision before archive.
 
-This skill operationalizes the rules in `.rsp/rules/rsp-rules.md`. Always load and follow those rules first.
+This skill operationalizes `.rsp/rules/rsp-rules.md`; it does not replace that canonical rules source.
 
 Prefer exact file paths, exact commands, and exact durable facts over vague summaries.
 
 ## When to use
 
-- Use this skill when a repository already contains `.rsp/` and the task is to operate within that workflow.
-- Use this skill when adopting RSP in a repository that does not yet have `.rsp/`.
-- Use this skill when the task is to audit or repair `.rsp/`, `AGENTS.md`, generated indices, or focus markers.
-- Use this skill when deciding whether a completed change needs durable updates before archive.
+- Use for RSP setup, repair, focused RSP work, and pre-archive durable decisions.
+- Use when a user explicitly asks to adopt, inspect, or operate the RSP workflow.
 
 ## When not to use
 
-- Do not load this skill for general coding tasks unrelated to `.rsp/`.
-- Do not use this skill as a substitute for reading `.rsp/rules/rsp-rules.md` during a focused RSP task.
-- Do not use this skill when the repository does not use RSP and the user did not ask to adopt it.
+- Do not load for general coding tasks unrelated to `.rsp/`.
+- Do not load when the repository does not use RSP and the user did not ask to adopt it.
+- Do not create an RSP change for a simple current-session task unless the user explicitly wants RSP tracking.
+- Do not use this skill as a substitute for reading `.rsp/rules/rsp-rules.md` during focused RSP work.
 
-## Workflow
+## Workflows
 
-### Adopt or initialize
+### Setup or repair
 
-1. Use one of these commands:
-   - `npx -y @oevery/rsp init --agents-mode managed`
-   - `npx -y @oevery/rsp init --agents-mode print`
-   - `npx -y @oevery/rsp init --with-project-setup --agents-mode managed`
-   - `npx -y @oevery/rsp init --with-project-setup --agents-mode print`
-2. If the repository still needs an explicit bootstrap change and you did not use `--with-project-setup`, run `npx -y @oevery/rsp create project-setup`.
-3. Fill `changes/project-setup.md`.
-4. Set an explicit `kind` in the change frontmatter.
-5. Write durable architecture, boundaries, defaults, and constraints into `specs/design.md`.
-6. Write stable local workflow or validation rules into `rules/project-rules.md` only when they are long-lived.
-7. Run `npx -y @oevery/rsp doctor`.
+1. Initialize with `npx -y @oevery/rsp init [--agents-mode managed|print] [--with-project-setup]`.
+2. `--with-project-setup` creates and focuses `changes/project-setup.md`; otherwise create it with `npx -y @oevery/rsp create project-setup` only when explicit bootstrap tracking is still needed.
+3. Fill the bootstrap change if it exists, then write durable architecture facts to `.rsp/specs/design.md` and stable local workflow rules to `.rsp/rules/project-rules.md` only when they are long-lived.
+4. For diagnostics, run `npx -y @oevery/rsp doctor`.
+5. For safe deterministic repairs, run `npx -y @oevery/rsp doctor --fix` or `npx -y @oevery/rsp update`.
+6. When auditing manually, verify `.rsp/` exists, `AGENTS.md` has the managed block, `specs/design.md` exists, generated indexes are intact, and `focus.d/` markers match `changes/` files.
+7. Treat `doctor --fix` `fixed` entries as actual filesystem changes. An empty `fixed` array or `No safe fixes needed.` means the repair pass changed nothing.
+8. Do not use repair commands for semantic decisions such as stale focus removal, durable updates, or archive readiness.
 
-### Operate an existing project
+### Focused work
 
 1. Follow the read order in `.rsp/rules/rsp-rules.md`.
-2. If a focused change is missing an explicit `kind`, repair the frontmatter before continuing.
-3. If an existing open change should become current work, use `npx -y @oevery/rsp focus <name>`.
-4. Do not treat unfocused files in `changes/` as current work unless the user explicitly asks for them or you first run `npx -y @oevery/rsp focus <name>`.
+2. Treat only `focus.d/` markers as current RSP work; do not treat unfocused files in `changes/` as current work unless the user explicitly asks or you run `npx -y @oevery/rsp focus <name>`.
+3. Read the focused change before editing code.
+4. If a focused change is missing an explicit `kind`, repair the frontmatter before continuing.
+5. Run `npx -y @oevery/rsp check --focused` before treating focused work as ready; resolve placeholder or clarification warnings when they represent real unfinished content.
+6. Treat `rsp check` warnings as deterministic hygiene signals, not as the durable-update decision.
+7. Use `npx -y @oevery/rsp create <name> --lite` only when the user explicitly wants RSP tracking for a small, straightforward change.
+8. Convert actionable `## Tasks` checkboxes into your agent-local task tracker when one is available.
+9. Keep implementation sequential by default; parallelize only independent read-only discovery or mechanical checks.
+10. Update `## Tasks`, `## Verify`, and any invalidated `## Proposal`, `## Spec`, or `## Design` content in the same working session as implementation facts change.
+11. Keep temporary debugging notes, task history, and command transcripts out of `specs/` and `rules/`.
 
-### Audit or repair
+### Pre-archive durable decision
 
-1. Check that `.rsp/` exists.
-2. Check that `AGENTS.md` contains the managed RSP block.
-3. Check that `specs/design.md` exists.
-4. Check that `specs/INDEX.md` and `archives/INDEX.md` are still generated files.
-   `specs/INDEX.md` should list only additional spec files beyond `specs/design.md`.
-5. Check that `focus.d/` markers and `changes/` files are in sync.
-6. If generated indices or the managed AGENTS block drift, run `npx -y @oevery/rsp update`.
-
-## Expected outputs
-
-- exact file paths to read or update
-- exact RSP commands to run
-- a single durable-decision result in the required template when evaluating archive readiness
-
-## Trigger examples
-
-- "Set up RSP in this repository."
-- "Repair the broken .rsp state in this project."
-- "Check whether this change needs spec or rule writeback before archive."
-- "Audit the RSP setup and tell me what is missing."
+1. Run `npx -y @oevery/rsp check --focused` for focused work, or `npx -y @oevery/rsp check` when reviewing all open changes.
+2. Run `npx -y @oevery/rsp show --focused --json` or `npx -y @oevery/rsp ready <name> --json` to collect readiness, warnings, context paths, and `durableReview` guidance.
+3. Treat `durableReview.candidateTargets` as advisory context for likely writable durable files, not as permission to edit generated indexes or bundled core rules.
+4. Treat `Spec` delta markers (`### ADDED`, `### MODIFIED`, `### REMOVED`) as planning aids only; do not merge them automatically.
+5. Read only the current change plus relevant `specs/`, `rules/`, and code files needed for the semantic decision.
+6. Produce the durable decision output before archiving.
 
 ## Durable decision
 
-Before `npx -y @oevery/rsp archive <name>`:
-
-1. Read the current change.
-2. Read only the relevant `specs/` and `rules/` files.
-3. Inspect code only if needed.
-4. Return exactly one decision:
+Return exactly one decision:
 
 - `No durable update needed`
 - `Update existing spec or rule`
-- `Create a new durable spec` only when the knowledge is truly project-level, reusable, and does not fit `specs/design.md`, an existing spec, or a rule file
+- `Create a new durable spec` only when the knowledge is project-level, reusable, and does not fit `specs/design.md`, an existing spec, or a rule file
+
+Prefer `No durable update needed` when no concrete stable fact is worth rereading in future sessions.
 
 Write a durable update only when one of these is true:
 
@@ -102,39 +88,18 @@ Write a durable update only when one of these is true:
 - future agents or developers would likely make mistakes without the fact
 - the fact is worth rereading in later sessions as durable project knowledge
 
-When unsure whether a fact is truly durable, prefer `No durable update needed` over speculative promotion.
-
-Default to no spec writeback unless the change produced project-level durable knowledge that future work must reread.
-
-Do not write these into `specs/` or `rules/`:
-
-- temporary debugging history
-- task-by-task execution notes
-- one-off implementation context
-- archive-only historical detail
-- a catch-all summary file like `specs/changes.md`
-
 Choose the smallest correct target:
 
-- project-wide design, boundaries, defaults, and durable context -> `specs/design.md`
-- stable local workflow or validation rules -> `rules/project-rules.md`
-- another durable rule set -> `rules/<name>.md`
-- an additional reusable project-level spec -> `specs/<name>.md`
+- project-wide design, boundaries, defaults, and durable context -> `.rsp/specs/design.md`
+- stable local workflow or validation rules -> `.rsp/rules/project-rules.md`
+- another durable rule set -> `.rsp/rules/<name>.md`
+- an additional reusable project-level spec -> `.rsp/specs/<name>.md`
 
-Prefer `specs/design.md` or an existing durable file before creating a new spec file.
+Do not choose generated indexes or bundled `rules/rsp-rules.md` as ordinary durable writeback targets unless the task explicitly changes RSP itself.
 
-When writing the durable update:
+Prefer `.rsp/specs/design.md` or an existing durable file before creating a new spec file.
 
-- write stable facts, not narrative history
-- prefer concrete facts and boundaries over summaries like "implemented X" or "investigated Y"
-- if you cannot identify a concrete durable target or concrete durable facts, do not invent them
-
-Set archive readiness like this:
-
-- If `Blockers` still contains a real blocker, set `Archive ready: no`.
-- If a durable update is required but not yet written, set `Archive ready: no`.
-- If no durable update is missing and the remaining `Verify` risk is consciously accepted, set `Archive ready: yes`.
-- Do not use CLI warning text as a substitute for semantic durable-update judgment.
+Write stable facts, not narrative history, task-by-task notes, temporary debugging history, or archive-only detail. If you cannot identify concrete durable facts, do not invent them.
 
 ## Output template
 
@@ -151,17 +116,16 @@ Use this exact format:
 - Archive ready: <yes | no>
 ```
 
-Minimal example:
+Short example:
 
 ```md
 ## Durable Decision
 - Decision: Update existing spec or rule
 - Target: .rsp/specs/design.md
 - Why:
-  - The change introduced a stable default and boundary that future work must follow.
+  - The change introduced a stable default that future agents must follow.
 - Facts to write:
   - Default API retries are capped at 3 attempts.
-  - Background sync stops retrying after a permanent authentication failure.
 - Archive ready: no
 ```
 
@@ -169,8 +133,7 @@ Rules for the output:
 
 - `Target` must be a concrete file path when the decision is not `No durable update needed`.
 - `Facts to write` must contain durable facts, not task history or debugging notes.
-- If the decision requires a durable update that is not yet written, `Archive ready` must be `no`.
-
-## Refresh guidance
-
-- After rule or skill changes, prefer a fresh session and reread `AGENTS.md` plus `.rsp/rules/*.md`.
+- If real blockers remain or a required durable update is not yet written, `Archive ready` must be `no`.
+- If no durable update is missing and remaining verify risk is consciously accepted, `Archive ready` may be `yes`.
+- Do not use CLI warning text as a substitute for semantic durable-update judgment.
+- CLI `archiveReady: judgment` means the skill or a human must decide; it is not automatic approval.
