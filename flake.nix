@@ -122,12 +122,13 @@
         nix-darwin.lib.darwinSystem {
           system = settings.system;
           specialArgs = makeSpecialArgs settings;
-      modules = [
-            ./modules/darwin/core/system.nix
-            ./modules/darwin/core/kilo-cleaner.nix
+          modules = [
+            ./modules/darwin/nix-darwin/core.nix
+            ./modules/darwin/nix-darwin/kilo-cleaner.nix
           ]
           ++ nixpkgs.lib.optionals enableDarwinGuiModules [
             nix-homebrew.darwinModules.nix-homebrew
+            ./modules/darwin/nix-darwin/desktop.nix
             {
               nix-homebrew = {
                 enable = true;
@@ -147,7 +148,7 @@
             )
           ]
           ++ nixpkgs.lib.optionals enableDarwinGuiModules [
-            ./modules/darwin/gui/homebrew.nix
+            ./modules/darwin/nix-darwin/homebrew.nix
           ]
           ++ [
             home-manager.darwinModules.home-manager
@@ -172,17 +173,13 @@
     {
       inherit homeConfigurations;
       inherit darwinConfigurations;
-      apps = nixpkgs.lib.genAttrs darwinSystems (
-        system: {
-          darwin-rebuild = {
-            type = "app";
-            program = "${nix-darwin.packages.${system}.darwin-rebuild}/bin/darwin-rebuild";
-          };
-        }
-      );
-      formatter = nixpkgs.lib.genAttrs systems (
-        system: nixpkgs.legacyPackages.${system}.nixfmt
-      );
+      apps = nixpkgs.lib.genAttrs darwinSystems (system: {
+        darwin-rebuild = {
+          type = "app";
+          program = "${nix-darwin.packages.${system}.darwin-rebuild}/bin/darwin-rebuild";
+        };
+      });
+      formatter = nixpkgs.lib.genAttrs systems (system: nixpkgs.legacyPackages.${system}.nixfmt);
       checks = nixpkgs.lib.genAttrs systems (
         system:
         let
