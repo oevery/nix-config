@@ -125,10 +125,7 @@
           modules = [
             ./modules/darwin/nix-darwin/core.nix
             ./modules/darwin/nix-darwin/kilo-cleaner.nix
-          ]
-          ++ nixpkgs.lib.optionals enableDarwinGuiModules [
             nix-homebrew.darwinModules.nix-homebrew
-            ./modules/darwin/nix-darwin/desktop.nix
             {
               nix-homebrew = {
                 enable = true;
@@ -146,9 +143,11 @@
                 homebrew.taps = darwinTapNames;
               }
             )
+            ./modules/darwin/nix-darwin/homebrew.nix
           ]
           ++ nixpkgs.lib.optionals enableDarwinGuiModules [
-            ./modules/darwin/nix-darwin/homebrew.nix
+            ./modules/darwin/nix-darwin/desktop.nix
+            ./modules/darwin/nix-darwin/homebrew-gui.nix
           ]
           ++ [
             home-manager.darwinModules.home-manager
