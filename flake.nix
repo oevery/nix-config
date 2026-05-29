@@ -176,6 +176,9 @@
         darwin-rebuild = {
           type = "app";
           program = "${nix-darwin.packages.${system}.darwin-rebuild}/bin/darwin-rebuild";
+          meta = {
+            description = "Run nix-darwin darwin-rebuild from this flake's nix-darwin input";
+          };
         };
       });
       formatter = nixpkgs.lib.genAttrs systems (system: nixpkgs.legacyPackages.${system}.nixfmt);
