@@ -2,14 +2,13 @@
   description = "Home Manager configuration";
 
   inputs = {
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs.url = "git+https://github.com/NixOS/nixpkgs.git?ref=nixpkgs-unstable&shallow=1";
+    nixpkgs.url = "git+https://github.com/NixOS/nixpkgs.git?ref=nixos-26.05&shallow=1";
     home-manager = {
-      url = "git+https://github.com/nix-community/home-manager.git?ref=master&shallow=1";
+      url = "git+https://github.com/nix-community/home-manager.git?ref=release-26.05&shallow=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-darwin = {
-      url = "git+https://github.com/nix-darwin/nix-darwin.git?ref=master&shallow=1";
+      url = "git+https://github.com/nix-darwin/nix-darwin.git?ref=nix-darwin-26.05&shallow=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-homebrew.url = "git+https://github.com/zhaofengli/nix-homebrew.git?ref=main&shallow=1";

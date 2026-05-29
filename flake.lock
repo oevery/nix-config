@@ -41,16 +41,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1779969295,
-        "narHash": "sha256-HwIJ3tOcwSMiV75L7KqJXciXR9UfT+d7rwOZMX7cTnA=",
-        "ref": "master",
-        "rev": "61e2c9659324181e0f0ed911958c536333b1d4f6",
+        "lastModified": 1779726825,
+        "narHash": "sha256-RUkMrREjKDQrA+dA9+xZviGAxM5W1aVdyOr/bSYpHrE=",
+        "ref": "release-26.05",
+        "rev": "b179bde238977f7d4454fc770b1a727eaf55111c",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/nix-community/home-manager.git"
       },
       "original": {
-        "ref": "master",
+        "ref": "release-26.05",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/nix-community/home-manager.git"
@@ -93,10 +93,10 @@
     "jundot-omlx": {
       "flake": false,
       "locked": {
-        "lastModified": 1780041574,
-        "narHash": "sha256-p2Jn72y35kXXEM+99YzvYiqpUtGMubsjrwpTDmPoFvc=",
+        "lastModified": 1780046106,
+        "narHash": "sha256-Qn2ZrBy03zWhrPtSOrhRz39bddDtB2jQq3LOyyxf8Vo=",
         "ref": "refs/heads/main",
-        "rev": "90b55de97c9d7fb4defb58e53cb408cdb32497bb",
+        "rev": "0604ce2bec58cbeea3d772cc0462a711261a2394",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/jundot/omlx.git"
@@ -133,14 +133,14 @@
       "locked": {
         "lastModified": 1779036909,
         "narHash": "sha256-zXcwYQGCT6pzinK+1dBB2ekTVtfxGZAapb3Evdcu4fY=",
-        "ref": "master",
+        "ref": "nix-darwin-26.05",
         "rev": "56c666e108467d87d13508936aade6d567f2a501",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/nix-darwin/nix-darwin.git"
       },
       "original": {
-        "ref": "master",
+        "ref": "nix-darwin-26.05",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/nix-darwin/nix-darwin.git"
@@ -168,16 +168,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1779877693,
-        "narHash": "sha256-NOF9NAREhxr50bbBfVcVOq+ArCMSoe8dP79Pk2uyARk=",
-        "ref": "nixpkgs-unstable",
-        "rev": "4100e830e085863741bc69b156ec4ccd53ab5be0",
+        "lastModified": 1779971959,
+        "narHash": "sha256-R5nauXyqyfRUFiZycFFZdkF7wl6eaUpPLst35+2nJQY=",
+        "ref": "nixos-26.05",
+        "rev": "ec942ba042dad5ef097e2ef3a3effc034241f011",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/NixOS/nixpkgs.git"
       },
       "original": {
-        "ref": "nixpkgs-unstable",
+        "ref": "nixos-26.05",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/NixOS/nixpkgs.git"
