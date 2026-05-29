@@ -15,14 +15,18 @@ let
   mkAutoImports =
     {
       dir,
-      exclude ? [ "default.nix" ],
+      exclude ? [ ],
     }:
     let
+      excluded = [ "default.nix" ] ++ exclude;
       entries = builtins.readDir dir;
       validFiles = lib.filterAttrs (
         name: type:
-        (type == "regular" && lib.hasSuffix ".nix" name && !(builtins.elem name exclude))
-        || (type == "directory" && builtins.pathExists (dir + "/${name}/default.nix"))
+        !(builtins.elem name excluded)
+        && (
+          (type == "regular" && lib.hasSuffix ".nix" name)
+          || (type == "directory" && builtins.pathExists (dir + "/${name}/default.nix"))
+        )
       ) entries;
     in
     map (name: dir + "/${name}") (lib.attrNames validFiles);
