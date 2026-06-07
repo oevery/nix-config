@@ -119,8 +119,9 @@
         node = "lts";
         pnpm = "latest";
         python = "3.11";
-        java = "temurin-21";
         uv = "latest";
+        java = "temurin-21";
+        maven = "latest";
         "npm:@antfu/ni" = "latest";
         "npm:sfw" = "latest";
         "npm:@colbymchenry/codegraph" = "latest";
