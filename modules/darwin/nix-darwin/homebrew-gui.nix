@@ -28,6 +28,8 @@
       # "rectangle" # 窗口管理。
       "pixpin" # 截图与标注。
       "keka" # 压缩/解压 GUI 工具。
+      "localsend" # 局域网跨设备文件传输。
+      "monitorcontrol" # 外接显示器亮度/音量控制。
 
       # 浏览器。
       "google-chrome"
@@ -40,6 +42,8 @@
       "wechat"
       "qq"
       "tencent-meeting" # 腾讯会议。
+      "feishu" # 飞书。
+      "lark" # Lark 国际版。
       "telegram"
       "readdle-spark" # Spark 邮件客户端。
       "termius" # SSH 客户端。
@@ -47,6 +51,7 @@
       # 远程。
       "uuremote" # 网易 UU 远程桌面。
       "windows-app" # 微软远程桌面。
+      "utm" # 虚拟机与系统模拟工具。
       # "rustdesk" # 开源远程桌面。
       "brewforge/chinese/easytier-gui" # EasyTier 桌面 GUI。
       # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
@@ -55,11 +60,10 @@
       "neteasemusic" # 网易云音乐。
       "obs" # 直播与录屏。
       "upscayl" # AI 图片放大工具。
-      # "iina" # 本地媒体播放器。
+      "iina" # 本地媒体播放器。
 
       # 办公软件。
       "wpsoffice" # 金山 WPS Office。
-      "onlyoffice" # OnlyOffice 本地办公套件，兼容 Microsoft Office 格式。
       "onedrive" # OneDrive 文件同步客户端。
 
       # 知识管理。
@@ -68,7 +72,7 @@
 
     # 更适合通过 App Store 安装的应用。
     masApps = {
-      # "Xcode" = 497799835;
+      "Xcode" = 497799835;
       # "Numbers" = 409203825;
       # "Keynote" = 409183694;
       # "Pages" = 409201541;
