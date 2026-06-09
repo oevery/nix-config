@@ -9,16 +9,16 @@ let
   shellConfig = import ./nix-config.nix;
 
   fluScript = pkgs.writeShellScriptBin "flu" ''
-    set -eu
+        set -eu
 
-    if ! command -v nix >/dev/null 2>&1; then
-      printf '%s\n' 'flu: nix command not found' >&2
-      exit 127
-    fi
+        if ! command -v nix >/dev/null 2>&1; then
+          printf '%s\n' 'flu: nix command not found' >&2
+          exit 127
+        fi
 
-${shellConfig.githubAccessTokensSnippet}
+    ${shellConfig.githubAccessTokensSnippet}
 
-    exec nix flake update --flake "$HOME/.config/home-manager" "$@"
+        exec nix flake update --flake "$HOME/.config/home-manager" "$@"
   '';
 
   commonAliases = {

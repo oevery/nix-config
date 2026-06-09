@@ -13,5 +13,7 @@ let
   '';
 in
 {
-  home.activation.ensureDockerComposePlugin = lib.hm.dag.entryAfter [ "writeBoundary" ] mkDockerComposePlugin;
+  home.activation.ensureDockerComposePlugin = lib.hm.dag.entryAfter [
+    "writeBoundary"
+  ] mkDockerComposePlugin;
 }
