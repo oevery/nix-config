@@ -14,6 +14,7 @@
       "iloader" # 用户友好的 iOS sideloader
       "dbeaver-community" # 数据库管理与 SQL 客户端。
       "android-studio" # Android 开发与模拟器。
+      "orbstack" # Docker/容器运行时。
       # AI / 监控。
       "codex-app" # OpenAI Codex 桌面编码代理。
       # "lm-studio" # 本地 LLM 下载、管理与推理桌面应用。
@@ -53,7 +54,7 @@
       # 远程。
       "uuremote" # 网易 UU 远程桌面。
       "windows-app" # 微软远程桌面。
-      "utm" # 虚拟机与系统模拟工具。
+      # "utm" # 虚拟机与系统模拟工具。
       # "rustdesk" # 开源远程桌面。
       "brewforge/chinese/easytier-gui" # EasyTier 桌面 GUI。
       # 如遇“已损坏，无法打开”，见 docs/quarantine.md。

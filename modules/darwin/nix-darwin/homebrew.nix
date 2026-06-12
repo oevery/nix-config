@@ -19,10 +19,10 @@
       "watchman" # 文件变更监听工具，常用于前端/移动端开发。
       # "omlx" # 本地 LLM 推理与管理后台。
       # "mm7894215/tokentracker/tokentracker" # AI token 用量采集 CLI。
-      # 容器运行时由 Colima 提供。
-      "colima" # 轻量容器运行时。
-      "docker" # Docker CLI。
-      "docker-compose" # Docker Compose。
+      # 容器运行时改由 OrbStack 提供，旧 Docker 工具保留为注释。
+      # "colima" # 轻量容器运行时。
+      # "docker" # Docker CLI。
+      # "docker-compose" # Docker Compose。
     ];
   };
 }
