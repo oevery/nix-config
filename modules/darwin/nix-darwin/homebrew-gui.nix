@@ -35,6 +35,7 @@
       # 浏览器。
       "google-chrome"
       "firefox"
+      "115browser" # 115 浏览器/云盘。
 
       # 密码管理。
       "bitwarden"
