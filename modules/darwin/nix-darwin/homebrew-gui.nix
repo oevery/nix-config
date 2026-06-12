@@ -15,6 +15,7 @@
       "dbeaver-community" # 数据库管理与 SQL 客户端。
       "android-studio" # Android 开发与模拟器。
       # AI / 监控。
+      "codex-app" # OpenAI Codex 桌面编码代理。
       # "lm-studio" # 本地 LLM 下载、管理与推理桌面应用。
       "mm7894215/tokentracker/tokentracker" # AI token 用量监控。
       # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
