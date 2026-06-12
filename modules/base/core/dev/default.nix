@@ -112,6 +112,7 @@
           "vfox"
         ];
         npm.package_manager = "pnpm";
+        github.credential_command = "gh auth token";
       };
       tools = {
         usage = "latest";
