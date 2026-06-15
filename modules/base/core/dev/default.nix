@@ -103,29 +103,43 @@
 
   programs.mise = {
     enable = true;
-    enableZshIntegration = true;
     enableNushellIntegration = true;
+    enableZshIntegration = true;
     globalConfig = {
       settings = {
         disable_backends = [
           "asdf"
           "vfox"
         ];
-        npm.package_manager = "pnpm";
         github.credential_command = "gh auth token";
+        npm.package_manager = "pnpm";
+        pipx.uvx = true;
       };
       tools = {
+        # mise 自身辅助工具。
         usage = "latest";
-        rust = "latest";
-        node = "lts";
-        pnpm = "latest";
-        python = "3.11";
-        uv = "latest";
+
+        # Java 工具链。
         java = "temurin-21";
         maven = "latest";
+
+        # Node.js 工具链。
+        node = "lts";
+        pnpm = "latest";
         "npm:@antfu/ni" = "latest";
-        "npm:sfw" = "latest";
         "npm:@colbymchenry/codegraph" = "latest";
+        "npm:sfw" = "latest";
+
+        # Python 工具链。
+        python = "3.11";
+        uv = "latest";
+        "pipx:docling" = {
+          version = "latest";
+          uvx_args = "--with rapidocr-onnxruntime";
+        };
+
+        # Rust 工具链。
+        rust = "latest";
       };
     };
   };

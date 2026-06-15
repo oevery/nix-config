@@ -67,6 +67,7 @@
       "iina" # 本地媒体播放器。
 
       # 办公软件。
+      "libreoffice" # LibreOffice 办公套件。
       "wpsoffice" # 金山 WPS Office。
       "onedrive" # OneDrive 文件同步客户端。
 
