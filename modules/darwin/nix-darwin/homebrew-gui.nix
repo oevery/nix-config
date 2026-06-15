@@ -17,6 +17,7 @@
       "orbstack" # Docker/容器运行时。
       # AI / 监控。
       "codex-app" # OpenAI Codex 桌面编码代理。
+      "cc-switch" # AI 配置切换工具。
       # "lm-studio" # 本地 LLM 下载、管理与推理桌面应用。
       "mm7894215/tokentracker/tokentracker" # AI token 用量监控。
       # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
