@@ -20,10 +20,10 @@
     "brewforge-chinese": {
       "flake": false,
       "locked": {
-        "lastModified": 1781430488,
-        "narHash": "sha256-MNnzUvNr3sUBN6Vjox8AM+uLsPDbJ2XDrI1Dv/P9DCk=",
+        "lastModified": 1781609156,
+        "narHash": "sha256-yW2yQLGgxjnZaQ2a+agAP6+O+51rSUJSZZROfmddEzU=",
         "ref": "refs/heads/main",
-        "rev": "71692367139a64604f08441a1933fba0b6f281fd",
+        "rev": "3f853a74eff975bb02b9512d21e29b6120732136",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/Brewforge/homebrew-chinese.git"
@@ -59,10 +59,10 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1781446042,
-        "narHash": "sha256-EI0EZq2paJYmQxqkZp9MCgKY5bkFVJQdf3D3EPfRPfk=",
+        "lastModified": 1781671757,
+        "narHash": "sha256-TtrrMunCEAeocPn827q8cidkf4lP4/i9nZGWbystx2E=",
         "ref": "refs/heads/main",
-        "rev": "1d81df918001e033e5043984a10380142143e9b5",
+        "rev": "c5a852bab29af214ca9469c9a5595c4bc9a76e40",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-cask.git"
@@ -76,10 +76,10 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1781443671,
-        "narHash": "sha256-CrgsO5eEYCgQ/FY7C4atHChV0rTxyTMJb2GySkz+7R0=",
+        "lastModified": 1781668386,
+        "narHash": "sha256-eDqdUwNincMfhLEF3GmQg5pHNVd6lNYBYdxGgsQPb2c=",
         "ref": "refs/heads/main",
-        "rev": "67be52c1fea271b9609e802bbaf54ca05fe08e42",
+        "rev": "db41a0c1a485e64bbedc0360c40311a7a9d1f27d",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-core.git"
@@ -93,10 +93,10 @@
     "jundot-omlx": {
       "flake": false,
       "locked": {
-        "lastModified": 1781426028,
-        "narHash": "sha256-yiOBv57G6KT4L04fx14H2Rqg040JSBDiZCl/LSOVd9w=",
+        "lastModified": 1781661774,
+        "narHash": "sha256-14RGO9EU6Qe+je726WtT8l9LSN66d7+a+DNIqsVdZFo=",
         "ref": "refs/heads/main",
-        "rev": "e4354435bbe8c0b9d5d60d3d3fa3cc02e97e0aa8",
+        "rev": "26f3f024ad283b4d52cf734ba5a2e5d8cdc20e8c",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/jundot/omlx.git"
@@ -110,10 +110,10 @@
     "mm7894215-tokentracker": {
       "flake": false,
       "locked": {
-        "lastModified": 1781420345,
-        "narHash": "sha256-euY5t0CRstYOCTZxgqfvfVSSNAc69KMr2O/Wz8D0F5M=",
+        "lastModified": 1781660171,
+        "narHash": "sha256-moh/7BgIZVySbhvGATkxc1rSAyP1CyFpk6lSnm9Df/c=",
         "ref": "refs/heads/main",
-        "rev": "dcbf09d8df318f62aa555d2b9922505767d4f9ed",
+        "rev": "f035dc0f8636db38be322e7d61471ecfb6b6683e",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/mm7894215/homebrew-tokentracker.git"

@@ -7,6 +7,7 @@
     casks = [
       # 终端与开发。
       # "iterm2" # 终端。
+      "warp" # Warp 终端。
       "visual-studio-code" # 编辑器。
       "hbuilderx" # uni-app 开发 IDE。
       "wechatwebdevtools" # 微信开发者工具（小程序/公众号）。
@@ -57,6 +58,7 @@
       "windows-app" # 微软远程桌面。
       # "utm" # 虚拟机与系统模拟工具。
       # "rustdesk" # 开源远程桌面。
+      "oevery/local/ishellpro" # iShellPro 远程连接与终端管理。
       "brewforge/chinese/easytier-gui" # EasyTier 桌面 GUI。
       # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
 

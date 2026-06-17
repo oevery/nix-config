@@ -100,6 +100,7 @@
         "brewforge/chinese"
         "mm7894215/tokentracker"
         "jundot/omlx"
+        "oevery/local"
       ];
 
       mkHostModules = settings: [ ./home.nix ] ++ resolveHostModules settings.modules;
@@ -117,6 +118,16 @@
         let
           enableDarwinGuiModules = builtins.elem "darwin/gui" settings.modules;
           isAppleSilicon = nixpkgs.lib.hasPrefix "aarch64-" settings.system;
+          pkgs = nixpkgs.legacyPackages.${settings.system};
+          localHomebrewTap = pkgs.stdenvNoCC.mkDerivation {
+            pname = "homebrew-local";
+            version = "1";
+            src = ./homebrew/local;
+            installPhase = ''
+              mkdir -p "$out"
+              cp -R . "$out"
+            '';
+          };
         in
         nix-darwin.lib.darwinSystem {
           system = settings.system;
@@ -131,7 +142,10 @@
                 enableRosetta = isAppleSilicon;
                 user = settings.username;
                 autoMigrate = true;
-                taps = darwinTaps;
+                taps = darwinTaps // {
+                  "oevery/homebrew-local" = localHomebrewTap;
+                };
+                trust.casks = [ "oevery/local/ishellpro" ];
                 # 只读管理 taps，避免 Homebrew 运行时改写 Tap 目录。
                 mutableTaps = false;
               };
