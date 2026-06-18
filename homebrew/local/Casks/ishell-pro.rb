@@ -10,5 +10,5 @@ cask "ishell-pro" do
   desc "SSH, SFTP, RDP, VNC, and server management client"
   homepage "https://ishell.cc/"
 
-  app "ishellpro.app"
+  app "ishellpro.app", target: "iShell Pro.app"
 end
