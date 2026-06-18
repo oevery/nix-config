@@ -145,7 +145,7 @@
                 taps = darwinTaps // {
                   "oevery/homebrew-local" = localHomebrewTap;
                 };
-                trust.casks = [ "oevery/local/ishellpro" ];
+                trust.casks = [ "oevery/local/ishell-pro" ];
                 # 只读管理 taps，避免 Homebrew 运行时改写 Tap 目录。
                 mutableTaps = false;
               };

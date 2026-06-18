@@ -58,7 +58,7 @@
       "windows-app" # 微软远程桌面。
       # "utm" # 虚拟机与系统模拟工具。
       # "rustdesk" # 开源远程桌面。
-      "oevery/local/ishellpro" # iShellPro 远程连接与终端管理。
+      "oevery/local/ishell-pro" # iShell Pro 远程连接与终端管理。
       "brewforge/chinese/easytier-gui" # EasyTier 桌面 GUI。
       # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
 

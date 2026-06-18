@@ -1,4 +1,4 @@
-cask "ishellpro" do
+cask "ishell-pro" do
   arch arm: "1", intel: "2"
 
   version :latest
@@ -6,7 +6,7 @@ cask "ishellpro" do
 
   url "https://api.ishell.cc/download/#{arch}/cn",
       verified: "api.ishell.cc/"
-  name "iShellPro"
+  name "iShell Pro"
   desc "SSH, SFTP, RDP, VNC, and server management client"
   homepage "https://ishell.cc/"
 
