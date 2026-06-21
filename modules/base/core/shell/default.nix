@@ -34,6 +34,10 @@ let
 in
 
 {
+  home.sessionPath = [
+    "$HOME/.local/bin"
+  ];
+
   home.sessionVariables = {
     # 导出 Copilot OTEL 遥测。
     COPILOT_OTEL_ENABLED = "true";
