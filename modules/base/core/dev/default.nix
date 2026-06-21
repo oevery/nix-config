@@ -13,7 +13,6 @@
 
         rustup
         mise
-        rtk
 
         # 由 Nix 管理 gnupg，确保 gpg 与 gpg-agent 一致。
         gnupg
@@ -119,6 +118,10 @@
         # mise 自身辅助工具。
         usage = "latest";
 
+        # 独立 CLI 工具。
+        rtk = "latest";
+        "github:aovestdipaperino/tokensave" = "latest";
+
         # Java 工具链。
         java = "temurin-21";
         maven = "latest";
@@ -127,7 +130,7 @@
         node = "lts";
         pnpm = "latest";
         "npm:@antfu/ni" = "latest";
-        "npm:@colbymchenry/codegraph" = "latest";
+        "npm:@open-zread/cli" = "latest";
         "npm:sfw" = "latest";
 
         # Python 工具链。
