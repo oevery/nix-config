@@ -130,11 +130,12 @@
         node = "lts";
         pnpm = "latest";
         "npm:@antfu/ni" = "latest";
-        "npm:@open-zread/cli" = "latest";
+        "npm:@larksuite/cli" = "latest";
+        "npm:zread_cli" = "latest";
         "npm:sfw" = "latest";
 
         # Python 工具链。
-        python = "3.11";
+        python = "latest";
         uv = "latest";
         "pipx:docling" = {
           version = "latest";
