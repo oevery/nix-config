@@ -17,8 +17,8 @@
       "android-studio" # Android 开发与模拟器。
       "orbstack" # Docker/容器运行时。
       # AI / 监控。
-      "codex"
-      "codex-app" # OpenAI Codex 桌面编码代理。
+      "codex" # OpenAI Codex 桌面编码代理。
+      "chatgpt" # OpenAI ChatGPT 桌面应用。
       "cc-switch" # AI 配置切换工具。
       # "lm-studio" # 本地 LLM 下载、管理与推理桌面应用。
       "mm7894215/tokentracker/tokentracker" # AI token 用量监控。
@@ -59,7 +59,10 @@
       "windows-app" # 微软远程桌面。
       # "utm" # 虚拟机与系统模拟工具。
       # "rustdesk" # 开源远程桌面。
-      "oevery/local/ishell-pro" # iShell Pro 远程连接与终端管理。
+      {
+        name = "oevery/local/ishell-pro";
+        greedy = true; # version :latest 的自建 cask 需要 greedy 才会在 drs 时重新拉取。
+      }
       "brewforge/chinese/easytier-gui" # EasyTier 桌面 GUI。
       # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
 
@@ -72,6 +75,7 @@
       # 办公软件。
       "libreoffice" # LibreOffice 办公套件。
       "wpsoffice" # 金山 WPS Office。
+      "syncthing-app" # Syncthing 文件同步客户端。
       "onedrive" # OneDrive 文件同步客户端。
 
       # 知识管理。
