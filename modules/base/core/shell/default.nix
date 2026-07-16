@@ -71,6 +71,12 @@ in
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+    envExtra = ''
+      # 部分终端前端不会为本地 PTY 设置 TERM；在插件加载前补齐安全默认值。
+      if [[ -o interactive && -t 0 && -z "''${TERM:-}" ]]; then
+        export TERM=xterm-256color
+      fi
+    '';
     shellAliases = commonAliases;
     initContent = builtins.readFile ./zsh-extra.sh;
     plugins = [
