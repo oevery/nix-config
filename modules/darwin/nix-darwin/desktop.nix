@@ -1,4 +1,4 @@
-{ host, ... }:
+{ ... }:
 
 {
   # macOS 桌面偏好设置。
@@ -7,17 +7,6 @@
       autohide = true;
       mru-spaces = false;
       show-recents = false;
-
-      persistent-apps = [
-        "/System/Applications/Apps.app"
-        "/System/Applications/System Settings.app"
-        "/Applications/Google Chrome.app"
-        "/Applications/Zed.app"
-      ];
-
-      persistent-others = [
-        "/Users/${host.username}/Developer"
-      ];
     };
 
     finder = {
