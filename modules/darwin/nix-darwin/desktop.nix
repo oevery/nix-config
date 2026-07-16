@@ -12,7 +12,7 @@
         "/System/Applications/Apps.app"
         "/System/Applications/System Settings.app"
         "/Applications/Google Chrome.app"
-        "/Applications/Visual Studio Code.app"
+        "/Applications/Zed.app"
       ];
 
       persistent-others = [

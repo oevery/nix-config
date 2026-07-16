@@ -9,6 +9,7 @@
       # "iterm2" # 终端。
       "warp" # Warp 终端。
       "visual-studio-code" # 编辑器。
+      "zed" # 编辑器。
       "hbuilderx" # uni-app 开发 IDE。
       "wechatwebdevtools" # 微信开发者工具（小程序/公众号）。
       "reqable" # API 调试与代理抓包。
