@@ -3,16 +3,16 @@
     "brew-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1784068757,
-        "narHash": "sha256-7KnV7rTlMpys+2J+TFVxUDDyKPLXFs4wIMtckMC72VM=",
+        "lastModified": 1784558651,
+        "narHash": "sha256-woXJ1ATKpSYRWCy46TQJjmm9XzAeZVEZw9xDfVG9NYI=",
         "owner": "Homebrew",
         "repo": "brew",
-        "rev": "6bd951d96e7ebc54787799dba77bfb26ec956c4c",
+        "rev": "b48c7994b5f0eed7bef532efa63cb4e4f763887a",
         "type": "github"
       },
       "original": {
         "owner": "Homebrew",
-        "ref": "6.0.11",
+        "ref": "6.0.12",
         "repo": "brew",
         "type": "github"
       }
@@ -20,10 +20,10 @@
     "brewforge-chinese": {
       "flake": false,
       "locked": {
-        "lastModified": 1784103952,
-        "narHash": "sha256-RuyiGQxqrWM4QZ/+NOE9uI8l5HgLWUiHA49mTiEsVvA=",
+        "lastModified": 1785146582,
+        "narHash": "sha256-KN3vnMj6MnSqbNgPq1mdKQkvM41MVphxySVOxKeW9dc=",
         "ref": "refs/heads/main",
-        "rev": "9a2a626f4781078e3aeaed72031b491886e2a62f",
+        "rev": "79b612bf1325de1644097b2d507642c15cff885f",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/Brewforge/homebrew-chinese.git"
@@ -41,10 +41,10 @@
         ]
       },
       "locked": {
-        "lastModified": 1783740085,
-        "narHash": "sha256-qajyHfZY29G2oEQk+uHxmsJcRoBUBXP9maTpFlwP/dI=",
+        "lastModified": 1785119570,
+        "narHash": "sha256-Rgs2xKnGLFWQscxUaXX07oyZeuMDOHEbqDOsgliLFGM=",
         "ref": "release-26.05",
-        "rev": "3cd22efe6471dc7365c822bd9ad73a21e55f38fb",
+        "rev": "d4fd24667c8cbef124bb70a20380cab75ec8474d",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/nix-community/home-manager.git"
@@ -59,10 +59,10 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1784164478,
-        "narHash": "sha256-s/lZutnzuBP0wlEGcih8TND4fJ+SlARiDid9hGPtUek=",
+        "lastModified": 1785207531,
+        "narHash": "sha256-WqXg+o5NmnuKwMki/kIso87B6gPkGTKsAsz/uzd/57M=",
         "ref": "refs/heads/main",
-        "rev": "416ac4352be268193f612a6f728e206183fef338",
+        "rev": "101aef9199e1cdc85168240ab65cafc3ab00f6f0",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-cask.git"
@@ -76,10 +76,10 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1784165076,
-        "narHash": "sha256-Oj985Lwd7WC6e4rzMxZq0yB2gjul6eW5G8VNtIIy2vE=",
+        "lastModified": 1785206436,
+        "narHash": "sha256-3N+zVv+dE6+PcoMbSyhgzd7SvcDgWjIllIUQxu84UEo=",
         "ref": "refs/heads/main",
-        "rev": "b8d7549d6338215463eb3c9eb8024291a2c64775",
+        "rev": "123fab72bef813867554045e7e9185cd59cb768d",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-core.git"
@@ -93,10 +93,10 @@
     "jundot-omlx": {
       "flake": false,
       "locked": {
-        "lastModified": 1784056476,
-        "narHash": "sha256-vg0kZ/XNtRFkInn9A6trk+CGIjTIj1DezEMzgjuCmw8=",
+        "lastModified": 1785085670,
+        "narHash": "sha256-RSTxp8nWvrccZ0udOFei+LfGLyjrAYCi3tAEZXPzYcY=",
         "ref": "refs/heads/main",
-        "rev": "5a39ba3a9c28bd8125aa8502d710b89e874efb46",
+        "rev": "9acccab96df2c8c2e364d400854c568a763acdba",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/jundot/omlx.git"
@@ -110,10 +110,10 @@
     "mm7894215-tokentracker": {
       "flake": false,
       "locked": {
-        "lastModified": 1784157111,
-        "narHash": "sha256-2Popr0KB99uJPteo8DNe8658Xt+Gh8VcVglXYwffvXM=",
+        "lastModified": 1785203830,
+        "narHash": "sha256-U33R7If5f+EaFDoLSM1wxjpIHTDVBBn4F2AF8KzhMA8=",
         "ref": "refs/heads/main",
-        "rev": "e6085479163b8666f718345cbef324fe07985be9",
+        "rev": "adb47487bab902cf1d8b719da7329f7cbe72f3b3",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/mm7894215/homebrew-tokentracker.git"
@@ -151,10 +151,10 @@
         "brew-src": "brew-src"
       },
       "locked": {
-        "lastModified": 1784159664,
-        "narHash": "sha256-I/B6YoRLImHEqNWh8bs+tPjEDeteACeFhcLyoSMo1GE=",
+        "lastModified": 1784906761,
+        "narHash": "sha256-2v0H8+Ert+xbm0oliHblXTPPczuKiibBUBvRax59kxg=",
         "ref": "main",
-        "rev": "842eeb863ecca0eeb463f7a814cdc51e1d925776",
+        "rev": "60623ec512406261f553d24033c8a0c53fd0b7f2",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/zhaofengli/nix-homebrew.git"
@@ -168,10 +168,10 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1784011430,
-        "narHash": "sha256-lDebytrYdd47IBLwvNOD+6AGeoqZ78CIKlp70hzW280=",
+        "lastModified": 1785104993,
+        "narHash": "sha256-eKbrvPoAOFutbYMdbB3r5EQVmFxKv24iKqHPPUXA0gM=",
         "ref": "nixos-26.05",
-        "rev": "8eeec934ae0dbeca3d7868c059568a65c08b2fc3",
+        "rev": "8623c4c20aa4ca2f5fb81510d2944066c3fb0d96",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/NixOS/nixpkgs.git"
