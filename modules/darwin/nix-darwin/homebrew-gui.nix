@@ -18,7 +18,7 @@
       "android-studio" # Android 开发与模拟器。
       "orbstack" # Docker/容器运行时。
       # AI / 监控。
-      "codex" # OpenAI Codex 桌面编码代理。
+      # "codex" # OpenAI Codex 桌面编码代理。
       "chatgpt" # OpenAI ChatGPT 桌面应用。
       "cc-switch" # AI 配置切换工具。
       # "lm-studio" # 本地 LLM 下载、管理与推理桌面应用。
@@ -64,11 +64,16 @@
         name = "oevery/local/ishell-pro";
         greedy = true; # version :latest 的自建 cask 需要 greedy 才会在 drs 时重新拉取。
       }
+      {
+        name = "oevery/local/oppo-connect";
+        greedy = true; # 通过官方接口动态获取当前架构的版本、下载地址与校验值。
+      }
       "brewforge/chinese/easytier-gui" # EasyTier 桌面 GUI。
       # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
 
       # 媒体娱乐。
       "neteasemusic" # 网易云音乐。
+      # "qqmusic" # QQ 音乐。
       "obs" # 直播与录屏。
       "upscayl" # AI 图片放大工具。
       "iina" # 本地媒体播放器。

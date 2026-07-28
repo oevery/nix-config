@@ -145,7 +145,10 @@
                 taps = darwinTaps // {
                   "oevery/homebrew-local" = localHomebrewTap;
                 };
-                trust.casks = [ "oevery/local/ishell-pro" ];
+                trust.casks = [
+                  "oevery/local/ishell-pro"
+                  "oevery/local/oppo-connect"
+                ];
                 # 只读管理 taps，避免 Homebrew 运行时改写 Tap 目录。
                 mutableTaps = false;
               };

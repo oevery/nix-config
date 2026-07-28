@@ -9,9 +9,9 @@ let
   dockApps = [
     "/System/Applications/Apps.app"
     "/System/Applications/System Settings.app"
+    "/Applications/Warp.app"
     "/Applications/Google Chrome.app"
     "/Applications/Zed.app"
-    "/Applications/Warp.app"
     "/Applications/ChatGPT.app"
   ];
 
