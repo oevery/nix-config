@@ -131,6 +131,8 @@
         pnpm = "latest";
         "npm:@antfu/ni" = "latest";
         "npm:@larksuite/cli" = "latest";
+        "npm:@playwright/mcp" = "latest";
+        "npm:@upstash/context7-mcp" = "latest";
         "npm:zread_cli" = "latest";
         "npm:sfw" = "latest";
 
