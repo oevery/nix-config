@@ -11,7 +11,15 @@
       url = "git+https://github.com/nix-darwin/nix-darwin.git?ref=nix-darwin-26.05&shallow=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-homebrew.url = "git+https://github.com/zhaofengli/nix-homebrew.git?ref=main&shallow=1";
+    # 显式锁定 Homebrew 执行引擎，避免新 tap DSL 超前于 nix-homebrew 的内置版本。
+    brew-src = {
+      url = "github:Homebrew/brew/6.0.13";
+      flake = false;
+    };
+    nix-homebrew = {
+      url = "git+https://github.com/zhaofengli/nix-homebrew.git?ref=main&shallow=1";
+      inputs.brew-src.follows = "brew-src";
+    };
     homebrew-core = {
       url = "git+https://github.com/homebrew/homebrew-core.git?shallow=1";
       flake = false;
@@ -43,6 +51,7 @@
       nixpkgs,
       home-manager,
       nix-darwin,
+      brew-src,
       nix-homebrew,
       homebrew-core,
       homebrew-cask,
@@ -139,6 +148,10 @@
             {
               nix-homebrew = {
                 enable = true;
+                package = brew-src // {
+                  name = "brew-6.0.13";
+                  version = "6.0.13";
+                };
                 enableRosetta = isAppleSilicon;
                 user = settings.username;
                 autoMigrate = true;
