@@ -20,7 +20,7 @@
       # AI / 监控。
       # "codex" # OpenAI Codex 桌面编码代理。
       "chatgpt" # OpenAI ChatGPT 桌面应用。
-      "cc-switch" # AI 配置切换工具。
+      "cherry-studio" # 多模型 AI 桌面客户端。
       # "lm-studio" # 本地 LLM 下载、管理与推理桌面应用。
       "mm7894215/tokentracker/tokentracker" # AI token 用量监控。
       # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
