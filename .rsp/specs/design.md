@@ -30,5 +30,6 @@
 - `hosts/*.nix` 应保持为声明数据，模块实现放在 `modules/`，通用装配逻辑放在 `lib/`。
 - 主机可用的模块键只能来自 `lib.moduleRegistry`，避免在 host 文件中直接引入任意路径。
 - 模块分层遵循 `base/*` 负责跨平台、`linux/*` 与 `darwin/*` 负责平台增量的边界。
+- Linux 主机使用 `nixos-26.05` 包集；Darwin 主机及 `nix-darwin` 使用独立的 `nixpkgs-26.05-darwin` 包集，避免跨平台 channel 的二进制缓存覆盖差异。
 - 模块目录默认通过 `myLib.mkAutoImports` 聚合子模块；Darwin 的 `system.nix`、GUI Homebrew 装配由上层显式接管。
 - 长期稳定的架构约定写入 `.rsp/specs/` 与 `.rsp/rules/`；操作说明保留在 `README.md` 或 `docs/`。

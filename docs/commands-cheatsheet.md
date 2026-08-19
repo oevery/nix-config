@@ -32,6 +32,9 @@ drs
 # 调试
 drst
 
+# 更新并验证 Homebrew 最新稳定版（不激活系统）
+brewup
+
 # 原生命令
 sudo nix run nix-darwin#darwin-rebuild -- switch --flake ~/.config/home-manager#<darwinName>
 ```

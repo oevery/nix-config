@@ -8,19 +8,20 @@
       # 终端与开发。
       # "iterm2" # 终端。
       "warp" # Warp 终端。
+      "dbx" # 轻量级数据库客户端。
       "visual-studio-code" # 编辑器。
       "zed" # 编辑器。
       "hbuilderx" # uni-app 开发 IDE。
       "wechatwebdevtools" # 微信开发者工具（小程序/公众号）。
       "reqable" # API 调试与代理抓包。
       "iloader" # 用户友好的 iOS sideloader
-      "dbeaver-community" # 数据库管理与 SQL 客户端。
+      # "dbeaver-community" # 数据库管理与 SQL 客户端。
       "android-studio" # Android 开发与模拟器。
       "orbstack" # Docker/容器运行时。
       # AI / 监控。
       # "codex" # OpenAI Codex 桌面编码代理。
       "chatgpt" # OpenAI ChatGPT 桌面应用。
-      "cherry-studio" # 多模型 AI 桌面客户端。
+      # "cherry-studio" # 多模型 AI 桌面客户端。
       # "lm-studio" # 本地 LLM 下载、管理与推理桌面应用。
       "mm7894215/tokentracker/tokentracker" # AI token 用量监控。
       # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
@@ -91,6 +92,7 @@
     # 更适合通过 App Store 安装的应用。
     masApps = {
       "Xcode" = 497799835;
+      "AndroMeld" = 6762439757; # Android 手机伴侣。
       # "Numbers" = 409203825;
       # "Keynote" = 409183694;
       # "Pages" = 409201541;

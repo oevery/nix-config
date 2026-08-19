@@ -17,6 +17,7 @@
       "mole" # 系统清理工具。
       "ios-deploy" # iOS 真机安装与调试。
       "watchman" # 文件变更监听工具，常用于前端/移动端开发。
+      "t8y2/tap/dbx-cli" # DBX 数据库 CLI。
       # "omlx" # 本地 LLM 推理与管理后台。
       # "mm7894215/tokentracker/tokentracker" # AI token 用量采集 CLI。
       # 容器运行时改由 OrbStack 提供，旧 Docker 工具保留为注释。

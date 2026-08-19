@@ -26,7 +26,7 @@ let
               sudo_cmd='sudo -E -H'
             fi
 
-            nix flake check --no-write-lock-file "$flake_path"
+            nix flake check --no-build --no-write-lock-file "$flake_path"
 
             # 始终通过当前 flake 暴露的 app 调用 `darwin-rebuild`，避免 PATH 中旧版本工具与本仓库输出结构不匹配。
             exec $sudo_cmd nix run "$flake_path#darwin-rebuild" -- switch ${traceFlag}--flake "$flake_path#${host.darwinName}"

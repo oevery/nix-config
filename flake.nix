@@ -3,17 +3,18 @@
 
   inputs = {
     nixpkgs.url = "git+https://github.com/NixOS/nixpkgs.git?ref=nixos-26.05&shallow=1";
+    nixpkgs-darwin.url = "git+https://github.com/NixOS/nixpkgs.git?ref=nixpkgs-26.05-darwin&shallow=1";
     home-manager = {
       url = "git+https://github.com/nix-community/home-manager.git?ref=release-26.05&shallow=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-darwin = {
       url = "git+https://github.com/nix-darwin/nix-darwin.git?ref=nix-darwin-26.05&shallow=1";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
     # 显式锁定 Homebrew 执行引擎，避免新 tap DSL 超前于 nix-homebrew 的内置版本。
     brew-src = {
-      url = "github:Homebrew/brew/6.0.13";
+      url = "github:Homebrew/brew/6.0.18";
       flake = false;
     };
     nix-homebrew = {
@@ -43,12 +44,18 @@
       url = "git+https://github.com/jundot/omlx.git?shallow=1";
       flake = false;
     };
+    # 第三方 Homebrew tap：dbx CLI。
+    t8y2-dbx = {
+      url = "git+https://github.com/t8y2/homebrew-tap.git?shallow=1";
+      flake = false;
+    };
   };
 
   outputs =
     {
       self,
       nixpkgs,
+      nixpkgs-darwin,
       home-manager,
       nix-darwin,
       brew-src,
@@ -58,9 +65,12 @@
       brewforge-chinese,
       mm7894215-tokentracker,
       jundot-omlx,
+      t8y2-dbx,
       ...
     }@inputs:
     let
+      flakeLock = builtins.fromJSON (builtins.readFile ./flake.lock);
+      brewVersion = flakeLock.nodes.brew-src.original.ref;
       myLib = import ./lib { lib = nixpkgs.lib; };
       hosts = import ./hosts { inherit myLib; };
       systems = hostSystems hosts;
@@ -69,9 +79,14 @@
         inherit inputs myLib;
         host = removeAttrs settings [ "system" ];
       };
-      darwinHosts = nixpkgs.lib.filterAttrs (
-        _: settings: settings.system == "aarch64-darwin" || settings.system == "x86_64-darwin"
-      ) hosts;
+      isDarwinSystem = system: system == "aarch64-darwin" || system == "x86_64-darwin";
+      pkgsForSystem =
+        system:
+        if isDarwinSystem system then
+          nixpkgs-darwin.legacyPackages.${system}
+        else
+          nixpkgs.legacyPackages.${system};
+      darwinHosts = nixpkgs.lib.filterAttrs (_: settings: isDarwinSystem settings.system) hosts;
       hostSystems =
         hostSet: nixpkgs.lib.unique (map (settings: settings.system) (builtins.attrValues hostSet));
       darwinSystems = hostSystems darwinHosts;
@@ -101,6 +116,7 @@
         "brewforge/homebrew-chinese" = brewforge-chinese;
         "mm7894215/homebrew-tokentracker" = mm7894215-tokentracker;
         "jundot/homebrew-omlx" = jundot-omlx;
+        "t8y2/homebrew-tap" = t8y2-dbx;
       };
 
       darwinTapNames = [
@@ -109,6 +125,7 @@
         "brewforge/chinese"
         "mm7894215/tokentracker"
         "jundot/omlx"
+        "t8y2/tap"
         "oevery/local"
       ];
 
@@ -117,7 +134,7 @@
       mkHome =
         settings:
         home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${settings.system};
+          pkgs = pkgsForSystem settings.system;
           extraSpecialArgs = makeSpecialArgs settings;
           modules = mkHostModules settings;
         };
@@ -127,7 +144,7 @@
         let
           enableDarwinGuiModules = builtins.elem "darwin/gui" settings.modules;
           isAppleSilicon = nixpkgs.lib.hasPrefix "aarch64-" settings.system;
-          pkgs = nixpkgs.legacyPackages.${settings.system};
+          pkgs = pkgsForSystem settings.system;
           localHomebrewTap = pkgs.stdenvNoCC.mkDerivation {
             pname = "homebrew-local";
             version = "1";
@@ -149,8 +166,8 @@
               nix-homebrew = {
                 enable = true;
                 package = brew-src // {
-                  name = "brew-6.0.13";
-                  version = "6.0.13";
+                  name = "brew-${brewVersion}";
+                  version = brewVersion;
                 };
                 enableRosetta = isAppleSilicon;
                 user = settings.username;
@@ -210,7 +227,7 @@
           };
         };
       });
-      formatter = nixpkgs.lib.genAttrs systems (system: nixpkgs.legacyPackages.${system}.nixfmt);
+      formatter = nixpkgs.lib.genAttrs systems (system: (pkgsForSystem system).nixfmt);
       checks = nixpkgs.lib.genAttrs systems (
         system:
         let

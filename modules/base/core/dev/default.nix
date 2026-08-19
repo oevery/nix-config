@@ -133,6 +133,7 @@
         "npm:@larksuite/cli" = "latest";
         "npm:@playwright/mcp" = "latest";
         "npm:@upstash/context7-mcp" = "latest";
+        "npm:@dbx-app/mcp-server" = "latest";
         "npm:@bitkyc08/opencodex" = {
           version = "latest";
           pnpm_args = "--allow-build=bun";
