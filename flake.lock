@@ -59,10 +59,10 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1787096297,
-        "narHash": "sha256-S4qMlBo/20PRjX3NJLv1qo3QmlCNCxlekZ4o69rSudE=",
+        "lastModified": 1787115390,
+        "narHash": "sha256-1CYvRJvt5YdukMOgA2z13hgCR0OLI0aVfi1JPykjvUc=",
         "ref": "refs/heads/main",
-        "rev": "46f75d7d220a14fe1e3638d41c64a1c8c4fe200b",
+        "rev": "1b75510bb4758ce0d69e5552be4a5384706d1824",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-cask.git"
@@ -76,10 +76,10 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1787099315,
-        "narHash": "sha256-dMprT0ZtMUeca+VcyuvXhuaOTSYU3FYixLNMrK7v1TY=",
+        "lastModified": 1787118760,
+        "narHash": "sha256-HHoLGDTr/XenoBPBHCiR4U+siTmYbHBtw9XBPjIwfwI=",
         "ref": "refs/heads/main",
-        "rev": "dc59630d6ee0e44cd405fe765d63b5f0d20dd552",
+        "rev": "6d0b3786da95be4693d099cfe3f943d57e6137dd",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-core.git"
@@ -93,10 +93,10 @@
     "jundot-omlx": {
       "flake": false,
       "locked": {
-        "lastModified": 1787070546,
-        "narHash": "sha256-hZHw9hlnteoBBMukCpRg4s8h0lQ/mMyDjgn8OtWSRd0=",
+        "lastModified": 1787118613,
+        "narHash": "sha256-Eq5f38dKoPQ3ZlS/KkbhBVdYC6Ele+L5U+KQ6rliEfI=",
         "ref": "refs/heads/main",
-        "rev": "1f1aff3018c097bcbeafca9a483e58d04dee38ba",
+        "rev": "cfa66534948cd7b18d8b997b9b6d2aa338ae6f49",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/jundot/omlx.git"
@@ -105,23 +105,6 @@
         "shallow": true,
         "type": "git",
         "url": "https://github.com/jundot/omlx.git"
-      }
-    },
-    "mm7894215-tokentracker": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1787027409,
-        "narHash": "sha256-lndLhM8qCKYpI30Sqs/GFdyN+vKNXr4BKpEckd2VRaQ=",
-        "ref": "refs/heads/main",
-        "rev": "ab65a759c091cf64cdf41a3f9a334e065b774a0b",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/mm7894215/homebrew-tokentracker.git"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/mm7894215/homebrew-tokentracker.git"
       }
     },
     "nix-darwin": {
@@ -210,29 +193,28 @@
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
         "jundot-omlx": "jundot-omlx",
-        "mm7894215-tokentracker": "mm7894215-tokentracker",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs",
         "nixpkgs-darwin": "nixpkgs-darwin",
-        "t8y2-dbx": "t8y2-dbx"
+        "xiufengsun-tokentracker": "xiufengsun-tokentracker"
       }
     },
-    "t8y2-dbx": {
+    "xiufengsun-tokentracker": {
       "flake": false,
       "locked": {
-        "lastModified": 1787048696,
-        "narHash": "sha256-tPO+hTQTMr/wLWHKMbkLeBYnzaw8lURVWOvNZaSsPH8=",
+        "lastModified": 1787027409,
+        "narHash": "sha256-lndLhM8qCKYpI30Sqs/GFdyN+vKNXr4BKpEckd2VRaQ=",
         "ref": "refs/heads/main",
-        "rev": "1b28694abf9719638c38b702dbe0ce3ffcb77c54",
+        "rev": "ab65a759c091cf64cdf41a3f9a334e065b774a0b",
         "shallow": true,
         "type": "git",
-        "url": "https://github.com/t8y2/homebrew-tap.git"
+        "url": "https://github.com/xiufengsun/homebrew-tokentracker.git"
       },
       "original": {
         "shallow": true,
         "type": "git",
-        "url": "https://github.com/t8y2/homebrew-tap.git"
+        "url": "https://github.com/xiufengsun/homebrew-tokentracker.git"
       }
     }
   },

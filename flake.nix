@@ -34,19 +34,14 @@
       url = "git+https://github.com/Brewforge/homebrew-chinese.git?shallow=1";
       flake = false;
     };
-    # 第三方 Homebrew tap：tokentracker。
-    mm7894215-tokentracker = {
-      url = "git+https://github.com/mm7894215/homebrew-tokentracker.git?shallow=1";
+    # 第三方 Homebrew tap：TokenTracker GUI。
+    xiufengsun-tokentracker = {
+      url = "git+https://github.com/xiufengsun/homebrew-tokentracker.git?shallow=1";
       flake = false;
     };
     # 第三方 Homebrew tap：omlx。
     jundot-omlx = {
       url = "git+https://github.com/jundot/omlx.git?shallow=1";
-      flake = false;
-    };
-    # 第三方 Homebrew tap：dbx CLI。
-    t8y2-dbx = {
-      url = "git+https://github.com/t8y2/homebrew-tap.git?shallow=1";
       flake = false;
     };
   };
@@ -63,9 +58,8 @@
       homebrew-core,
       homebrew-cask,
       brewforge-chinese,
-      mm7894215-tokentracker,
+      xiufengsun-tokentracker,
       jundot-omlx,
-      t8y2-dbx,
       ...
     }@inputs:
     let
@@ -114,19 +108,26 @@
         "homebrew/homebrew-core" = homebrew-core;
         "homebrew/homebrew-cask" = homebrew-cask;
         "brewforge/homebrew-chinese" = brewforge-chinese;
-        "mm7894215/homebrew-tokentracker" = mm7894215-tokentracker;
+        "xiufengsun/homebrew-tokentracker" = xiufengsun-tokentracker;
         "jundot/homebrew-omlx" = jundot-omlx;
-        "t8y2/homebrew-tap" = t8y2-dbx;
       };
 
       darwinTapNames = [
         "homebrew/core"
         "homebrew/cask"
         "brewforge/chinese"
-        "mm7894215/tokentracker"
-        "jundot/omlx"
-        "t8y2/tap"
-        "oevery/local"
+        {
+          name = "xiufengsun/tokentracker";
+          trusted = true;
+        }
+        {
+          name = "jundot/omlx";
+          trusted = true;
+        }
+        {
+          name = "oevery/local";
+          trusted = true;
+        }
       ];
 
       mkHostModules = settings: [ ./home.nix ] ++ resolveHostModules settings.modules;
@@ -175,10 +176,6 @@
                 taps = darwinTaps // {
                   "oevery/homebrew-local" = localHomebrewTap;
                 };
-                trust.casks = [
-                  "oevery/local/ishell-pro"
-                  "oevery/local/oppo-connect"
-                ];
                 # 只读管理 taps，避免 Homebrew 运行时改写 Tap 目录。
                 mutableTaps = false;
               };

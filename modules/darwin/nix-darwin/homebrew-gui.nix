@@ -23,7 +23,7 @@
       "chatgpt" # OpenAI ChatGPT 桌面应用。
       # "cherry-studio" # 多模型 AI 桌面客户端。
       # "lm-studio" # 本地 LLM 下载、管理与推理桌面应用。
-      "mm7894215/tokentracker/tokentracker" # AI token 用量监控。
+      "xiufengsun/tokentracker/tokentracker" # TokenTracker 菜单栏 GUI。
       # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
 
       # 效率工具。
@@ -65,11 +65,14 @@
         name = "oevery/local/ishell-pro";
         greedy = true; # version :latest 的自建 cask 需要 greedy 才会在 drs 时重新拉取。
       }
+      # {
+      #   name = "oevery/local/oppo-connect";
+      #   greedy = true; # 通过官方接口动态获取当前架构的版本、下载地址与校验值。
+      # }
       {
-        name = "oevery/local/oppo-connect";
-        greedy = true; # 通过官方接口动态获取当前架构的版本、下载地址与校验值。
+        name = "brewforge/chinese/easytier-gui";
+        trusted = true; # 仅信任当前使用的 EasyTier cask，不扩大到整个 Brewforge tap。
       }
-      "brewforge/chinese/easytier-gui" # EasyTier 桌面 GUI。
       # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
 
       # 媒体娱乐。
