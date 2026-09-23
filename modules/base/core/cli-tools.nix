@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -21,6 +21,7 @@
     # 其他常用工具
     fastfetch # 系统信息展示工具
     tealdeer # Rust 实现的高速 tldr 客户端
+    ffmpeg # 音视频处理工具
 
     jq
     yq
@@ -84,9 +85,15 @@
 
   programs.vivid = {
     enable = true;
-    enableZshIntegration = true;
+    # Work around home-manager#8862. Remove this override after the upstream
+    # fix from home-manager#9156 (or an equivalent fix) is released.
+    enableZshIntegration = false;
     activeTheme = "one-dark";
   };
+
+  programs.zsh.initContent = lib.mkBefore ''
+    export LS_COLORS="$(${pkgs.vivid}/bin/vivid generate one-dark)"
+  '';
 
   programs.zoxide = {
     enable = true;

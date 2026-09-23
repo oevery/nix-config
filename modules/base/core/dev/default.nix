@@ -111,7 +111,7 @@
           "vfox"
         ];
         github.credential_command = "gh auth token";
-        npm.package_manager = "pnpm";
+        npm.package_manager = "npm";
         pipx.uvx = true;
       };
       tools = {
@@ -137,7 +137,7 @@
         "npm:@dbx-app/mcp-server" = "latest";
         "npm:@bitkyc08/opencodex" = {
           version = "latest";
-          pnpm_args = "--allow-build=bun";
+          npm_args = "--allow-scripts=bun";
         };
         "npm:zread_cli" = "latest";
         "npm:sfw" = "latest";

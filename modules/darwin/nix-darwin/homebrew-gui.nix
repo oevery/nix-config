@@ -17,6 +17,7 @@
       "iloader" # 用户友好的 iOS sideloader
       # "dbeaver-community" # 数据库管理与 SQL 客户端。
       "android-studio" # Android 开发与模拟器。
+      # "mumuplayer" # MuMu模拟器 Pro。
       "orbstack" # Docker/容器运行时。
       # AI / 监控。
       # "codex" # OpenAI Codex 桌面编码代理。
