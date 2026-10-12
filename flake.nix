@@ -90,9 +90,7 @@
         true;
       renderNamedOutputs =
         attrName: hostSet: transform:
-        let
-          _ = uniqueAttr attrName hostSet;
-        in
+        assert uniqueAttr attrName hostSet;
         nixpkgs.lib.mapAttrs' (_hostKey: settings: {
           name = settings.${attrName};
           value = transform settings;
@@ -104,17 +102,6 @@
         "brewforge/homebrew-chinese" = brewforge-chinese;
         "vishvavariya/homebrew-notchy" = vishvavariya-notchy;
       };
-
-      darwinTapNames = [
-        "homebrew/core"
-        "homebrew/cask"
-        "brewforge/chinese"
-        "vishvavariya/notchy"
-        {
-          name = "oevery/local";
-          trusted = true;
-        }
-      ];
 
       mkHostModules = settings: [ ./home.nix ] ++ resolveHostModules settings.modules;
 
@@ -167,9 +154,13 @@
               };
             }
             (
-              { ... }:
+              { config, lib, ... }:
               {
-                homebrew.taps = darwinTapNames;
+                # 从同一份 tap 声明生成 Brewfile，信任策略独立于源清单。
+                homebrew.taps = map (tap: {
+                  name = lib.replaceStrings [ "/homebrew-" ] [ "/" ] tap;
+                  trusted = tap == "oevery/homebrew-local";
+                }) (builtins.attrNames config.nix-homebrew.taps);
               }
             )
             ./modules/darwin/nix-darwin/homebrew.nix

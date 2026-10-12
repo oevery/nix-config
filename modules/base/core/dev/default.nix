@@ -1,5 +1,6 @@
 {
   pkgs,
+  host,
   ...
 }:
 
@@ -74,20 +75,8 @@
   services.gpg-agent = {
     enable = true;
     enableZshIntegration = true;
-    # 优先使用图形化 pinentry，不可用时回退到 curses。
-    pinentry.package =
-      let
-        linuxPinentryPackage =
-          if pkgs.lib.hasAttr "pinentry-gnome3" pkgs then
-            pkgs.pinentry-gnome3
-          else if pkgs.lib.hasAttr "pinentry-gtk" pkgs then
-            pkgs.pinentry-gtk
-          else if pkgs.lib.hasAttr "pinentry-qt" pkgs then
-            pkgs.pinentry-qt
-          else
-            pkgs.pinentry-curses;
-      in
-      if pkgs.stdenv.isDarwin then pkgs.pinentry_mac else linuxPinentryPackage;
+    # 按主机的实际交互环境选择，不以包是否存在判断图形会话。
+    pinentry.package = pkgs.${host.pinentryPackage};
     defaultCacheTtl = 10800;
     maxCacheTtl = 86400;
   };

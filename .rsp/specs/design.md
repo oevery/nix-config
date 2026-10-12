@@ -21,7 +21,7 @@
 - `hosts/` - 主机声明层，定义每台主机的 `system`、输出名、用户身份与模块组合；`hosts/default.nix` 是注册入口。
 - `modules/base/` - 跨平台模块实现，承载大多数公共 Home Manager 配置。
 - `modules/linux/` - Linux 专属模块实现，仅补充非 Darwin 平台差异。
-- `modules/darwin/` - macOS 专属模块实现，区分用户态配置与 `system.nix` 等系统态配置。
+- `modules/darwin/` - macOS 专属模块实现，用户态配置位于 `core/`、`gui/`，系统态配置位于 `nix-darwin/`。
 - `home.nix` - 薄的公共 Home Manager 根模块，只保留全局基础项。
 - `docs/` - 操作说明与排障文档，不承载长期设计事实。
 
@@ -31,5 +31,6 @@
 - 主机可用的模块键只能来自 `lib.moduleRegistry`，避免在 host 文件中直接引入任意路径。
 - 模块分层遵循 `base/*` 负责跨平台、`linux/*` 与 `darwin/*` 负责平台增量的边界。
 - Linux 主机使用 `nixos-26.05` 包集；Darwin 主机及 `nix-darwin` 使用独立的 `nixpkgs-26.05-darwin` 包集，避免跨平台 channel 的二进制缓存覆盖差异。
-- 模块目录默认通过 `myLib.mkAutoImports` 聚合子模块；Darwin 的 `system.nix`、GUI Homebrew 装配由上层显式接管。
+- 模块目录默认通过 `myLib.mkAutoImports` 聚合子模块；`modules/darwin/nix-darwin/` 中的系统模块由 flake 显式装配。
+- Homebrew tap 源由 `nix-homebrew.taps` 统一声明，`homebrew.taps` 从其生成；tap 与单个 cask 的信任策略分别维护。
 - 长期稳定的架构约定写入 `.rsp/specs/` 与 `.rsp/rules/`；操作说明保留在 `README.md` 或 `docs/`。

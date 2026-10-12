@@ -8,6 +8,20 @@
 let
   shellConfig = import ./nix-config.nix;
 
+  checkScript = pkgs.writeShellScriptBin "hc" ''
+    set -eu
+
+    flake_path="$HOME/.config/home-manager"
+    nix eval --raw --no-write-lock-file \
+      "$flake_path#homeConfigurations.${host.homeConfigurationName}.activationPackage.drvPath"
+    printf '\n'
+    ${lib.optionalString pkgs.stdenv.isDarwin ''
+      nix eval --raw --no-write-lock-file \
+        "$flake_path#darwinConfigurations.${host.darwinName}.config.system.build.toplevel.drvPath"
+      printf '\n'
+    ''}
+  '';
+
   fluScript = pkgs.writeShellScriptBin "flu" ''
         set -eu
 
@@ -27,9 +41,10 @@ let
     man = "batman";
     bgrep = "batgrep";
 
-    hc = ''SYS="$(nix eval --impure --raw --expr builtins.currentSystem)"; nix eval --json ".#checks.''${SYS}"'';
-    hms = "hc && home-manager switch --flake ~/.config/home-manager#${host.homeConfigurationName}";
-    gc = "nix-collect-garbage -d";
+    nix-gc-delete-all-old-generations = "nix-collect-garbage -d";
+  }
+  // lib.optionalAttrs pkgs.stdenv.isLinux {
+    hms = "${checkScript}/bin/hc && home-manager switch --flake ~/.config/home-manager#${host.homeConfigurationName}";
   };
 in
 
@@ -64,6 +79,7 @@ in
       # nushell
       nix-your-shell
       fluScript
+      checkScript
     ]);
 
   programs.zsh = {

@@ -1,4 +1,10 @@
-{ pkgs, host, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  host,
+  ...
+}:
 
 {
   # 系统主用户。
@@ -11,34 +17,28 @@
     enable = true;
     settings = {
       experimental-features = "nix-command flakes";
-      # 提升 Darwin 二进制缓存命中率。
-      extra-platforms = [
-        "aarch64-darwin"
-        "x86_64-darwin"
-      ];
+      # 原生架构无需重复声明；启用 Rosetta 时允许本机构建 Intel 派生。
+      extra-platforms = lib.optionals config.nix-homebrew.enableRosetta [ "x86_64-darwin" ];
       substituters = [
         # "https://mirror.sjtu.edu.cn/nix-channels/store"
         "https://cache.nixos.org/"
       ];
-      keep-outputs = true;
+      keep-outputs = false;
       keep-derivations = true;
       builders-use-substitutes = true;
       accept-flake-config = true;
       connect-timeout = 10;
       fallback = true;
       max-jobs = "auto";
-      trusted-users = [
-        "root"
-        host.username
-      ];
+      # 保留 nix-darwin 默认的 root 信任；普通用户通过 allowed-users 访问 daemon。
     };
 
     optimise.automatic = true;
 
-    # 每周清理 7 天前旧代。
+    # 每周清理 30 天前旧代，保留近期回滚窗口。
     gc = {
       automatic = true;
-      options = "--delete-older-than 7d";
+      options = "--delete-older-than 30d";
       interval = {
         Weekday = 0;
         Hour = 3;

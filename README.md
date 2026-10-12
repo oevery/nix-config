@@ -53,7 +53,9 @@ sudo nix run nix-darwin#darwin-rebuild -- switch --flake .#oevery-mac
 hc
 ```
 
-`hc` 会检查当前 host 对应的配置：Linux 只检查当前 `homeConfigurationName`，macOS 同时检查当前 `homeConfigurationName` 和 `darwinName`。
+`hc` 固定检查 `~/.config/home-manager` 中当前 host 对应的配置，不依赖工作目录：Linux 只求值当前 `homeConfigurationName`，macOS 同时求值当前 `homeConfigurationName` 和 `darwinName`。检查不构建、不修改 lock 文件。
+
+`hms` 仅在 Linux 提供；macOS 统一通过 `drs` / `drst` 激活系统及其集成的 Home Manager 配置。两种入口都会先运行当前主机检查。
 
 完整命令速查见 [docs/commands-cheatsheet.md](docs/commands-cheatsheet.md)。
 
@@ -64,15 +66,16 @@ hc
 - `homeConfigurations` 使用显式的 `homeConfigurationName` 作为 key。
 - `darwinConfigurations` 使用稳定的 `darwinName` 作为 key，不依赖运行时 `hostname`。
 
-当前示例主机：
+当前主机：
 
-- Linux 默认 Home Manager 配置：`homeConfigurationName = "oevery"`
+- Linux homelab：`homeConfigurationName = "oevery-homelab"`
+- Linux 桌面：`homeConfigurationName = "oevery-desktop"`
 - macOS 配置：`homeConfigurationName = "oevery-mac"`，`darwinName = "oevery-mac"`
 
 ### 平台配置
 
 - Linux（非 NixOS）：优先 `/etc/nix/nix.conf`
-- macOS（nix-darwin）：优先 `modules/darwin/core/system.nix` 中的 `nix.settings`
+- macOS（nix-darwin）：优先 `modules/darwin/nix-darwin/core.nix` 中的 `nix.settings`
 
 Linux `nix.conf` 参考模板见 [docs/linux-nix-conf.md](docs/linux-nix-conf.md)。
 
@@ -91,11 +94,13 @@ Linux `nix.conf` 参考模板见 [docs/linux-nix-conf.md](docs/linux-nix-conf.md
 
 ## 验证与排障
 
-标准检查：
+跨平台求值检查（不构建、不修改 lock 文件）：
 
 ```bash
-nix flake check
+nix flake check --all-systems --no-build --no-write-lock-file
 ```
+
+需要验证本机平台的实际构建时，运行 `nix flake check --no-write-lock-file`。
 
 快速验证输出：
 
@@ -117,6 +122,8 @@ nix eval --raw path:$PWD#darwinConfigurations.oevery-mac.config.system.build.top
 3. 为每台主机设置唯一的 `homeConfigurationName`。
 4. 若为 macOS，再设置唯一 `darwinName`。
 5. 使用 `nix flake check` 或求值命令验证配置。
+
+主机还需声明 `pinentryPackage`：无图形会话的 homelab 使用 `pinentry-curses`，Linux 桌面使用 `pinentry-gnome3`，macOS 使用 `pinentry_mac`。
 
 ### 生成 hosts gpgKey
 
