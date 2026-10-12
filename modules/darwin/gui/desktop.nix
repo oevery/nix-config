@@ -13,6 +13,10 @@ let
     "/Applications/Google Chrome.app"
     "/Applications/Zed.app"
     "/Applications/ChatGPT.app"
+    "/Applications/Spark Desktop.app"
+    "/Applications/Telegram.app"
+    "/Applications/QQ.app"
+    "/Applications/WeChat.app"
   ];
 
   zedDynamicFileExtensions = [
