@@ -134,7 +134,6 @@
           specialArgs = makeSpecialArgs settings;
           modules = [
             ./modules/darwin/nix-darwin/core.nix
-            ./modules/darwin/nix-darwin/kilo-cleaner.nix
             nix-homebrew.darwinModules.nix-homebrew
             {
               nix-homebrew = {
