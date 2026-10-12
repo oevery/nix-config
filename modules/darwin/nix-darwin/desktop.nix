@@ -29,22 +29,36 @@
     };
 
     CustomUserPreferences = {
+      # Notchy 统一通过声明式 Homebrew 配置更新。
+      "dev.notchy.app" = {
+        SUEnableAutomaticChecks = false;
+        SUAutomaticallyUpdate = false;
+      };
+
       # 网络磁盘不写 .DS_Store。
       "com.apple.desktopservices" = {
         DSDontWriteNetworkStores = true;
       };
 
-      # 关闭 Spotlight 快捷键，避免与 Raycast 冲突。
+      # 使用系统 Spotlight 快捷键。
       "com.apple.symbolichotkeys" = {
         AppleSymbolicHotKeys = {
           "160" = {
             enabled = 0;
           };
           "64" = {
-            enabled = 0;
+            enabled = 1;
+            value = {
+              parameters = [ 32 49 1048576 ]; # ⌘Space
+              type = "standard";
+            };
           };
           "65" = {
-            enabled = 0;
+            enabled = 1;
+            value = {
+              parameters = [ 32 49 1572864 ]; # ⌥⌘Space
+              type = "standard";
+            };
           };
         };
       };

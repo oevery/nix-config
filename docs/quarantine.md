@@ -6,7 +6,6 @@
 常见场景：
 
 - `easytier-gui`
-- `TokenTrackerBar`
 
 ## 原因
 
@@ -56,7 +55,6 @@
    例如：
 
    brew reinstall --cask easytier-gui
-   brew reinstall --cask mm7894215/tokentracker/tokentracker
 
 6. 仅在确认来源可信且其他方法无效时，才考虑临时关闭 Gatekeeper：
 

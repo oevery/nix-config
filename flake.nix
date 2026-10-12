@@ -34,14 +34,9 @@
       url = "git+https://github.com/Brewforge/homebrew-chinese.git?shallow=1";
       flake = false;
     };
-    # 第三方 Homebrew tap：TokenTracker GUI。
-    xiufengsun-tokentracker = {
-      url = "git+https://github.com/xiufengsun/homebrew-tokentracker.git?shallow=1";
-      flake = false;
-    };
-    # 第三方 Homebrew tap：omlx。
-    jundot-omlx = {
-      url = "git+https://github.com/jundot/omlx.git?shallow=1";
+    # 第三方 Homebrew tap：Notchy。
+    vishvavariya-notchy = {
+      url = "git+https://github.com/vishvavariya/homebrew-notchy.git?shallow=1";
       flake = false;
     };
   };
@@ -58,8 +53,7 @@
       homebrew-core,
       homebrew-cask,
       brewforge-chinese,
-      xiufengsun-tokentracker,
-      jundot-omlx,
+      vishvavariya-notchy,
       ...
     }@inputs:
     let
@@ -108,22 +102,14 @@
         "homebrew/homebrew-core" = homebrew-core;
         "homebrew/homebrew-cask" = homebrew-cask;
         "brewforge/homebrew-chinese" = brewforge-chinese;
-        "xiufengsun/homebrew-tokentracker" = xiufengsun-tokentracker;
-        "jundot/homebrew-omlx" = jundot-omlx;
+        "vishvavariya/homebrew-notchy" = vishvavariya-notchy;
       };
 
       darwinTapNames = [
         "homebrew/core"
         "homebrew/cask"
         "brewforge/chinese"
-        {
-          name = "xiufengsun/tokentracker";
-          trusted = true;
-        }
-        {
-          name = "jundot/omlx";
-          trusted = true;
-        }
+        "vishvavariya/notchy"
         {
           name = "oevery/local";
           trusted = true;

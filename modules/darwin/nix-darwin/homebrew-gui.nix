@@ -6,7 +6,6 @@
     # 第三方 cask 需先在 flake.nix 中注册对应 tap。
     casks = [
       # 终端与开发。
-      # "iterm2" # 终端。
       "warp" # Warp 终端。
       "dbx" # 轻量级数据库客户端。
       "visual-studio-code" # 编辑器。
@@ -15,25 +14,19 @@
       "wechatwebdevtools" # 微信开发者工具（小程序/公众号）。
       "reqable" # API 调试与代理抓包。
       "iloader" # 用户友好的 iOS sideloader
-      # "dbeaver-community" # 数据库管理与 SQL 客户端。
       "android-studio" # Android 开发与模拟器。
-      # "mumuplayer" # MuMu模拟器 Pro。
       "orbstack" # Docker/容器运行时。
       # AI / 监控。
       # "codex" # OpenAI Codex 桌面编码代理。
       "chatgpt" # OpenAI ChatGPT 桌面应用。
-      # "cherry-studio" # 多模型 AI 桌面客户端。
-      # "lm-studio" # 本地 LLM 下载、管理与推理桌面应用。
-      "xiufengsun/tokentracker/tokentracker" # TokenTracker 菜单栏 GUI。
-      # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
 
       # 效率工具。
-      "raycast" # 快捷启动。
-      "stats" # 系统监控。
-      "thaw" # 菜单栏管理工具。
+      {
+        name = "vishvavariya/notchy/notchy";
+        greedy = true; # 自带更新功能的 cask 也由 drs 纳入升级。
+        trusted = true; # 仅信任当前使用的 Notchy cask。
+      }
       "mos" # 鼠标滚动增强。
-      "alt-tab" # 窗口切换。
-      # "rectangle" # 窗口管理。
       "pixpin" # 截图与标注。
       "keka" # 压缩/解压 GUI 工具。
       "localsend" # 局域网跨设备文件传输。
@@ -55,21 +48,14 @@
       "lark" # Lark 国际版。
       "telegram"
       "readdle-spark" # Spark 邮件客户端。
-      "termius" # SSH 客户端。
 
       # 远程。
       "uuremote" # 网易 UU 远程桌面。
       "windows-app" # 微软远程桌面。
-      # "utm" # 虚拟机与系统模拟工具。
-      # "rustdesk" # 开源远程桌面。
       {
         name = "oevery/local/ishell-pro";
         greedy = true; # version :latest 的自建 cask 需要 greedy 才会在 drs 时重新拉取。
       }
-      # {
-      #   name = "oevery/local/oppo-connect";
-      #   greedy = true; # 通过官方接口动态获取当前架构的版本、下载地址与校验值。
-      # }
       {
         name = "brewforge/chinese/easytier-gui";
         trusted = true; # 仅信任当前使用的 EasyTier cask，不扩大到整个 Brewforge tap。
@@ -78,7 +64,6 @@
 
       # 媒体娱乐。
       "neteasemusic" # 网易云音乐。
-      # "qqmusic" # QQ 音乐。
       "obs" # 直播与录屏。
       "upscayl" # AI 图片放大工具。
       "iina" # 本地媒体播放器。
@@ -97,11 +82,6 @@
     masApps = {
       "Xcode" = 497799835;
       "AndroMeld" = 6762439757; # Android 手机伴侣。
-      # "Numbers" = 409203825;
-      # "Keynote" = 409183694;
-      # "Pages" = 409201541;
-      # "GarageBand" = 682658836;
-      # "iMovie" = 408981434;
     };
   };
 }
