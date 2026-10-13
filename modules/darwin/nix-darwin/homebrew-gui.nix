@@ -28,6 +28,7 @@
         trusted = true; # 仅信任 Tinycast cask 的安装后处理。
       }
       "mos" # 鼠标滚动增强。
+      "alt-tab" # 窗口预览与快捷切换。
       "pixpin" # 截图与标注。
       "keka" # 压缩/解压 GUI 工具。
       "localsend" # 局域网跨设备文件传输。
