@@ -19,12 +19,13 @@
       # AI / 监控。
       # "codex" # OpenAI Codex 桌面编码代理。
       "chatgpt" # OpenAI ChatGPT 桌面应用。
+      "stats" # 菜单栏系统监控。
 
       # 效率工具。
+      "oevery/local/boring-notch-rc" # 固定 2.8 候选版，待官方稳定版发布后切回。
       {
-        name = "vishvavariya/notchy/notchy";
-        greedy = true; # 自带更新功能的 cask 也由 drs 纳入升级。
-        trusted = true; # 仅信任当前使用的 Notchy cask。
+        name = "abue-ammar/tinycast/tinycast";
+        trusted = true; # 仅信任 Tinycast cask 的安装后处理。
       }
       "mos" # 鼠标滚动增强。
       "pixpin" # 截图与标注。
@@ -69,7 +70,6 @@
       "iina" # 本地媒体播放器。
 
       # 办公软件。
-      "libreoffice" # LibreOffice 办公套件。
       "wpsoffice" # 金山 WPS Office。
       "syncthing-app" # Syncthing 文件同步客户端。
       "onedrive" # OneDrive 文件同步客户端。

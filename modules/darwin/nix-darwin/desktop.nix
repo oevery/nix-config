@@ -54,8 +54,8 @@
     };
 
     CustomUserPreferences = {
-      # Notchy 统一通过声明式 Homebrew 配置更新。
-      "dev.notchy.app" = {
+      # Boring Notch 候选版由本地 cask 固定，避免应用内更新偏离声明版本。
+      "theboringteam.boringnotch" = {
         SUEnableAutomaticChecks = false;
         SUAutomaticallyUpdate = false;
       };
@@ -66,14 +66,15 @@
         DSDontWriteUSBStores = true;
       };
 
-      # 使用系统 Spotlight 快捷键。parameters 依次为字符码、虚拟键码、修饰键掩码。
+      # 将 ⌘Space 留给 Tinycast，保留 Finder 搜索快捷键。
+      # parameters 依次为字符码、虚拟键码、修饰键掩码。
       "com.apple.symbolichotkeys" = {
         AppleSymbolicHotKeys = {
           "160" = {
             enabled = 0;
           };
           "64" = { # 显示 Spotlight 搜索。
-            enabled = 1;
+            enabled = 0;
             value = {
               parameters = [ 32 49 1048576 ]; # ⌘Space
               type = "standard";
