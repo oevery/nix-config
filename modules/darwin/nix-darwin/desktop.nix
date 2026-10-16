@@ -54,12 +54,6 @@
     };
 
     CustomUserPreferences = {
-      # Boring Notch 候选版由本地 cask 固定，避免应用内更新偏离声明版本。
-      "theboringteam.boringnotch" = {
-        SUEnableAutomaticChecks = false;
-        SUAutomaticallyUpdate = false;
-      };
-
       # 避免在网络和 USB 磁盘生成 Finder 目录显示设置文件；不清理已有 .DS_Store。
       "com.apple.desktopservices" = {
         DSDontWriteNetworkStores = true;

@@ -22,7 +22,10 @@
       "stats" # 菜单栏系统监控。
 
       # 效率工具。
-      "oevery/local/boring-notch-rc" # 固定 2.8 候选版，待官方稳定版发布后切回。
+      {
+        name = "vishvavariya/notchy/notchy"; # 刘海区域效率工具。
+        greedy = true; # 支持自动更新的应用也由 Homebrew 检查升级。
+      }
       {
         name = "abue-ammar/tinycast/tinycast";
         trusted = true; # 仅信任 Tinycast cask 的安装后处理。

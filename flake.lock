@@ -3,10 +3,10 @@
     "abue-ammar-tinycast": {
       "flake": false,
       "locked": {
-        "lastModified": 1791843479,
-        "narHash": "sha256-IQjUEH9vomOt/WjqwXdOWAc6gDq8w2PGynSxy7sJmzk=",
+        "lastModified": 1792103255,
+        "narHash": "sha256-7VIHQx1YKz/ekU7KZGLSAbHl9jNP5rGQZZMEUijCYRc=",
         "ref": "refs/heads/main",
-        "rev": "0553a7e4078d949692251b244676b1c40af39916",
+        "rev": "3cf93e50e7ba7e3f886df98388a7e6683bad172e",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/abue-ammar/homebrew-tinycast.git"
@@ -37,10 +37,10 @@
     "brewforge-chinese": {
       "flake": false,
       "locked": {
-        "lastModified": 1791817042,
-        "narHash": "sha256-/CJIVHlMwqpI8dxcvB2kWvk3RXIfakL/ouWmqNC4AYg=",
+        "lastModified": 1792110659,
+        "narHash": "sha256-jrvLOSBBw8Z3bwaWcBi7lMd5WNwGoMTkQTfOv5pHs3g=",
         "ref": "refs/heads/main",
-        "rev": "1bbd6dbb5f5407be56b8cc780f3063e3272b4268",
+        "rev": "d4117125be188a0d675d32a33061aeebf9a98786",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/Brewforge/homebrew-chinese.git"
@@ -58,10 +58,10 @@
         ]
       },
       "locked": {
-        "lastModified": 1790996401,
-        "narHash": "sha256-f+kOxEmOUnQazVAmGg0i8hzwgd1kX/geY+k/Dpheye8=",
+        "lastModified": 1791938526,
+        "narHash": "sha256-yNYK2pdk3bCtJrpblrNYA6hZKdybWUeyTtx74+OEJFo=",
         "ref": "release-26.05",
-        "rev": "db7d5e2332710f5abb088f6b5de927d7f9511b35",
+        "rev": "32904dfe1cf86039f3c8c9f41f94e1cfd76dbb34",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/nix-community/home-manager.git"
@@ -76,10 +76,10 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1791875848,
-        "narHash": "sha256-CzDRQa/OLTX31+JyTX3EB6D8zFW60BHjgjx7mtM27zU=",
+        "lastModified": 1792118998,
+        "narHash": "sha256-2gwnNSKnuC5u4ZQKimjZYVMkaGBf/pepIqrg9Vn5/A8=",
         "ref": "refs/heads/main",
-        "rev": "e10ab01a6de6fe8bcddf086132ca62012c91cf42",
+        "rev": "16a8e60525e4d070a05fc6a3a7c5961fd84fb0e9",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-cask.git"
@@ -93,10 +93,10 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1791875741,
-        "narHash": "sha256-ukst3YknbLfeAp13bJ7jXiOIZFzSUhP0+2j7BLDzBOg=",
+        "lastModified": 1792107407,
+        "narHash": "sha256-evWOIUg5zwth5FhoEMFK8uMdNqJpuS86GSmy9GY5/Wk=",
         "ref": "refs/heads/main",
-        "rev": "b3713b7310da8bdcf15e6b1f94e9e529dfa5606e",
+        "rev": "33f30f4b6ce0386f7c84d5ca0079dccd231d8a93",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-core.git"
@@ -153,10 +153,10 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1791765022,
-        "narHash": "sha256-ZGq3ptZzA+oO0N/Wi/F+GbuTijLkYExD01LvpNFAvr0=",
+        "lastModified": 1791883866,
+        "narHash": "sha256-yvkDdToRZ4IgPc9tSBzzCYJvTLf8n5eE3rgUkpCuD5A=",
         "ref": "nixos-26.05",
-        "rev": "7993f34ee47e28a3d607a525aadc6c94b73be728",
+        "rev": "a033e66ab94a6bedf2c3d58d93a36319d3cbbbaf",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/NixOS/nixpkgs.git"
@@ -170,10 +170,10 @@
     },
     "nixpkgs-darwin": {
       "locked": {
-        "lastModified": 1791678325,
-        "narHash": "sha256-yH6Su6IXtj1DUC6/Fpl1rmGpOFH1vtozMGOqaA6Yknk=",
+        "lastModified": 1792052774,
+        "narHash": "sha256-E7Hc6xMjd2onLR6KEwaGJHaFlbhE2J+R0ikHzBo0Xis=",
         "ref": "nixpkgs-26.05-darwin",
-        "rev": "240fddad86d7a0520319f21d8be1b43db426b18d",
+        "rev": "7529d323f8f9926b38df356da2483c2a4e759d00",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/NixOS/nixpkgs.git"
@@ -196,7 +196,25 @@
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-darwin": "nixpkgs-darwin"
+        "nixpkgs-darwin": "nixpkgs-darwin",
+        "vishvavariya-notchy": "vishvavariya-notchy"
+      }
+    },
+    "vishvavariya-notchy": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792106177,
+        "narHash": "sha256-d2FEEBV1ZCDWj64/W6KXED0Yx3XeSNuxahl/+RYk0DE=",
+        "ref": "refs/heads/main",
+        "rev": "857b5edab9a307c46ea3deb0d65243bf6bc3cf90",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/vishvavariya/homebrew-notchy.git"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/vishvavariya/homebrew-notchy.git"
       }
     }
   },
