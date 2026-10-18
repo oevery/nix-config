@@ -19,6 +19,10 @@
       # AI / 监控。
       # "codex" # OpenAI Codex 桌面编码代理。
       "chatgpt" # OpenAI ChatGPT 桌面应用。
+      {
+        name = "oevery/local/opencodex"; # 桌面端管理代理，不配置独立 CLI。
+        greedy = true; # drs 时检查并更新 latest cask。
+      }
       "stats" # 菜单栏系统监控。
 
       # 效率工具。
