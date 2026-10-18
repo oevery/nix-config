@@ -4,8 +4,7 @@ cask "ishell-pro" do
   version :latest
   sha256 :no_check
 
-  url "https://api.ishell.cc/download/#{arch}/cn",
-      verified: "api.ishell.cc/"
+  url "https://api.ishell.cc/download/#{arch}/cn"
   name "iShell Pro"
   desc "SSH, SFTP, RDP, VNC, and server management client"
   homepage "https://ishell.cc/"

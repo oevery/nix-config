@@ -119,7 +119,6 @@
         settings:
         let
           enableDarwinGuiModules = builtins.elem "darwin/gui" settings.modules;
-          isAppleSilicon = nixpkgs.lib.hasPrefix "aarch64-" settings.system;
           pkgs = pkgsForSystem settings.system;
           localHomebrewTap = pkgs.stdenvNoCC.mkDerivation {
             pname = "homebrew-local";
@@ -144,7 +143,8 @@
                   name = "brew-${brewVersion}";
                   version = brewVersion;
                 };
-                enableRosetta = isAppleSilicon;
+                # 只管理原生架构 Homebrew，不创建未使用的 Intel 前缀。
+                enableRosetta = false;
                 user = settings.username;
                 autoMigrate = true;
                 taps = darwinTaps // {

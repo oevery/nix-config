@@ -35,7 +35,6 @@ cask "oppo-connect" do
   sha256 metadata.fetch("sha256")
 
   url metadata.fetch("downloadUrl"),
-      verified: "pc-assistant-cn.allawnfs.com/",
       referer: "https://connect.oppo.com/"
   name "OPPO Connect"
   name "OPPO 互联"
