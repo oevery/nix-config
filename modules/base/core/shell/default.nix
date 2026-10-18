@@ -37,7 +37,7 @@ let
 
   commonAliases = {
     cat = "bat";
-    catp = "bat -p";
+    catp = "bat --style=plain --color=never --paging=never";
     man = "batman";
     bgrep = "batgrep";
 
@@ -68,19 +68,10 @@ in
     mkdir -p "$HOME/.copilot/otel"
   '';
 
-  home.packages =
-    (lib.optionals pkgs.stdenv.isLinux (
-      with pkgs;
-      [
-        zsh
-      ]
-    ))
-    ++ (with pkgs; [
-      # nushell
-      nix-your-shell
-      fluScript
-      checkScript
-    ]);
+  home.packages = [
+    fluScript
+    checkScript
+  ];
 
   programs.zsh = {
     enable = true;
@@ -100,11 +91,6 @@ in
         name = "zsh-autopair";
         src = pkgs.zsh-autopair;
         file = "share/zsh/zsh-autopair/zsh-autopair.plugin.zsh";
-      }
-      {
-        name = "you-should-use";
-        src = pkgs.zsh-you-should-use;
-        file = "share/zsh/plugins/you-should-use/you-should-use.plugin.zsh";
       }
       {
         name = "fzf-tab";
