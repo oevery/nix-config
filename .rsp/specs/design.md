@@ -26,6 +26,7 @@
 - `docs/` - 操作说明与排障文档，不承载长期设计事实。
 
 ## Constraints
+- `nixpkgs-unstable` 作为独立锁定的可选包源，仅按需显式引用个别工具，默认包集维持 26.05，不作为全局替换。目前仅 `programs.mise.package` 使用它，以获得更新的来源证明验证支持。
 - `homeConfigurations` 必须使用显式的 `homeConfigurationName`，`darwinConfigurations` 必须使用显式的 `darwinName`，且名称需非空、全局唯一。
 - `hosts/*.nix` 应保持为声明数据，模块实现放在 `modules/`，通用装配逻辑放在 `lib/`。
 - 主机可用的模块键只能来自 `lib.moduleRegistry`，避免在 host 文件中直接引入任意路径。

@@ -39,6 +39,18 @@ macOS（nix-darwin，需要 sudo）：
 sudo nix run nix-darwin#darwin-rebuild -- switch --flake .#oevery-mac
 ```
 
+### 4. 初始化 Rust 工具链
+
+Home Manager 安装 mise 并生成其配置；Rust 工具链由 mise 调用 rustup 管理，不在 Nix 激活阶段下载。Linux 首次应用配置后，新开终端并在本仓库目录运行：
+
+```bash
+mise install rust
+mise exec -- rustc --version
+mise exec -- cargo --version
+```
+
+首次安装需要联网；mise 会在缺少用户 Rust 环境时初始化 rustup。已有的 `~/.cargo` 和 `~/.rustup` 保留，移除 Nix 的 rustup 声明不会删除它们。macOS 同样适用；已有工具链的机器无需为此次配置调整重新安装。
+
 ## 日常使用
 
 常用 alias：

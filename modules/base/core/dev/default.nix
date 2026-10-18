@@ -1,6 +1,7 @@
 {
   pkgs,
   host,
+  inputs,
   ...
 }:
 
@@ -9,15 +10,6 @@
     with pkgs;
     (
       [
-        git
-        gh
-
-        rustup
-        mise
-
-        # 由 Nix 管理 gnupg，确保 gpg 与 gpg-agent 一致。
-        gnupg
-
         # 跨平台 CLI 统一交给 Nix 管理。
         sqlite
         android-tools # adb / fastboot。
@@ -35,13 +27,14 @@
     settings = {
       init.defaultBranch = "main";
       pull.rebase = true;
+      color.ui = "auto";
       # Home Manager 中 `pager` 需放在 `core` 下。
       core = {
         pager = "delta";
       };
 
       interactive = {
-        diffFilter = "delta --color-only";
+        diffFilter = "delta --color-only --paging=never";
       };
 
       # 确保 Git 使用由 Nix 管理的 gpg 二进制，避免签名失败。
@@ -50,6 +43,7 @@
       };
 
       delta = {
+        paging = "auto";
         "syntax-theme" = "TwoDark";
         "line-numbers" = true;
       };
@@ -70,6 +64,7 @@
     };
   };
 
+  # 由 GPG 模块安装 gnupg，确保 gpg 与 gpg-agent 来自同一包集。
   programs.gpg.enable = true;
 
   services.gpg-agent = {
@@ -91,6 +86,8 @@
 
   programs.mise = {
     enable = true;
+    # 新版包含 GitHub TSA 信任根更新，保留工具来源证明校验。
+    package = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.mise;
     enableNushellIntegration = true;
     enableZshIntegration = true;
     globalConfig = {
@@ -109,7 +106,13 @@
 
         # 独立 CLI 工具。
         rtk = "latest";
-        "github:aovestdipaperino/tokensave" = "latest";
+        # 固定 RC 版本，产物与上游校验信息由 mise 自动解析；索引和服务单独接入。
+        "github:xerj-org/xerj" = {
+          version = "1.0.0-rc.96";
+          version_prefix = "v";
+          # Linux 使用静态 musl 产物，避免依赖宿主 glibc。
+          platforms.linux-x64.asset_pattern = "xerj-*-x86_64-unknown-linux-musl.tar.gz";
+        };
 
         # Java 工具链。
         java = "temurin-21";
@@ -139,7 +142,7 @@
           uvx_args = "--with rapidocr-onnxruntime";
         };
 
-        # Rust 工具链。
+        # Rust 工具链由 mise 调用用户目录中的 rustup 管理，首次安装时自动初始化。
         rust = "latest";
       };
     };

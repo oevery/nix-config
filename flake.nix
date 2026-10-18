@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "git+https://github.com/NixOS/nixpkgs.git?ref=nixos-26.05&shallow=1";
     nixpkgs-darwin.url = "git+https://github.com/NixOS/nixpkgs.git?ref=nixpkgs-26.05-darwin&shallow=1";
+    # 按需为个别工具提供新版包，默认仍使用 26.05 稳定包集。
+    nixpkgs-unstable.url = "git+https://github.com/NixOS/nixpkgs.git?ref=nixpkgs-unstable&shallow=1";
     home-manager = {
       url = "git+https://github.com/nix-community/home-manager.git?ref=release-26.05&shallow=1";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -34,11 +36,6 @@
       url = "git+https://github.com/Brewforge/homebrew-chinese.git?shallow=1";
       flake = false;
     };
-    # 第三方 Homebrew tap：Notchy。
-    vishvavariya-notchy = {
-      url = "git+https://github.com/vishvavariya/homebrew-notchy.git?shallow=1";
-      flake = false;
-    };
     # 第三方 Homebrew tap：Tinycast。
     abue-ammar-tinycast = {
       url = "git+https://github.com/abue-ammar/homebrew-tinycast.git?shallow=1";
@@ -58,7 +55,6 @@
       homebrew-core,
       homebrew-cask,
       brewforge-chinese,
-      vishvavariya-notchy,
       abue-ammar-tinycast,
       ...
     }@inputs:
@@ -106,7 +102,6 @@
         "homebrew/homebrew-core" = homebrew-core;
         "homebrew/homebrew-cask" = homebrew-cask;
         "brewforge/homebrew-chinese" = brewforge-chinese;
-        "vishvavariya/homebrew-notchy" = vishvavariya-notchy;
         "abue-ammar/homebrew-tinycast" = abue-ammar-tinycast;
       };
 

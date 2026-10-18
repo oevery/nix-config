@@ -23,10 +23,6 @@
 
       # 效率工具。
       {
-        name = "vishvavariya/notchy/notchy"; # 刘海区域效率工具。
-        greedy = true; # 支持自动更新的应用也由 Homebrew 检查升级。
-      }
-      {
         name = "abue-ammar/tinycast/tinycast";
         trusted = true; # 仅信任 Tinycast cask 的安装后处理。
       }
