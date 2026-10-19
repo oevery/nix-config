@@ -106,13 +106,6 @@
 
         # 独立 CLI 工具。
         rtk = "latest";
-        # 固定 RC 版本，产物与上游校验信息由 mise 自动解析；索引和服务单独接入。
-        "github:xerj-org/xerj" = {
-          version = "1.0.0-rc.96";
-          version_prefix = "v";
-          # Linux 使用静态 musl 产物，避免依赖宿主 glibc。
-          platforms.linux-x64.asset_pattern = "xerj-*-x86_64-unknown-linux-musl.tar.gz";
-        };
 
         # Java 工具链。
         java = "temurin-21";
