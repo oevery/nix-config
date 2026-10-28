@@ -41,6 +41,7 @@ lib.mkIf pkgs.stdenv.isDarwin {
 
   programs.zsh.shellAliases = {
     sysup = "softwareupdate -ia";
+    unq = "xattr -rd com.apple.quarantine";
     # 重建 Launch Services 索引。
     lsreset = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user";
   };

@@ -33,7 +33,17 @@
 
 3. 仅在信任该应用时移除 quarantine：
 
-   sudo xattr -r -d com.apple.quarantine "/Applications/<App>.app"
+   ```zsh
+   unq "/Applications/<App>.app"
+   ```
+
+   `unq` 是本仓库为 macOS Zsh 配置的别名，等同于 `xattr -rd com.apple.quarantine`。需先执行 `drs` 激活配置，再打开新终端使用。
+
+   若提示权限不足，使用原始命令提权，不依赖 `sudo` 展开别名：
+
+   ```zsh
+   sudo xattr -rd com.apple.quarantine "/Applications/<App>.app"
+   ```
 
    推荐优先使用上面的精确删除命令，不要一开始就用：
 
@@ -66,4 +76,4 @@
 
 - 不要对不可信的二进制执行移除 quarantine 或关闭 Gatekeeper。
 - 如果上述方法都无法解决，可能包本身未被开发者正确签名/公证，需要向软件发布者或 Homebrew Cask 仓库报告 issue。
-- `/Applications` 下通常需要 `sudo`，`~/Applications` 下通常不需要。
+- 先使用 `unq`，仅在权限不足时使用上述 `sudo xattr` 命令。

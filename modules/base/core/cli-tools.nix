@@ -1,4 +1,9 @@
-{ lib, pkgs, ... }:
+{
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   home.packages = with pkgs; [
@@ -7,7 +12,8 @@
     # 命令行效率工具
     ripgrep # 快速递归文本搜索工具 (rg)
     fd # 快速文件查找工具（fzf 默认命令依赖）
-    ast-grep # 基于语法结构的代码搜索与改写。
+    # 使用独立锁定的 unstable 包，获取新版结构导航、搜索与改写能力。
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.ast-grep
     hyperfine # 命令行基准测试与重复计时。
 
     # 磁盘工具

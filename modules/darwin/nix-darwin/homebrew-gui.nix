@@ -19,11 +19,11 @@
       # AI / 监控。
       # "codex" # OpenAI Codex 桌面编码代理。
       "chatgpt" # OpenAI ChatGPT 桌面应用。
-      {
-        name = "oevery/local/opencodex"; # 桌面端管理代理，不配置独立 CLI。
-        greedy = true; # drs 时检查并更新 latest cask。
-      }
+      "magpie" # AI Agent 模型网关与本地脱敏。
       "stats" # 菜单栏系统监控。
+
+      # 设计与原型。
+      "open-design" # OpenDesign 交互原型与界面设计。
 
       # 效率工具。
       {
@@ -65,7 +65,7 @@
         name = "brewforge/chinese/easytier-gui";
         trusted = true; # 仅信任当前使用的 EasyTier cask，不扩大到整个 Brewforge tap。
       }
-      # 如遇“已损坏，无法打开”，见 docs/quarantine.md。
+      # 如遇“已损坏，无法打开”，确认来源可信后运行 unq "/Applications/<App>.app"，详见 docs/quarantine.md。
 
       # 媒体娱乐。
       "neteasemusic" # 网易云音乐。
