@@ -105,6 +105,7 @@
       tools = {
         # mise 自身辅助工具。
         usage = "latest";
+        pitchfork = "latest";
 
         # 独立 CLI 工具。
         rtk = "latest";
@@ -117,6 +118,7 @@
         node = "lts";
         pnpm = "latest";
         "npm:@antfu/ni" = "latest";
+        "npm:@jackwener/opencli" = "latest";
         "npm:@larksuite/cli" = "latest";
         "npm:@playwright/mcp" = "latest";
         "npm:@upstash/context7-mcp" = "latest";
@@ -126,7 +128,7 @@
         "npm:sfw" = "latest";
 
         # Python 工具链。
-        python = "latest";
+        python = "3.14";
         uv = "latest";
         "pipx:docling" = {
           version = "latest";
