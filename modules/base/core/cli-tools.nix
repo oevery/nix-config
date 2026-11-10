@@ -81,10 +81,10 @@
     ];
     fileWidgetCommand = "fd --type f --strip-cwd-prefix --hidden --follow --exclude .git";
     fileWidgetOptions = [
-      "--preview 'if [ -d {} ]; then eza --tree --color=always --icons=always {} | head -200; else bat --paging=never --decorations=always --style=numbers --color=always --line-range :500 {}; fi'"
+      "--preview 'if [ -d {} ]; then eza --tree -L 2 --color=always --icons=always {} | head -200; else bat --paging=never --decorations=always --style=numbers --color=always --line-range :500 {}; fi'"
     ];
     changeDirWidgetCommand = "fd --type d --strip-cwd-prefix --hidden --follow --exclude .git";
-    changeDirWidgetOptions = [ "--preview 'eza --tree --color=always --icons=always {} | head -200'" ];
+    changeDirWidgetOptions = [ "--preview 'eza --tree -L 2 --color=always --icons=always {} | head -200'" ];
   };
 
   programs.vivid = {

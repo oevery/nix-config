@@ -6,9 +6,11 @@
     # 第三方 cask 需先在 flake.nix 中注册对应 tap。
     casks = [
       # 终端与开发。
-      "warp" # Warp 终端。
+      {
+        name = "oevery/local/rex-beta";
+        greedy = true; # 与其他 latest 自建 cask 一起检查更新。
+      }
       "dbx" # 轻量级数据库客户端。
-      "visual-studio-code" # 编辑器。
       "zed" # 编辑器。
       "hbuilderx" # uni-app 开发 IDE。
       "wechatwebdevtools" # 微信开发者工具（小程序/公众号）。
@@ -21,9 +23,6 @@
       "chatgpt" # OpenAI ChatGPT 桌面应用。
       "magpie" # AI Agent 模型网关与本地脱敏。
       "stats" # 菜单栏系统监控。
-
-      # 设计与原型。
-      "open-design" # OpenDesign 交互原型与界面设计。
 
       # 效率工具。
       {

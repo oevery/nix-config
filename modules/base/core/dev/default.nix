@@ -45,6 +45,7 @@
       };
 
       delta = {
+        navigate = true;
         paging = "auto";
         "syntax-theme" = "TwoDark";
         "line-numbers" = true;
