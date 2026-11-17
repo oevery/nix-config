@@ -14,7 +14,6 @@ let
     "/Applications/Zed.app"
     "/Applications/ChatGPT.app"
     "/Applications/Obsidian.app"
-    "/Applications/Safari.app"
     "/Applications/Spark Desktop.app"
     "/Applications/Telegram.app"
     "/Applications/QQ.app"
