@@ -15,9 +15,10 @@
       "hbuilderx" # uni-app 开发 IDE。
       "wechatwebdevtools" # 微信开发者工具（小程序/公众号）。
       "reqable" # API 调试与代理抓包。
+      "serial-studio" # 串口监控、数据可视化与记录。
       "iloader" # 用户友好的 iOS sideloader
       "android-studio" # Android 开发与模拟器。
-      "orbstack" # Docker/容器运行时。
+      "libracoder/kiri/kiri" # 轻量级 Docker/容器运行时。
       # AI / 监控。
       # "codex" # OpenAI Codex 桌面编码代理。
       "chatgpt" # OpenAI ChatGPT 桌面应用。

@@ -41,6 +41,10 @@
       url = "git+https://github.com/abue-ammar/homebrew-tinycast.git?shallow=1";
       flake = false;
     };
+    libracoder-kiri = {
+      url = "git+https://github.com/libracoder/homebrew-kiri.git?shallow=1";
+      flake = false;
+    };
   };
 
   outputs =
@@ -56,6 +60,7 @@
       homebrew-cask,
       brewforge-chinese,
       abue-ammar-tinycast,
+      libracoder-kiri,
       ...
     }@inputs:
     let
@@ -103,6 +108,7 @@
         "homebrew/homebrew-cask" = homebrew-cask;
         "brewforge/homebrew-chinese" = brewforge-chinese;
         "abue-ammar/homebrew-tinycast" = abue-ammar-tinycast;
+        "libracoder/homebrew-kiri" = libracoder-kiri;
       };
 
       mkHostModules = settings: [ ./home.nix ] ++ resolveHostModules settings.modules;
