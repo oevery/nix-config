@@ -26,10 +26,7 @@
       "stats" # 菜单栏系统监控。
 
       # 效率工具。
-      {
-        name = "abue-ammar/tinycast/tinycast";
-        trusted = true; # 仅信任 Tinycast cask 的安装后处理。
-      }
+      "tinycast"
       "mos" # 鼠标滚动增强。
       "alt-tab" # 窗口预览与快捷切换。
       "pixpin" # 截图与标注。

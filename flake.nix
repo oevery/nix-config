@@ -36,11 +36,6 @@
       url = "git+https://github.com/Brewforge/homebrew-chinese.git?shallow=1";
       flake = false;
     };
-    # 第三方 Homebrew tap：Tinycast。
-    abue-ammar-tinycast = {
-      url = "git+https://github.com/abue-ammar/homebrew-tinycast.git?shallow=1";
-      flake = false;
-    };
     libracoder-kiri = {
       url = "git+https://github.com/libracoder/homebrew-kiri.git?shallow=1";
       flake = false;
@@ -59,7 +54,6 @@
       homebrew-core,
       homebrew-cask,
       brewforge-chinese,
-      abue-ammar-tinycast,
       libracoder-kiri,
       ...
     }@inputs:
@@ -107,7 +101,6 @@
         "homebrew/homebrew-core" = homebrew-core;
         "homebrew/homebrew-cask" = homebrew-cask;
         "brewforge/homebrew-chinese" = brewforge-chinese;
-        "abue-ammar/homebrew-tinycast" = abue-ammar-tinycast;
         "libracoder/homebrew-kiri" = libracoder-kiri;
       };
 

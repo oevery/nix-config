@@ -1,22 +1,5 @@
 {
   "nodes": {
-    "abue-ammar-tinycast": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1794645078,
-        "narHash": "sha256-eH4m+SkincDmac08HGqSbKJRw2efSExuj8tBUr9kTRk=",
-        "ref": "refs/heads/main",
-        "rev": "70d2a2a6d3fc2ae7e0128f96515966b54cd421ac",
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/abue-ammar/homebrew-tinycast.git"
-      },
-      "original": {
-        "shallow": true,
-        "type": "git",
-        "url": "https://github.com/abue-ammar/homebrew-tinycast.git"
-      }
-    },
     "brew-src": {
       "flake": false,
       "locked": {
@@ -221,7 +204,6 @@
     },
     "root": {
       "inputs": {
-        "abue-ammar-tinycast": "abue-ammar-tinycast",
         "brew-src": "brew-src",
         "brewforge-chinese": "brewforge-chinese",
         "home-manager": "home-manager",
