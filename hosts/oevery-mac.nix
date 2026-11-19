@@ -6,6 +6,7 @@ mkHost (
     system = "aarch64-darwin";
     homeConfigurationName = "oevery-mac";
     darwinName = "oevery-mac";
+    enableMihomo = true;
     gpgKey = "FF2F947EF8595DC8";
     pinentryPackage = "pinentry_mac";
     modules = [

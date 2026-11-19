@@ -18,6 +18,7 @@
 ## Structure
 - `flake.nix` - 仓库装配入口，导入 `lib/` 与 `hosts/`，生成所有 flake outputs，并处理 Darwin 特有的系统层集成。
 - `lib/` - 规则与装配辅助层，提供 `moduleRegistry`、`mkAutoImports`、`mkHost` 等稳定基础设施。
+- `pkgs/` - 仓库自定义软件包，由需要它们的模块通过 `callPackage` 引入。
 - `hosts/` - 主机声明层，定义每台主机的 `system`、输出名、用户身份与模块组合；`hosts/default.nix` 是注册入口。
 - `modules/base/` - 跨平台模块实现，承载大多数公共 Home Manager 配置。
 - `modules/linux/` - Linux 专属模块实现，仅补充非 Darwin 平台差异。
@@ -27,6 +28,7 @@
 
 ## Constraints
 - `nixpkgs-unstable` 作为独立锁定的可选包源，仅按需显式引用个别工具，默认包集维持 26.05，不作为全局替换。`programs.mise.package` 使用它以获得更新的来源证明验证支持；`ast-grep` 使用它以获得新版结构导航、搜索与改写能力。
+- `mihomoctl` 共用配置更新逻辑；可变配置、订阅凭据和状态不写入 Nix store。启用 `enableMihomo` 的 macOS 主机由 nix-darwin 管理内核和 LaunchDaemon。Linux 暂不接入主机配置，`systemd` 后端仅保留在共享包中。
 - `homeConfigurations` 必须使用显式的 `homeConfigurationName`，`darwinConfigurations` 必须使用显式的 `darwinName`，且名称需非空、全局唯一。
 - `hosts/*.nix` 应保持为声明数据，模块实现放在 `modules/`，通用装配逻辑放在 `lib/`。
 - 主机可用的模块键只能来自 `lib.moduleRegistry`，避免在 host 文件中直接引入任意路径。

@@ -1,16 +1,26 @@
-# Nix/Home Manager artifacts
+# Nix / Home Manager 本地产物
 result
 result-*
+.direnv/
 
-# Secret files (If you use them)
+# Python 字节码与本地开发产物
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 本地凭据（保留环境变量示例）
 *.age
 *.sops
 .env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
 
-# Temporary files
+# 编辑器与 macOS 临时文件
 *.swp
 *~
 .DS_Store
-
-# Git ignore itself
-.direnv/

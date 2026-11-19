@@ -134,6 +134,7 @@
           specialArgs = makeSpecialArgs settings;
           modules = [
             ./modules/darwin/nix-darwin/core.nix
+            ./modules/darwin/nix-darwin/mihomo.nix
             nix-homebrew.darwinModules.nix-homebrew
             {
               nix-homebrew = {

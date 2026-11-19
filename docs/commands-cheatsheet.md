@@ -44,6 +44,30 @@ brewup
 sudo nix run nix-darwin#darwin-rebuild -- switch --flake ~/.config/home-manager#<darwinName>
 ```
 
+### Mihomo（macOS）
+
+首次激活后，`org.nixos.mihomo` 使用占位配置启动，不监听端口、不接管 TUN。
+在应用第一份实际配置前，先退出 Verge 或关闭它的 TUN 和可能冲突的监听端口。
+独立 EasyTier 可以继续运行；不要给 Mihomo 的原生 EasyTier 出站配置同一个虚拟 IP。
+
+```bash
+mihomoctl status
+mihomoctl config set-source 'https://…'  # Mac 的 Surgio 完整配置地址
+mihomoctl config update                  # 从已保存的地址更新
+mihomoctl restart                        # 重启；未加载时尝试启动
+mihomoctl stop                           # 本次停用，不改变开机设置
+mihomoctl start
+mihomoctl disable                        # 禁止后续启动，不停止当前进程
+mihomoctl enable                         # 解除禁用，不立即启动
+sudo tail -F /Library/Logs/Mihomo/{stdout,stderr}.log
+```
+
+- `set-source` 只接受可信的 HTTPS 完整配置（含 `rules`），不是节点订阅。含凭据的地址请用 `mihomoctl config set-source --stdin`，从凭据管理器通过管道提供，避免出现在参数或历史里。
+- 更新先用 `mihomo -t` 校验。配置有变化且服务原本在运行时才重启，只确认新进程稳定存活；重启失败或更新中按 `Ctrl-C` 会回滚配置和源地址，暂不处理 `SIGTERM`。服务原本停止时只安装配置，下次 `start` 生效。首次切换或改端口、DNS、TUN 时，请另看日志并验证连通性。
+- 配置与状态保存在 `/Library/Application Support/Mihomo/`，由 root 管理；普通用法会按需调用 `sudo`。不要直接把 Verge 目录软链过来。节点和规则 provider 仍按配置中的 `interval` 刷新。
+- `org.nixos.mihomo.logrotate` 每小时检查两个日志文件，各自按 `10 MiB` 阈值轮转、压缩并保留最近 5 份。使用 `copytruncate`，不重启 Mihomo，也不改变 TUN 状态；轮转时可能漏掉少量日志。
+- 禁用后若也想立即停用，再执行 `stop`。nix-darwin 重新安装或更新 LaunchDaemon 定义时可能重新启用服务。
+
 ## Quick Eval
 
 ```bash
