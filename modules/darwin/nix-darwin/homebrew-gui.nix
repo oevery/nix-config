@@ -7,7 +7,7 @@
     casks = [
       # 终端与开发。
       {
-        name = "oevery/local/rex-beta";
+        name = "oevery/local/rex";
         greedy = true; # 与其他 latest 自建 cask 一起检查更新。
       }
       "dbx" # 轻量级数据库客户端。
@@ -23,6 +23,7 @@
       # "codex" # OpenAI Codex 桌面编码代理。
       "chatgpt" # OpenAI ChatGPT 桌面应用。
       "magpie" # AI Agent 模型网关与本地脱敏。
+      "oevery/local/multica-desktop"
       "stats" # 菜单栏系统监控。
 
       # 效率工具。
