@@ -20,10 +20,10 @@
     "brewforge-chinese": {
       "flake": false,
       "locked": {
-        "lastModified": 1794811648,
-        "narHash": "sha256-OpZstm7u4l0muvhnCUCF873p9B8qntHmlLAE6NcCWRM=",
+        "lastModified": 1795022697,
+        "narHash": "sha256-ZXSwBI5f0M6KbT+mi0Ve9INDcouzQ5S+IJQcsOQ7hgg=",
         "ref": "refs/heads/main",
-        "rev": "dd542fa40cb900c1ef3812046769a3cd8a455499",
+        "rev": "fa700f74dde867b1d835a0cefab4b91bafc083cc",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/Brewforge/homebrew-chinese.git"
@@ -59,10 +59,10 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1794960753,
-        "narHash": "sha256-ely/tTWL4rhlYXoBC+U38XGoIU+S/r7Z/BFKlk582/E=",
+        "lastModified": 1795050015,
+        "narHash": "sha256-FW7AG1FpLfD30XkH0sqcQkDBq8Ip0RTaZxvPpGXE3WI=",
         "ref": "refs/heads/main",
-        "rev": "5d7cdcec63419fd1c2daf4242eaa6031c19f82c2",
+        "rev": "9a763d8f4086b052b64501e143dd684f37e885fe",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-cask.git"
@@ -76,10 +76,10 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1794962275,
-        "narHash": "sha256-oVhmN+dqJlD3FYYFkqG+ccYpGyymhBz+AmN8lEwSbpk=",
+        "lastModified": 1795050212,
+        "narHash": "sha256-kbLU8eKSWzIML0vAvPZ+a3DCYMpLoNbRKga+Gqs2ITE=",
         "ref": "refs/heads/main",
-        "rev": "156bc81a267a4e0160c401b37bb5f5a1da4ba780",
+        "rev": "cfebb8566a94f555ddc583911157595608e3d6c9",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-core.git"
@@ -170,10 +170,10 @@
     },
     "nixpkgs-darwin": {
       "locked": {
-        "lastModified": 1794217284,
-        "narHash": "sha256-Ya0ojDh1BF5zgyZRlehygC0ZvvEg2WaGZWn1xiNozmM=",
+        "lastModified": 1794918815,
+        "narHash": "sha256-lsIUChCLfoCyf0VO6CzedtMZBV62+1W86nT3XGCIgiw=",
         "ref": "nixpkgs-26.05-darwin",
-        "rev": "f4244ef33645badc8157562b5e80748929b396c2",
+        "rev": "94d362415787ffff528f73820996aeedd97ff0dd",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/NixOS/nixpkgs.git"
@@ -187,10 +187,10 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1794705614,
-        "narHash": "sha256-DZ5eNWHA6heAHwkMt1SBtF1p8Lfgi4ivqdqmgxUZkLs=",
+        "lastModified": 1794840529,
+        "narHash": "sha256-ySrWnmZB5UsZTYGHHnBjllT05O5iFjElCRS+mabtfP0=",
         "ref": "nixpkgs-unstable",
-        "rev": "1c872b8c508bbbfebc1b0b74777ff391ce0a574c",
+        "rev": "e21fec321d73511849707a7585e4ea155ee4bf40",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/NixOS/nixpkgs.git"
