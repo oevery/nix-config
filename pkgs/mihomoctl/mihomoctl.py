@@ -16,6 +16,7 @@ import yaml
 
 from backend import Backend
 from errors import ControlError
+from paths import require_root_owned
 
 
 APP_DIR = Path(__file__).resolve().parent
@@ -26,12 +27,12 @@ CONTROL = Path(SETTINGS["controlDir"])
 SOURCE = CONTROL / "config-source"
 PLACEHOLDER = Path(SETTINGS["placeholderPath"]) if SETTINGS["placeholderPath"] else None
 SERVICE_COMMANDS = {
-    "status": "查看配置、服务和开机启动状态",
+    "status": "查看配置、运行状态和开机自启状态",
     "start": "启动服务",
-    "stop": "停止服务，不改变开机启动设置",
+    "stop": "停止服务，不改变开机自启设置",
     "restart": "重启服务，未加载时尝试启动",
-    "enable": "允许开机启动，不立即启动服务",
-    "disable": "禁止后续启动，不停止正在运行的服务",
+    "enable": "开启开机自启，不立即启动服务",
+    "disable": "关闭开机自启，不停止服务",
 }
 
 
@@ -43,16 +44,6 @@ def print_config_status():
     else:
         config_status = "配置已安装"
     print(f"配置状态：{config_status}", flush=True)
-
-
-def require_root_owned(path, expected_type, forbidden_mode):
-    try:
-        info = path.lstat()
-    except FileNotFoundError:
-        raise ControlError(f"找不到所需路径：{path}。") from None
-    if not expected_type(info.st_mode) or info.st_uid != 0 or info.st_mode & forbidden_mode:
-        raise ControlError(f"路径类型、属主或权限不符合要求：{path}。")
-    return info
 
 
 def download(url, target):
@@ -111,11 +102,12 @@ def restart_and_check(service, old_pid):
     raise ControlError("Mihomo 未能稳定运行。")
 
 
-def update_config(service, new_source=None):
-    require_root_owned(STATE, stat.S_ISDIR, 0o022)
-    require_root_owned(CONFIG.parent, stat.S_ISDIR, 0o022)
-    original = require_root_owned(CONFIG, stat.S_ISREG, 0o022)
-    if new_source is None and not SOURCE.is_file():
+def update_config(service, control_gid, new_source=None):
+    require_root_owned(STATE, stat.S_ISDIR)
+    config_dir = require_root_owned(CONFIG.parent, stat.S_ISDIR)
+    require_root_owned(CONFIG, stat.S_ISREG)
+    source_exists = require_root_owned(SOURCE, stat.S_ISREG, missing_ok=True) is not None
+    if new_source is None and not source_exists:
         raise ControlError("尚未设置配置源，请先运行 `mihomoctl config set-source`。")
     url = new_source if new_source is not None else SOURCE.read_text().rstrip("\n")
     with ExitStack() as cleanup:
@@ -130,8 +122,9 @@ def update_config(service, new_source=None):
             source_stage = Path(cleanup.enter_context(tempfile.TemporaryDirectory(prefix=".source-", dir=CONTROL)))
             pending_source = source_stage / "config-source"
             pending_source.write_text(f"{new_source}\n")
-            if SOURCE.exists() or SOURCE.is_symlink():
-                require_root_owned(SOURCE, stat.S_ISREG, 0o077)
+            os.chown(pending_source, 0, control_gid)
+            os.chmod(pending_source, 0o644)
+            if source_exists:
                 source_backup = source_stage / "previous-source"
                 os.link(SOURCE, source_backup)
 
@@ -142,8 +135,8 @@ def update_config(service, new_source=None):
             old_pid = service.pid()
             backup = stage / "previous.yaml"
             os.link(CONFIG, backup)
-            os.chown(candidate, original.st_uid, original.st_gid)
-            os.chmod(candidate, stat.S_IMODE(original.st_mode))
+            os.chown(candidate, 0, config_dir.st_gid)
+            os.chmod(candidate, 0o644)
 
         restart_started = False
         try:
@@ -200,7 +193,13 @@ def main():
     source = set_source.add_mutually_exclusive_group(required=True)
     source.add_argument("url", metavar="URL", nargs="?", help="完整 Mihomo 配置的 HTTPS 地址")
     source.add_argument("--stdin", action="store_true", help="从标准输入读取配置地址，适合带凭据的地址")
-    args = parser.parse_args()
+    boot_args = sys.argv[1:]
+    if hasattr(Backend, "boot_autostart") and boot_args in (
+        ["--run-boot-autostart"], ["--skip-boot-autostart"]
+    ):
+        args = argparse.Namespace(command="boot_autostart", skip=boot_args[0] == "--skip-boot-autostart")
+    else:
+        args = parser.parse_args()
 
     if os.geteuid() != 0:
         os.execv(
@@ -208,25 +207,29 @@ def main():
             ["sudo", "--", SETTINGS["pythonPath"], "-I", str(APP_DIR), *sys.argv[1:]],
         )
 
-    os.umask(0o077)
+    os.umask(0o022)
     if PLACEHOLDER is not None and not CONTROL.is_dir():
         raise ControlError("Mihomo 尚未通过 nix-darwin 激活。")
     service = Backend(SETTINGS)
     if args.command == "status":
         print_config_status()
         return service.status()
-    if args.command != "config" and not CONTROL.exists():
+    if args.command not in ("config", "boot_autostart") and not CONTROL.exists():
         return getattr(service, args.command)()
-    require_root_owned(CONTROL, stat.S_ISDIR, 0o077)
-    with (CONTROL / ".ctl.lock").open("a") as lock:
+    control_dir = require_root_owned(CONTROL, stat.S_ISDIR)
+    lock_path = CONTROL / ".ctl.lock"
+    require_root_owned(lock_path, stat.S_ISREG, missing_ok=True)
+    with lock_path.open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
+        if args.command == "boot_autostart":
+            return service.boot_autostart(skip=args.skip)
         if args.command != "config":
             return getattr(service, args.command)()
         else:
             url = None
             if args.action == "set-source":
                 url = sys.stdin.readline().rstrip("\r\n") if args.stdin else args.url
-            update_config(service, url)
+            update_config(service, control_dir.st_gid, url)
 
 
 if __name__ == "__main__":

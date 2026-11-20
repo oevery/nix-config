@@ -63,6 +63,7 @@ runCommand "mihomoctl"
     cp ${./mihomoctl.py} "$appDir/__main__.py"
     cp ${backend} "$appDir/backend.py"
     cp ${./errors.py} "$appDir/errors.py"
+    cp ${./paths.py} "$appDir/paths.py"
     printf '%s\n' ${lib.escapeShellArg settings} > "$appDir/settings.json"
     makeWrapper ${pythonPath} "$out/bin/mihomoctl" --add-flag -I --add-flag "$appDir"
   ''
