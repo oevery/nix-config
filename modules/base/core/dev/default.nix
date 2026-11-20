@@ -125,7 +125,6 @@
         "npm:@upstash/context7-mcp" = "latest";
         "npm:@dbx-app/cli" = "latest";
         "npm:@dbx-app/mcp-server" = "latest";
-        "npm:zread_cli" = "latest";
         "npm:sfw" = "latest";
 
         # Python 工具链。
