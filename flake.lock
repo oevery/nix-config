@@ -3,16 +3,16 @@
     "brew-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1790006612,
-        "narHash": "sha256-7Rc3LKFvjgqXiMPtcpWAf6Qk7bEgi23bSRl35DfYohs=",
+        "lastModified": 1795051546,
+        "narHash": "sha256-8qp8StbMuOtXNqnfLa2ABjB+pIdHJBax5LJCs2eMhKQ=",
         "owner": "Homebrew",
         "repo": "brew",
-        "rev": "570982948a8a194f0f42f43f4a5bce2d1c9f64cb",
+        "rev": "3e47189a707c739ee1278a28a3b845f5834574e6",
         "type": "github"
       },
       "original": {
         "owner": "Homebrew",
-        "ref": "7.0.6",
+        "ref": "7.0.15",
         "repo": "brew",
         "type": "github"
       }
@@ -20,10 +20,10 @@
     "brewforge-chinese": {
       "flake": false,
       "locked": {
-        "lastModified": 1795022697,
-        "narHash": "sha256-ZXSwBI5f0M6KbT+mi0Ve9INDcouzQ5S+IJQcsOQ7hgg=",
+        "lastModified": 1795302924,
+        "narHash": "sha256-2btIWVpJdPpgFMqUd5dpNtp2P/T50uEIP09hYaiD5iw=",
         "ref": "refs/heads/main",
-        "rev": "fa700f74dde867b1d835a0cefab4b91bafc083cc",
+        "rev": "0dcf707e320973631fb4fd002f57129175ae1d36",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/Brewforge/homebrew-chinese.git"
@@ -41,10 +41,10 @@
         ]
       },
       "locked": {
-        "lastModified": 1794943722,
-        "narHash": "sha256-Qkh6uNyMsic61gfyOO8VXnC+HEBdti6Xe2kKiMf66O0=",
+        "lastModified": 1795325060,
+        "narHash": "sha256-XYoMPsqRFZ6jOaYI1KAAu8fzqif4tkCX8mhEKrViDXQ=",
         "ref": "release-26.05",
-        "rev": "5643e73425b85ac359ba2aaf83deae8ce1cd7968",
+        "rev": "6480d7d8533b88c78cc6dcda395ab89cd546e450",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/nix-community/home-manager.git"
@@ -59,10 +59,10 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1795130438,
-        "narHash": "sha256-auNIeMoXPNygWRxKhCFTSlps4pYRLZ5is3BvjIW8zzE=",
+        "lastModified": 1795388070,
+        "narHash": "sha256-OStqfSClujl4O/zZmvwKX9xX4B30o8EYHFz4pUHJOwU=",
         "ref": "refs/heads/main",
-        "rev": "31380a256a250a16402e6fb9a0b1f408cf2cf068",
+        "rev": "f3c25b6446698e13deb7f5be9a289dd7fac216dc",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-cask.git"
@@ -76,10 +76,10 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1795134271,
-        "narHash": "sha256-q7TZR+1zJmcE+6qL7WRB7vKmoBk17sxBdUnXb8UTotI=",
+        "lastModified": 1795394161,
+        "narHash": "sha256-N3TEHDJ9E1cOyjx86EUAgTL9KHUX+83F0bZQd6k/iB4=",
         "ref": "refs/heads/main",
-        "rev": "1985de828309fb51c176f1faf5aaf83e72eadae8",
+        "rev": "5033b36ccf67b6dfc6df725ecacdd6c699bdebe0",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-core.git"
@@ -153,10 +153,10 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1795031880,
-        "narHash": "sha256-Obi0Kr71SBfU9aaDxSncVRT4wYTjLzjMyCmmuC2XGd0=",
+        "lastModified": 1795258312,
+        "narHash": "sha256-IEuDsf80ubivfpidbRsIm30HVo7PZIdZt1stRsbaY4Y=",
         "ref": "nixos-26.05",
-        "rev": "3457b69ac4aba6d9ea9a743370af160fb502db29",
+        "rev": "94c3211b0ee8ba969a3f12eb4aff8ba0f72971dd",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/NixOS/nixpkgs.git"
@@ -170,10 +170,10 @@
     },
     "nixpkgs-darwin": {
       "locked": {
-        "lastModified": 1795069713,
-        "narHash": "sha256-AmPdTru89Bg2Ajs0xigU3In6e8Np753uVKGlU3bkF8E=",
+        "lastModified": 1795387764,
+        "narHash": "sha256-c2VS34FJxgjfNbfKgh837LzPzx9S2FXTez+Th1iKDZ8=",
         "ref": "nixpkgs-26.05-darwin",
-        "rev": "31cff629c6323a1a6ab22977bc497cedae34a548",
+        "rev": "f0b41a99f28c34ffeaff61d4b419afff0516a923",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/NixOS/nixpkgs.git"
@@ -187,10 +187,10 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1794840529,
-        "narHash": "sha256-ySrWnmZB5UsZTYGHHnBjllT05O5iFjElCRS+mabtfP0=",
+        "lastModified": 1795249095,
+        "narHash": "sha256-8JDgyVvWUZg5m9hNlL8Ge9aT647ng3Ukc8NPMiKNTPQ=",
         "ref": "nixpkgs-unstable",
-        "rev": "e21fec321d73511849707a7585e4ea155ee4bf40",
+        "rev": "93a9ed0a866099a230ed5146a5bb7d16fd5c9b14",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/NixOS/nixpkgs.git"

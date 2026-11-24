@@ -16,7 +16,7 @@
     };
     # 显式锁定 Homebrew 执行引擎，避免新 tap DSL 超前于 nix-homebrew 的内置版本。
     brew-src = {
-      url = "github:Homebrew/brew/7.0.6";
+      url = "github:Homebrew/brew/7.0.15";
       flake = false;
     };
     nix-homebrew = {
