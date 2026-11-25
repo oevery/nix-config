@@ -1,39 +1,22 @@
 # Project Design: home-manager
 
 ## Purpose
-- 该仓库通过一个 Nix flake 统一管理多台主机的用户环境配置。
-- 主要服务同一用户在 Linux 与 macOS 之间保持一致的开发环境、Shell、工具链与主机差异化设置。
+用同一个 Nix flake 管理个人 Linux 与 macOS 主机的开发环境，在共享 Shell 和工具链的同时保留主机差异。
 
-## Scope
-- In scope:
-  - 维护 `homeConfigurations` 与 `darwinConfigurations` 两类输出。
-  - 用 `hosts/` 中的主机声明和 `modules/` 中的模块组合生成最终配置。
-  - 管理跨平台基础配置，以及 Linux、Darwin 各自的平台增量配置。
-  - 在 macOS 上通过 `nix-darwin` 管理系统层配置，并嵌入 Home Manager。
-- Out of scope:
-  - NixOS 系统配置管理。
-  - 安装步骤、日常命令速查、排障手册等操作文档。
-  - 与项目设计无关的软件清单说明或临时使用笔记。
+## Boundaries
+- 所有主机都提供 `homeConfigurations`；macOS 另提供 `darwinConfigurations`，由 nix-darwin 统一激活系统和嵌入的 Home Manager。
+- Linux 使用独立的 Home Manager，不接管 NixOS 或宿主操作系统。
+
+## Contracts
+- 主机通过 `lib.mkHost` 声明并在 `hosts/default.nix` 注册。`homeConfigurationName` 与 `darwinName` 是显式、非空、在各自输出集合内唯一的稳定名称，不依赖运行时 hostname。
+- 主机声明只组合 `lib.moduleRegistry` 中允许的模块组，不直接导入任意路径或实现模块逻辑。
+- [flake 输出](../../flake.nix)的 `checks` 按平台覆盖所有已注册主机的 Home Manager 激活包，并包含该平台的 Darwin 系统构建。求值、构建、激活是三个不同的结果。
+- Homebrew tap 源由 `nix-homebrew.taps` 统一声明，运行时不可改写，`homebrew.taps` 从中生成；tap 和单个 cask 的信任策略分别维护。`flake.lock` 锁定引擎与外部 tap 源，不是已安装应用或其用户数据的快照。
 
 ## Structure
-- `flake.nix` - 仓库装配入口，导入 `lib/` 与 `hosts/`，生成所有 flake outputs，并处理 Darwin 特有的系统层集成。
-- `lib/` - 规则与装配辅助层，提供 `moduleRegistry`、`mkAutoImports`、`mkHost` 等稳定基础设施。
-- `pkgs/` - 仓库自定义软件包，由需要它们的模块通过 `callPackage` 引入。
-- `hosts/` - 主机声明层，定义每台主机的 `system`、输出名、用户身份与模块组合；`hosts/default.nix` 是注册入口。
-- `modules/base/` - 跨平台模块实现，承载大多数公共 Home Manager 配置。
-- `modules/linux/` - Linux 专属模块实现，仅补充非 Darwin 平台差异。
-- `modules/darwin/` - macOS 专属模块实现，用户态配置位于 `core/`、`gui/`，系统态配置位于 `nix-darwin/`。
-- `home.nix` - 薄的公共 Home Manager 根模块，只保留全局基础项。
-- `docs/` - 操作说明与排障文档，不承载长期设计事实。
+- `flake.nix` 组合 `hosts/` 的声明与 `lib/` 的装配逻辑。`home.nix` 保持为薄入口；公共实现放在 `modules/base/`，`modules/linux/` 与 `modules/darwin/` 只负责平台差异。
+- 模块目录默认使用 `myLib.mkAutoImports` 聚合；Darwin 系统模块由 flake 显式装配，与 Darwin 用户态模块分开。仓库自定义包放在 `pkgs/`，由使用方通过 `callPackage` 引入。
 
 ## Constraints
-- `nixpkgs-unstable` 作为独立锁定的可选包源，仅按需显式引用个别工具，默认包集维持 26.05，不作为全局替换。`programs.mise.package` 使用它以获得更新的来源证明验证支持；`ast-grep` 使用它以获得新版结构导航、搜索与改写能力。
-- `mihomoctl` 共用配置更新逻辑；可变配置、订阅凭据和状态不写入 Nix store。启用 `enableMihomo` 的 macOS 主机由 nix-darwin 管理内核和 LaunchDaemon。Linux 暂不接入主机配置，`systemd` 后端仅保留在共享包中。
-- `homeConfigurations` 必须使用显式的 `homeConfigurationName`，`darwinConfigurations` 必须使用显式的 `darwinName`，且名称需非空、全局唯一。
-- `hosts/*.nix` 应保持为声明数据，模块实现放在 `modules/`，通用装配逻辑放在 `lib/`。
-- 主机可用的模块键只能来自 `lib.moduleRegistry`，避免在 host 文件中直接引入任意路径。
-- 模块分层遵循 `base/*` 负责跨平台、`linux/*` 与 `darwin/*` 负责平台增量的边界。
-- Linux 主机使用 `nixos-26.05` 包集；Darwin 主机及 `nix-darwin` 使用独立的 `nixpkgs-26.05-darwin` 包集，避免跨平台 channel 的二进制缓存覆盖差异。
-- 模块目录默认通过 `myLib.mkAutoImports` 聚合子模块；`modules/darwin/nix-darwin/` 中的系统模块由 flake 显式装配。
-- Homebrew tap 源由 `nix-homebrew.taps` 统一声明，`homebrew.taps` 从其生成；tap 与单个 cask 的信任策略分别维护。
-- 长期稳定的架构约定写入 `.rsp/specs/` 与 `.rsp/rules/`；操作说明保留在 `README.md` 或 `docs/`。
+- Linux 与 Darwin 使用各自的稳定 nixpkgs 输入，以匹配平台的二进制缓存；nix-darwin 跟随 Darwin 输入。`nixpkgs-unstable` 独立锁定，只供显式选择的软件使用，不替换默认包集。具体分支以 [flake inputs](../../flake.nix) 为准。
+- `mihomoctl` 的可变配置、订阅凭据和状态不写入 Nix store。启用 `enableMihomo` 的 macOS 主机由 nix-darwin 管理内核与 LaunchDaemon；共享包保留 systemd 后端，但 Linux 主机未启用该服务。

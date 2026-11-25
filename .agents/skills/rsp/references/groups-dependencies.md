@@ -1,0 +1,14 @@
+# Groups and dependencies
+
+Load this reference before creating, focusing, planning, or closing grouped or dependent work.
+Use the same selected CLI throughout; `rsp` below denotes that invocation, not a request to fetch or install a package.
+
+- Use the [shared work model](work-model.md) for Group and child identities when those definitions are missing from the current context.
+- Use a Change Group only for at least two independently acceptable/deliverable Changes with dependencies or an integration obligation. Create it with `rsp group create <group> [goal]`, replace placeholders, and declare each direct child under `Slices` before creating it.
+- The Brief is not focusable. Read it before a selected child. Its declaration order guides navigation and its blockers are inherited as external blockers, not graph edges.
+- Group-level integration obligations belong in the Brief's `Completion Conditions`. Use a named `Integration:` condition for the durable boundary and record fresh integration evidence before marking it complete. A boundary supplied only by the current request is transient and cannot complete Group closeout until it is written back.
+- Declare an exact prerequisite only as `- requires \`<change-work-ref>\`: <reason>` under the dependent Change's `Blockers`. Targets must be executable Changes.
+- Use plain `rsp status` for the default semantic view and `rsp status --json` when exact dependency fields are needed. In the default JSON projection, `plan.nodes`, `plan.edges`, `plan.blocked`, and `plan.waves` are authoritative; the first non-empty wave is the current ready work. Each edge means “change requires prerequisite”; filtered plans retain transitive prerequisite context.
+- Do not infer nested ownership from the human dependency forest, create a parallel graph, or copy live delivery state into a Group Brief. Archived prerequisites resolve without rewriting dependents; incomplete inspection fails closed.
+- Archive children independently. Close the brief with `rsp group close <group>` only after every direct child and group completion gate passes.
+- Closed Group recovery never reuses its identity through `rsp group create` and never cascades into children or dependents. Core's direct reopen-recovery procedure owns the lifecycle sequence and exact retained-archive selection.

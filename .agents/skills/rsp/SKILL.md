@@ -1,139 +1,81 @@
 ---
 name: rsp
-description: Use this skill when initializing RSP, operating an existing .rsp project, auditing or repairing .rsp state, or deciding whether a change needs durable updates before archive.
-compatibility:
-  agents:
-    - any agent that supports the Agent Skills format
-  requirements:
-    - Node.js 18+
-    - local filesystem read/write access
-    - shell access for `rsp` or `npx -y @oevery/rsp`
-  optional_requirements:
-    - network access for first-run `npx` installation or skill refresh
+description: Coordinate authorized direct, Change or Group work; select capabilities and accept results while executors load their methods. Retain recovery and evidence and prepare delivery without treating completion as closure.
+license: MIT
 metadata:
   author: oevery
-  version: 2.0.3
+  version: "2026.11.06.1"
 ---
 
-# RSP Skill
+# RSP Core
 
-Load this skill when you need to initialize RSP, operate `.rsp/`, audit or repair RSP state, or make a durable-update decision before archive.
+Carry the authorized request through execution, applicable evidence and needed knowledge updates. Core owns the goal, boundary, capability selection, cross-capability decisions and result acceptance. Capabilities own their methods and may be invoked directly. Skills are the only workflow. A missing or unusable required Skill stops dependent work; report the incomplete installation without reading retired Rules or installing implicitly.
 
-This skill operationalizes `.rsp/rules/rsp-rules.md`; it does not replace that canonical rules source.
+## Select the work and responsibility
 
-Prefer exact file paths, exact commands, and exact durable facts over vague summaries.
+Before mutation, read nearest instructions and relevant CONTEXT; establish intent, authority and the existing owner from evidence. Use known paths and discover missing context as needed. An explicit WorkRef wins; multiple focus markers alone do not block work. Preserve dirty work and its owner. Before switching owners, check overlapping product and knowledge paths; overlap transfers no authority.
 
-## When to use
+- **Direct:** a local, explicit modification with a clear result and verification boundary. Interface changes, multiple files, strict checks or repeated execution alone require no Change or tracking preflight.
+- **Change:** one delivery/acceptance boundary whose implementation needs a shared record of related behavior, responsibility, compatibility or acceptance decisions. Actual staged delivery, handoff or deferred obligations can also require this record. It need not span sessions or split into independently deliverable parts. Read its six sections and relevant Specs; Focus is only a sparse recovery pointer.
+- **Group:** independently acceptable/deliverable child Changes with dependencies or integration obligations. Read the Brief then select a child; the Brief is not executable work. File count, complexity and agent count alone do not create a Group.
 
-- Use for RSP setup, repair, focused RSP work, and pre-archive durable decisions.
-- Use when a user explicitly asks to adopt, inspect, or operate the RSP workflow.
+Read-only advice, diagnosis and review create no implementation Change. Establish actual impact before selecting new work; reconsider when authorized scope materially expands, not for routine corrections or failed checks. Continue a matching existing owner only for the same outcome or remaining obligations; shared files or modules alone establish no ownership. A short plan or design discussion alone requires no Change. Preserve explicit user and project tracking requirements.
 
-## When not to use
+Load the [work model](references/work-model.md) when tracked identities are missing from context; required tracking cannot be bypassed by relabelling work Direct. Use rsp status for needed owner, dependency or recovery facts, and JSON for exact dependency data. Required dependency checks and fresh archive readiness still apply.
 
-- Do not load for general coding tasks unrelated to `.rsp/`.
-- Do not load when the repository does not use RSP and the user did not ask to adopt it.
-- Do not create an RSP change for a simple current-session task unless the user explicitly wants RSP tracking.
-- Do not use this skill as a substitute for reading `.rsp/rules/rsp-rules.md` during focused RSP work.
+Use the CLI invocation selected by the project AGENTS entry; `rsp` in these Skills denotes that selection. Resolve needed settings through the selected CLI's successful `rsp config --json` summary. Reuse it until relevant drift or recovery; raw YAML is diagnostic only. Projection failure blocks choices depending on unknown settings, while independent authorized work continues.
 
-## Workflows
+Select capabilities from their descriptions and the task contract. Executors reuse applicable entrypoint and method text already in context, load missing or changed instructions, and inspect sources; Core consults method details when needed for its own work or a concrete coordination question. Select the responsibility needed now:
 
-### Setup or repair
+- rsp-shape: bounded read-only design or authorized planning; reopen planning only for material unresolved choices.
+- rsp-implement: diagnosis, authorized implementation or accepted-finding correction, including ordinary own checks.
+- rsp-doc: substantive document/Skill writing, needed knowledge writeback and final Change reconciliation.
+- rsp-verify: a requested declared-evidence result or a separately required verification obligation; ordinary implementation checks stay with Implement.
+- rsp-review: fixed-scope read-only judgment or explicitly bounded structural discovery. Supporting checks remain within that review.
+- rsp-commit: separately authorized exact local delivery; required for Git execution, with no Core substitute if unavailable.
 
-1. Initialize with `npx -y @oevery/rsp init [--agents-mode managed|print] [--with-project-setup]`.
-2. `--with-project-setup` creates and focuses `changes/project-setup.md`; otherwise create it with `npx -y @oevery/rsp create project-setup` only when explicit bootstrap tracking is still needed.
-3. Fill the bootstrap change if it exists, then write durable architecture facts to `.rsp/specs/design.md` and stable local workflow rules to `.rsp/rules/project-rules.md` only when they are long-lived.
-4. For diagnostics, run `npx -y @oevery/rsp doctor`.
-5. For safe deterministic repairs, run `npx -y @oevery/rsp doctor --fix` or `npx -y @oevery/rsp update`.
-6. When auditing manually, verify `.rsp/` exists, `AGENTS.md` has the managed block, `specs/design.md` exists, generated indexes are intact, and `focus.d/` markers match `changes/` files.
-7. Treat `doctor --fix` `fixed` entries as actual filesystem changes. An empty `fixed` array or `No safe fixes needed.` means the repair pass changed nothing.
-8. Do not use repair commands for semantic decisions such as stale focus removal, durable updates, or archive readiness.
+Continue authorized same-scope work without another continuation request. A phase, role or method change alone requires no tool call, worker, review or test run. Required review, independent execution and protected operations still apply. For ownerless release checks, establish the exact candidate, check contract and effects authority, plus a baseline for any comparison; invent no Change or Verify owner.
 
-### Focused work
+## Execute and reconcile evidence
 
-1. Follow the read order in `.rsp/rules/rsp-rules.md`.
-2. Treat only `focus.d/` markers as current RSP work; do not treat unfocused files in `changes/` as current work unless the user explicitly asks or you run `npx -y @oevery/rsp focus <name>`.
-3. Read the focused change before editing code.
-4. If a focused change is missing an explicit `kind`, repair the frontmatter before continuing.
-5. Run `npx -y @oevery/rsp check --focused` before treating focused work as ready; resolve placeholder or clarification warnings when they represent real unfinished content.
-6. Treat `rsp check` warnings as deterministic hygiene signals, not as the durable-update decision.
-7. Use `npx -y @oevery/rsp create <name> --lite` only when the user explicitly wants RSP tracking for a small, straightforward change.
-8. Convert actionable `## Tasks` checkboxes into your agent-local task tracker when one is available.
-9. Keep implementation sequential by default; parallelize only independent read-only discovery or mechanical checks.
-10. Update `## Tasks`, `## Verify`, and any invalidated `## Proposal`, `## Spec`, or `## Design` content in the same working session as implementation facts change.
-11. Keep temporary debugging notes, task history, and command transcripts out of `specs/` and `rules/`.
+Implement owns ordinary self-checks. Main-agent inspection can assess results, but an implementation participant cannot certify required independent review. Select extra Verify/Review only when requested, required or supported by concrete risk, not per task or per worker automatically.
 
-### Pre-archive durable decision
+Reuse traceable observations, checks and reviews while their target, acceptance boundary and relevant inputs still apply. Changed code, dependencies, configuration, tools or environment invalidate affected evidence; role changes and delivery-scope confirmation alone do not. Include excluded worktree inputs when assessing a staged slice, and recognize behavior changes in normative Specs or executable Skills even when stored as Markdown.
 
-1. Run `npx -y @oevery/rsp check --focused` for focused work, or `npx -y @oevery/rsp check` when reviewing all open changes.
-2. Run `npx -y @oevery/rsp show --focused --json` or `npx -y @oevery/rsp ready <name> --json` to collect readiness, warnings, context paths, and `durableReview` guidance.
-3. Treat `durableReview.candidateTargets` as advisory context for likely writable durable files, not as permission to edit generated indexes or bundled core rules.
-4. Treat `Spec` delta markers (`### ADDED`, `### MODIFIED`, `### REMOVED`) as planning aids only; do not merge them automatically.
-5. Read only the current change plus relevant `specs/`, `rules/`, and code files needed for the semantic decision.
-6. Produce the durable decision output before archiving.
+Check paths, diff, outcomes, omissions and evidence applicability. Reuse executor checks when applicable. Independent semantic review may use implementer test evidence; required independent execution must run. Preserve original evidence and verdicts with their existing owner; apply the current work record rules to Change summaries. Add no evidence ledger.
 
-## Durable decision
+For required correction/re-review, load [review convergence](references/coordination-review.md). Batch compatible findings into one correction, run covering checks, then review finding resolution and new risks in the correction. Stop for changed scope/authority, unsafe replay, missing required capability, non-convergence or no new discriminating evidence. Required failures remain incomplete.
 
-Return exactly one decision:
+Dependent writes require successful prerequisites; observe each required result rather than relying on a batch's final exit status. Recover tool failures within unchanged authority, inspecting uncertain effects before safe replay. Named checks and Commit's one-attempt rule remain binding.
 
-- `No durable update needed`
-- `Update existing spec or rule`
-- `Create a new durable spec` only when the knowledge is project-level, reusable, and does not fit `specs/design.md`, an existing spec, or a rule file
+## Coordinate only when needed and allowed
 
-Prefer `No durable update needed` when no concrete stable fact is worth rereading in future sessions.
+Work shape does not choose agent topology. Automatic delegation defaults off. An explicit worker request or binding independent-worker requirement permits that bounded dispatch; otherwise resolve workflow.delegation before automatic delegation. When auto is enabled, the user or main agent chooses zero, one or multiple execution workers. RSP has no worker-count tiers or maximum; host constraints still apply.
 
-Write a durable update only when one of these is true:
+Load [worker coordination](references/coordination.md) for actual dispatch, dependencies/shared-resource arbitration or required independent workers. Keep tightly coupled work local; never simulate missing worker identity or independence. Workers do not delegate further by default. Main retains integration and result acceptance; child passes do not establish integration coverage.
 
-- the change altered stable system behavior
-- the change changed a project boundary, default, or constraint
-- future agents or developers would likely make mistakes without the fact
-- the fact is worth rereading in later sessions as durable project knowledge
+Load [interruption recovery](references/coordination-recovery.md) for pause/resume or unsettled host effects, and [focus continuation](references/focus-continuation.md) for a recovery snapshot. Cross-session continuation refreshes current authority, owner, applicable status, Git index, dirty paths, evidence applicability and replay safety. Cancelling a wait does not stop workers or release resources.
 
-Choose the smallest correct target:
+## Maintain records and prepare delivery
 
-- project-wide design, boundaries, defaults, and durable context -> `.rsp/specs/design.md`
-- stable local workflow or validation rules -> `.rsp/rules/project-rules.md`
-- another durable rule set -> `.rsp/rules/<name>.md`
-- an additional reusable project-level spec -> `.rsp/specs/<name>.md`
+For tracked work, apply the [current work record rules](references/work-model.md#current-work-records) during execution. Load them only when absent from context. Update affected Tasks/Verify directly when scope, contract, design and knowledge remain accurate; do not append attempts or postpone current-state corrections until archive. Use the same work model for Blockers syntax. Passing checks or recovery alone adds no whole-document rewrite. Focus supplies only missing recovery context, never acceptance or authority.
 
-Do not choose generated indexes or bundled `rules/rsp-rules.md` as ordinary durable writeback targets unless the task explicitly changes RSP itself.
+Ordinary completion and checkpoint commits leave Change open. Before a tracked commit, inspect actual remaining Tasks: incomplete work selects a checkpoint; all Tasks complete selects [delivery closeout](references/closeout.md), even with missing or failed verification. Reuse an explicit applicable checkpoint or closure choice without asking again. Also load closeout for established final delivery or an explicit close request. workflow.closeout is ask (default), auto or manual; no setting grants Git, push, publication, deployment, approval or human acceptance authority.
 
-Prefer `.rsp/specs/design.md` or an existing durable file before creating a new spec file.
+For necessary stable-knowledge updates, load [durable writeback](references/durable-review.md) to establish facts, update their owners and reconcile affected records. Final delivery or closure additionally requires whole-Change convergence and consistency checks. Reuse applicable evidence and fill missing or invalidated coverage and separately required review. Already-accurate records need no edit; current readiness is a lifecycle observation, not semantic acceptance.
 
-Write stable facts, not narrative history, task-by-task notes, temporary debugging history, or archive-only detail. If you cannot identify concrete durable facts, do not invent them.
+Operate command-owned state through RSP commands. Persist only open and archived; derive readiness and routing. A complete Task list never closes work. Reopen is exceptional recovery requiring explicit authority: load [reopen recovery](references/reopen-recovery.md) only when actually needed.
 
-## Output template
+Other conditional procedures:
 
-Use this exact format:
+- [Architecture knowledge](references/architecture.md) when coordinating work on modeled structure or responsibilities.
+- [Setup and repair](references/setup-repair.md) before initialization, managed-asset inspection, upgrade or repair.
+- [Groups and dependencies](references/groups-dependencies.md) for grouped work.
+- [Context migration](references/context-migration.md) when a root/relevant legacy CONTEXT-MAP.md is found or migration requested; preserve context, discovery alone grants no migration.
+- [Conflict handling](references/conflict-handling.md) for an intersecting Git operation.
 
-```md
-## Durable Decision
-- Decision: <No durable update needed | Update existing spec or rule | Create a new durable spec>
-- Target: <path or N/A>
-- Why:
-  - <reason>
-- Facts to write:
-  - <durable fact>
-- Archive ready: <yes | no>
-```
+## Return the result
 
-Short example:
+Follow explicit response language, personal instructions, then conversation language. Existing artifacts retain their language; new artifacts follow explicit instruction, effective project settings, scoped instructions, then conversation language. Keep identifiers and machine values exact; load [language details](references/response-language.md) only for contested choices.
 
-```md
-## Durable Decision
-- Decision: Update existing spec or rule
-- Target: .rsp/specs/design.md
-- Why:
-  - The change introduced a stable default that future agents must follow.
-- Facts to write:
-  - Default API retries are capped at 3 attempts.
-- Archive ready: no
-```
-
-Rules for the output:
-
-- `Target` must be a concrete file path when the decision is not `No durable update needed`.
-- `Facts to write` must contain durable facts, not task history or debugging notes.
-- If real blockers remain or a required durable update is not yet written, `Archive ready` must be `no`.
-- If no durable update is missing and remaining verify risk is consciously accepted, `Archive ready` may be `yes`.
-- Do not use CLI warning text as a substitute for semantic durable-update judgment.
-- CLI `archiveReady: judgment` means the skill or a human must decide; it is not automatic approval.
+Report the outcome, decisive evidence, material limits and needed next action. Distinguish observed effects, checks, review and acceptance; unverified claims stay unverified. Missing Required evidence blocks only dependent completion. No mandatory phase receipts or repeated logs. Load [control outcome](references/control-outcome.md) only for a consumer needing its technical rendering. For unfinished work retain only the owner, authority, evidence, blocker and safe continuation needed by the next actor.

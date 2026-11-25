@@ -1,0 +1,67 @@
+---
+name: rsp-verify
+description: Collect and report one selected RSP WorkOwner's declared check evidence, including separately required independent verification. Read-only; fixed-scope semantic judgment belongs to Review even when it includes checks.
+license: MIT
+metadata:
+  author: oevery
+  version: "2026.10.27.1"
+---
+
+# RSP Verify
+
+For tracked work, read the [shared work model](../rsp/references/work-model.md) when its identity and ownership definitions are missing from the current context. Use logical WorkRefs in commands and reports; cite file locations separately. Direct invocation needs no prior Core execution.
+
+Collect declared-check evidence for one existing RSP WorkOwner when requested or separately required. Return one bounded read-only result. Review may run supporting checks without invoking Verify. Honor combined requests and required independent evidence; this Skill supplies no host independence. Verify is a Discipline for evidence collection, not routing, control, lifecycle, semantic review or Git delivery.
+
+## Require a declared boundary
+
+Require one selected WorkOwner, current target, declared check contract and execution authority. A comparison needs its comparison baseline; a current-target check does not need an old revision. An explicit reference wins; otherwise resolve one FocusSet candidate from user intent and status. Multiple markers are valid.
+
+- **Change:** use its WorkRef and its `Verify` section for the declared boundary.
+- **Group:** use its Group reference and named `Integration:` condition in the Brief's `Completion Conditions`; child evidence stays with each child WorkRef. An explicit request may supply an in-progress temporary boundary, which must be written back before Group closeout.
+
+Stop for ambiguous owner, target, required evidence or environment, a missing required comparison baseline, or a Group without a named boundary for the requested verification.
+
+Read nearest instructions, selected Change/Brief, relevant contracts, blockers and the smallest production path needed to understand the check. Inspect the diff when the check concerns a change. This package needs no installed Core Skill. Do not invent checks from generic testability or replace an unexplained failure with a guessed assertion; return that symptom for read-only diagnosis.
+
+## Preserve read-only authority
+
+Do not edit product files, Changes, Specs, Decisions, focus markers, archives, configuration, or Git state. Do not start publication, deployment, approval, or human-acceptance actions. Running a declared local test, build, typecheck, lint, browser check, or other environment check is evidence collection only and retains the authority required by that command.
+
+Use the caller's result contract when supplied, otherwise the direct result below. Core owns response coordination, dispatch, result validation, acceptance and closeout; Verify supplies evidence, never worker identity/isolation, `review-clean` or `archiveReady`. Identity and independence require host observations.
+
+## Collect the declared evidence
+
+Bind evidence to the declared target. For comparison or reuse, establish the earlier target and relevant inputs. Reuse traceable passes while their tested scope and relevant content, dependencies, configuration, tools, inputs and environment still apply. Run missing, failed or invalidated named checks and any explicitly required execution, current-environment observations or independent execution. Corrections and integration need fresh evidence for affected inputs or an enlarged boundary; a phase change alone requires no rerun.
+
+Create no backup, snapshot or digest merely to identify a routine check. Use them only for an actual recovery requirement or independent identity/integrity consumer. Exact Git delivery, trusted external digests and required recovery safeguards retain their own contracts.
+
+Compare each check's actual targets, inputs, coverage and completion with its declaration. Retain commands, scope, sources and results; distinguish reused evidence from new execution. Invocation errors or incomplete observations alone prove no product defect; exit status alone establishes no acceptance.
+
+For a tool-only obstacle, diagnose read-only and inspect actual effects before continuing:
+
+- Change a permitted collection method only with unchanged goal, owner, scope, baseline, authority and required evidence, and demonstrably safe replay.
+- Run a named mandatory command/check as required; substitutes supply no pass.
+- Do not repair product/workflow state, manually replace command-owned RSP operations, replay one-shot work or continue with unknown mutation effects.
+
+## Return one bounded result
+
+Return exactly one canonical result from the collected evidence, with observed failure taking precedence over unavailable coverage:
+
+- `fail`: at least one named required check has observed failure, even when another check is unavailable.
+- `unavailable`: no named required check has observed failure, but a required tool, dependency, service, credential, or environment could not be used.
+- `pass`: every named required check passed within the declared boundary.
+
+Report each check's outcome, including missing or unexecuted checks. Aggregation changes neither coverage nor stop conditions. Failure does not imply complete coverage; unavailable evidence does not erase observed failures.
+
+Report the WorkOwner and applicable WorkRef or Group `Integration:` condition, target, named checks and outcomes, decisive evidence, omissions and any changed boundary. Distinguish reused from new execution; include a comparison baseline only for a comparative claim or reused evidence. Add machine fields only for an actual consumer or explicitly required schema, preserving its exact values. Do not repeat logs. Human-facing narration follows explicit user instruction, then personal instructions, then conversation language.
+
+`pass` proves only declared checks, not semantic review, writeback, archive/commit eligibility, publication, deployment, approval or human acceptance. It grants no lifecycle, Git, external or acceptance authority.
+
+Long-running verification remains active while its boundary and stop conditions hold. Elapsed time, heartbeat, polling and progress messages do not change the result.
+
+## Stop and return
+
+Stop the affected verification if required evidence cannot be collected or observed, the required environment is unavailable, or the declared boundary changes. Use the caller's canonical stop reason only when supplied. For direct invocation, identify the missing input or changed boundary and the required next action; do not invent a completed verification result before the declared boundary is established.
+
+On cancellation, wait until the command or owned process is observed stopped before beginning conflicting work. Return the result, decisive evidence, omissions and next action to the caller or user. Retry only with new evidence and safe replay inside the declared boundary.

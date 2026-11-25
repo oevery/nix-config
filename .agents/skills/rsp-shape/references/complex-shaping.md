@@ -1,0 +1,32 @@
+# Complex shaping
+
+Read for authorized planning with multiple material decisions or independently acceptable outcomes with dependencies/integration. This method does not select agent topology.
+
+Use existing planning authority for clear in-scope discovery. Keep cohesive corrections in the Change. Use a separate Change for an independently closable result, or a shallow Group when at least two results have dependencies or integration obligations. Return the ready owner without another authorization round. Configuration grants no planning/product authority. Changes to behavior, acceptance, interfaces, scope, mutation authority or external action need an owner decision.
+
+## Close material decisions
+
+List unresolved owner decisions by implementation impact. Ask one to three related questions, write authorized answers into their owning Change sections, and reapply the Shape Ready gate. Repeat only while another material decision remains. If one cannot be settled, keep it in `Blockers` and return it as the next owner decision.
+
+Use an installed interview or grilling capability only when the work boundary is known, the remaining choice is high-risk, and the user selects deeper exploration. Consume its settled decisions afterward; it owns no RSP state.
+
+## Choose a complex owner
+
+Keep cohesive work in one Change only when it delivers one observable outcome and its tasks must converge across the same consistency, focused-verification, review, archive, and rollback boundary. A shared file, module, deadline, or integration check does not establish that cohesion by itself.
+
+Use a shallow Group when at least two observable outcomes can be independently implemented, focused, verified, reviewed, archived, and rolled back. Preserve those outcomes as direct child Changes even when they share one broad integration, release, or acceptance gate. The Brief owns that aggregate gate plus the shared goal, constraints, slices, completion, and durable outcomes. Child Changes own their outcome, implementation tasks, focused verification, lifecycle, and exact `requires` edges. Group completion gates closing the Brief; it does not prevent a child from archiving unless that child declares the dependency.
+
+Use an Overall Delivery Change when independently closable semantic owners converge on terminal versioning, packaging, migration, authorization, or publication. It remains an ordinary six-section Change:
+
+- Proposal, Spec, and Design name the terminal outcome, upstream owners, aggregate completion contract, and static ownership map;
+- Tasks and Verify contain only terminal delivery operations;
+- references point to upstream outcomes without copying their tasks, checks, progress, or live status;
+- exact prerequisites remain ordinary Change `Blockers`.
+
+A permission needed only for a later external task belongs in that task and its constraints. Promote it to an active `Blocker` only when it prevents the next executable work; do not block versioning, packaging, or other authorized preparation prematurely.
+
+Do not add a nested Group, delivery-map file, phase entity, or persisted wave plan. If one existing Change or Group already owns the complete outcome, return that owner unchanged.
+
+## Completion criterion
+
+Finish complex shaping when the smallest sufficient owner is selected, every direct slice or upstream owner has one clear boundary, dependencies live only in child or terminal Change `Blockers`, no live state is duplicated, and every executable Change passes the ordinary Shape Ready gate.

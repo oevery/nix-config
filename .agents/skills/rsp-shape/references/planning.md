@@ -1,0 +1,42 @@
+# Authorized planning and readiness
+
+Load only for authorized planning-artifact work, before choosing or naming an owner, creating/refining a Change or Group, or updating the selected Change Design. Advice alone grants no artifact mutation.
+
+## Choose and name the owner
+
+For a new WorkRef, canonically normalize a valid user-supplied identity. Otherwise follow the nearest explicit project/domain naming convention; absent both, infer ASCII lowercase kebab-case from stable domain or technical terms. Artifact, commit, response, host locale and TUI language settings do not select or translate WorkRefs. Explicit input or project/domain conventions may use safe Unicode. Language or naming changes never rename existing open or archived identities.
+
+Prefer one ordinary Change only for one observable outcome sharing a consistency, focused-verification, review, archive, and rollback boundary. Change granularity does not prescribe Git commit count; never split or merge Changes merely to enforce a Change-to-commit mapping. Use a shallow Group for independently acceptable/deliverable outcomes with dependencies or integration obligations; complexity and worker count alone do not justify it; an integration gate never merges them. A shared completion contract gates Group closure, not child archive unless declared there. Keep Brief `Slices`, child `Blockers`, and derived readiness. Add no hierarchy.
+
+## Write one outcome
+
+Keep one observable outcome per Change:
+
+- `Proposal`: outcome, scope, non-goals;
+- `Spec`: settled contract delta and acceptance, referencing affected existing Specs rather than copying the baseline or inventing public promises;
+- `Design`: approach, responsibility boundaries, and necessary tradeoffs, not repeated requirements or tasks;
+- `Tasks`: current checkable work, with prescribed order only where correctness, safety, or migration requires it;
+- `Verify`: settled acceptance evidence under the current work record rules below; do not introduce new public requirements;
+- `Blockers`: dependencies and decisions, or `none`.
+
+Keep the six sections; small changes need only proportionate content. Plain-prose HTML scaffold hints may remain or be removed; they guide writing, never supply requirements, evidence, or completed content. Resolve body placeholders and keep all material decisions visible outside comments.
+
+Plan a test only when it protects observable behavior or a real boundary, adds distinct future confidence, avoids duplicate or implementation-detail coverage, and costs proportionately. Otherwise prefer smallest sufficient evidence and keep probes temporary.
+
+Apply the [current work record rules](../../rsp/references/work-model.md#current-work-records) when shaping or revising tasks and verification; load them when absent from context. Replace obsolete plans within settled authority, keeping unmet obligations visible. A Change records current intent and progress during work, then the delivered result at closeout. Necessary stable knowledge stays with its owner; Focus only supplements missing recovery context.
+
+Use domain language. Mention agents only as real product actors or constraints, not authors or execution narrators.
+
+## Apply the Shape Ready gate
+
+A Change is ready only when:
+
+- outcome, non-goals, and acceptance are concrete;
+- product and mutation authority are settled;
+- affected boundaries and material constraints are known;
+- no hidden assumption can change implementation or acceptance;
+- Tasks are concrete enough for implementation to begin. Shaping does not execute them;
+- Verify proves the result without process chronology; Blockers are truthful;
+- one Change or a justified shallow Group is the smallest sufficient owner.
+
+After authorized planning mutation, run the focused RSP check. Readiness permits Core to continue only the already authorized objective; it grants no product, lifecycle, Git or external authority.
