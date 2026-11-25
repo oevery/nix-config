@@ -1,6 +1,6 @@
 # nix-config
 
-个人 Nix / Home Manager 配置仓库，用于统一管理多主机开发环境。
+这份配置管理三台主机：两台 Linux 使用独立的 Home Manager，一台 Mac 由 nix-darwin 同时管理系统和用户环境。第一次安装从下文开始；已安装的主机直接看[日常命令速查](docs/commands-cheatsheet.md)。
 
 ## 快速开始
 
@@ -27,21 +27,24 @@ cd ~/.config/home-manager
 
 ### 3. 首次应用
 
-Linux（Home Manager）：
+在仓库根目录执行对应平台的命令，重建工具和主机配置均使用本仓库的 `flake.lock`。
+
+**Linux（Home Manager）：** 若尚未启用 flakes，在 `/etc/nix/nix.conf` 中加入 `extra-experimental-features = nix-command flakes`。按机器选择 `oevery-homelab` 或 `oevery-desktop`：
 
 ```bash
-nix run github:nix-community/home-manager -- switch --flake .#<homeConfigurationName>
+host=oevery-homelab
+nix run ".#homeConfigurations.$host.config.programs.home-manager.package" -- switch --flake ".#$host"
 ```
 
-macOS（nix-darwin，需要 sudo）：
+**macOS（nix-darwin）：** 先以当前桌面用户登录 Mac App Store，激活时会从商店安装 Xcode 和 AndroMeld。下面的命令仅为本次调用启用 flakes，无需先修改 `/etc/nix/nix.conf`；首次激活成功后由 nix-darwin 管理该文件。
 
 ```bash
-sudo nix run nix-darwin#darwin-rebuild -- switch --flake .#oevery-mac
+sudo nix --extra-experimental-features 'nix-command flakes' run .#darwin-rebuild -- switch --flake .#oevery-mac
 ```
 
-### 4. 初始化 Rust 工具链
+### 4. 检查首装结果，按需安装 Rust
 
-Home Manager 安装 mise 并生成其配置；Rust 工具链由 mise 调用 rustup 管理，不在 Nix 激活阶段下载。Linux 首次应用配置后，新开终端并在本仓库目录运行：
+切换成功后新开终端，运行 `hc`。Linux 应输出一个 `.drv` 路径，Mac 应输出两个；这说明当前主机的配置能够求值。需要 Rust 时，在仓库目录运行：
 
 ```bash
 mise install rust
@@ -49,114 +52,38 @@ mise exec -- rustc --version
 mise exec -- cargo --version
 ```
 
-首次安装需要联网；mise 会在缺少用户 Rust 环境时初始化 rustup。已有的 `~/.cargo` 和 `~/.rustup` 保留，移除 Nix 的 rustup 声明不会删除它们。macOS 同样适用；已有工具链的机器无需为此次配置调整重新安装。
+Nix 安装 mise，但不在激活时下载 Rust。mise 首次安装 Rust 需要联网，已有的 `~/.cargo` 和 `~/.rustup` 保留。
 
 ## 日常使用
 
-常用 alias：
+Linux 在已加载本配置的交互式 Zsh 中用 `hms`；Bash 等其他 shell 使用[速查中的 `home-manager switch` 命令](docs/commands-cheatsheet.md#linux-home-manager)。Mac 用 `drs` 做日常维护，包括 Homebrew 升级和清理。`hms` 和 `drs` 都会先检查当前主机，不必手动再跑一次 `hc`。
 
-- Linux：`hms`
-- macOS：`drs`
-- macOS 调试：`drst`
+- 更新依赖、只验证不激活、管理 Mihomo 或清理旧代：见[命令速查](docs/commands-cheatsheet.md)。
+- Linux 多用户 Nix 的 daemon 设置：见 [Linux 配置参考](docs/linux-nix-conf.md)。Mac 对应设置在 [nix-darwin 系统模块](modules/darwin/nix-darwin/core.nix)。
+- macOS 提示应用“已损坏”：先按 [Quarantine 排障](docs/quarantine.md)检查来源和签名。
 
-切换前可先检查：
+### Git 本地身份
 
-```bash
-hc
-```
-
-`hc` 固定检查 `~/.config/home-manager` 中当前 host 对应的配置，不依赖工作目录：Linux 只求值当前 `homeConfigurationName`，macOS 同时求值当前 `homeConfigurationName` 和 `darwinName`。检查不构建、不修改 lock 文件。
-
-`hms` 仅在 Linux 提供；macOS 统一通过 `drs` / `drst` 激活系统及其集成的 Home Manager 配置。两种入口都会先运行当前主机检查。
-
-完整命令速查见 [docs/commands-cheatsheet.md](docs/commands-cheatsheet.md)。
-
-## 配置约定
-
-### Key 约定
-
-- `homeConfigurations` 使用显式的 `homeConfigurationName` 作为 key。
-- `darwinConfigurations` 使用稳定的 `darwinName` 作为 key，不依赖运行时 `hostname`。
-
-当前主机：
-
-- Linux homelab：`homeConfigurationName = "oevery-homelab"`
-- Linux 桌面：`homeConfigurationName = "oevery-desktop"`
-- macOS 配置：`homeConfigurationName = "oevery-mac"`，`darwinName = "oevery-mac"`
-
-### 平台配置
-
-- Linux（非 NixOS）：优先 `/etc/nix/nix.conf`
-- macOS（nix-darwin）：优先 `modules/darwin/nix-darwin/core.nix` 中的 `nix.settings`
-
-Linux `nix.conf` 参考模板见 [docs/linux-nix-conf.md](docs/linux-nix-conf.md)。
-
-### 软件管理策略
-
-- 优先用 Nix/Home Manager 管理 CLI 与开发环境。
-- macOS 下用 Homebrew 补充 GUI 或 Nix 不便安装的应用。
-
-### Git 本地扩展配置
-
-- 默认保留个人 Git 身份。
-- Home Manager 会额外生成 `~/.config/git/local.gitconfig` 与 `~/.config/git/work.gitconfig`。
-- 主 Git 配置只 include `~/.config/git/local.gitconfig`，再由这个本地文件继续声明默认的 `includeIf` 规则。
-- 默认会把 `~/Developer/work/` 下的仓库导向 `~/.config/git/work.gitconfig`，适合填写公司身份。
-- 这些文件只在 Git 运行时被 include，不参与 flake import。
-
-## 验证与排障
-
-跨平台求值检查（不构建、不修改 lock 文件）：
-
-```bash
-nix flake check --all-systems --no-build --no-write-lock-file
-```
-
-需要验证本机平台的实际构建时，运行 `nix flake check --no-write-lock-file`。
-
-快速验证输出：
-
-```bash
-nix eval --raw path:$PWD#homeConfigurations.<homeConfigurationName>.activationPackage.drvPath
-nix eval --raw path:$PWD#darwinConfigurations.oevery-mac.config.system.build.toplevel.drvPath
-```
-
-常见问题：
-
-- 找不到 Linux 主机配置：检查 `hosts/default.nix` 是否注册了对应的 `homeConfigurationName`。
-- Darwin 找不到目标：检查对应 `hosts/*.nix` 是否定义唯一 `darwinName`，并且已在 `hosts/default.nix` 注册。
-- `modules` 字段报错：`hosts/*.nix` 的 `modules` 只能使用仓库允许的模块键。
+默认使用主机声明的个人身份。需要工作身份时，编辑 `~/.config/git/work.gitconfig`；默认由 `~/.config/git/local.gitconfig` 的 `includeIf` 对 `~/Developer/work/` 下的仓库生效。激活只创建缺失的文件，不覆盖已有配置。可在目标仓库运行 `git config --show-origin --get user.email` 确认实际来源。
 
 ## 新增主机
 
-1. 在 `hosts/` 新建主机文件，使用 `mkHost` 定义数据。
-2. 在 `hosts/default.nix` 注册该主机。
-3. 为每台主机设置唯一的 `homeConfigurationName`。
-4. 若为 macOS，再设置唯一 `darwinName`。
-5. 使用 `nix flake check` 或求值命令验证配置。
-
-主机还需声明 `pinentryPackage`：无图形会话的 homelab 使用 `pinentry-curses`，Linux 桌面使用 `pinentry-gnome3`，macOS 使用 `pinentry_mac`。
+1. 以 [homelab](hosts/oevery-homelab.nix)、[Linux 桌面](hosts/oevery-desktop.nix)或 [Mac](hosts/oevery-mac.nix) 为范本，在 `hosts/` 用 `mkHost` 声明主机。选择匹配会话的 `pinentryPackage`：无图形会话用 `pinentry-curses`，GNOME 用 `pinentry-gnome3`，macOS 用 `pinentry_mac`。
+2. 在 [主机注册表](hosts/default.nix) 注册。`homeConfigurationName` 必须唯一；Mac 还需要唯一的 `darwinName`。`modules` 只接受[模块注册表](lib/default.nix)中的键。
+3. 将新主机文件加入 Git 跟踪后，按[验证命令](docs/commands-cheatsheet.md#core)先做全平台求值，再在目标平台构建。主机与模块的分工见[项目设计](.rsp/specs/design.md)。
 
 ### 生成 hosts gpgKey
 
-1. 没有 key 时先生成一个：
+需要默认签名且尚无密钥时，先生成签名密钥（`0` 表示不过期）；已有密钥则跳过此命令。
 
 ```bash
 gpg --quick-generate-key "Your Name <you@example.com>" ed25519 sign 0
 ```
 
-`0` 表示不过期。
-
-1. 查看私钥 Key ID：
+查看 Key ID，将输出写入主机声明的 `gpgKey`：
 
 ```bash
 gpg --list-secret-keys --keyid-format LONG --with-colons you@example.com | awk -F: '$1=="sec"{print $5}'
 ```
 
-1. 将输出的 Key ID 写入对应 `hosts/*.nix`：
-
-```nix
-gpgKey = "YOUR_KEY_ID";
-```
-
-1. 如果已有 key，直接执行第 2 步即可。
+不设置 `gpgKey` 时，该配置不会默认签名。

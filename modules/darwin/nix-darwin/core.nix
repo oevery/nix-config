@@ -26,7 +26,6 @@
       keep-outputs = false;
       keep-derivations = true;
       builders-use-substitutes = true;
-      accept-flake-config = true;
       connect-timeout = 10;
       fallback = true;
       max-jobs = "auto";

@@ -3,32 +3,32 @@
 ## Core
 
 ```bash
-# 更新依赖
-nix flake update --flake ~/.config/home-manager
+# 更新仓库锁定的依赖，不激活；只更新指定 input 可用 flu <input>
+flu
 
-# 当前 host 求值检查（固定仓库路径，可在任意目录运行）
+# 只求值当前主机，不构建、不写锁文件；不依赖当前目录
 hc
 
 # 全部平台求值检查（不构建、不修改 lock 文件）
 nix flake check --all-systems --no-build --no-write-lock-file ~/.config/home-manager
 
-# 当前平台构建检查
+# 构建当前平台的 checks，不激活；Linux 构建在 Linux 上运行
 nix flake check --no-write-lock-file ~/.config/home-manager
 ```
 
 ## Linux (Home Manager)
 
 ```bash
-# 推荐
+# 已加载本配置的交互式 Zsh
 hms
 
-# 原生命令
-home-manager switch --flake ~/.config/home-manager#<homeConfigurationName>
+# Bash 等其他 shell 使用原生命令；桌面主机换为 oevery-desktop
+home-manager switch --flake "$HOME/.config/home-manager#oevery-homelab"
 ```
 
 ## macOS (nix-darwin)
 
-macOS 的 Home Manager 由 nix-darwin 统一激活，不提供独立的 `hms` 命令。
+`drs` 先运行 `hc`，再统一激活系统和 Home Manager，不另跑 `hms`。切换也会按已锁定的 taps 升级软件；移出清单的 cask 会按 `zap` 规则清理，可能删除偏好文件。只想检查配置时用 `hc` 或 `nix flake check`，不要用 `drs`。
 
 ```bash
 # 推荐
@@ -37,11 +37,11 @@ drs
 # 调试
 drst
 
-# 更新并验证 Homebrew 最新稳定版（不激活系统）
+# 更新仓库锁定的 Homebrew 引擎并验证构建，不激活；不是升级已安装应用
 brewup
 
 # 原生命令
-sudo nix run nix-darwin#darwin-rebuild -- switch --flake ~/.config/home-manager#<darwinName>
+sudo nix run "$HOME/.config/home-manager#darwin-rebuild" -- switch --flake "$HOME/.config/home-manager#oevery-mac"
 ```
 
 ### Mihomo（macOS）
@@ -71,11 +71,11 @@ tail -F /Library/Logs/Mihomo/{stdout,stderr}.log
 ## Quick Eval
 
 ```bash
-# Home Manager 输出求值
-nix eval --raw path:$PWD#homeConfigurations.<homeConfigurationName>.activationPackage.drvPath
+# 从仓库根目录检查单个输出，不激活
+nix eval --raw --no-write-lock-file '.#homeConfigurations.oevery-homelab.activationPackage.drvPath'
 
 # Darwin 输出求值
-nix eval --raw path:$PWD#darwinConfigurations.oevery-mac.config.system.build.toplevel.drvPath
+nix eval --raw --no-write-lock-file '.#darwinConfigurations.oevery-mac.config.system.build.toplevel.drvPath'
 ```
 
 ## Garbage Collection

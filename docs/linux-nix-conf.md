@@ -1,9 +1,6 @@
 # Linux Nix Config Reference
 
-Linux（非 NixOS）下的 `/etc/nix/nix.conf` 参考配置。
-
-- macOS 若已接入 nix-darwin，优先维护 `modules/darwin/nix-darwin/core.nix` 中的 `nix.settings`。
-- 修改后重启 daemon 或重启系统。
+这是非 NixOS Linux 多用户安装的 **daemon** 配置示例，不是 `hms` 自动写入的文件。按需合并到 `/etc/nix/nix.conf`，保留安装器已有设置；修改后重启 `nix-daemon` 或系统。用户侧的 registry 和定时 GC 由 [Linux Home Manager 模块](../modules/linux/core/nix.nix)管理。
 
 ```nix
 build-users-group = nixbld
@@ -23,8 +20,8 @@ keep-outputs = false
 keep-derivations = true
 # 构建器可使用二进制缓存
 builders-use-substitutes = true
-# 允许 flake 中定义的缓存配置生效
-accept-flake-config = true
+# 保留默认值，不自动接受 flake 提议的配置
+accept-flake-config = false
 # 网络不稳定时更稳健
 connect-timeout = 10
 fallback = true
