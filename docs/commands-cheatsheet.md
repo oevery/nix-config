@@ -22,7 +22,7 @@ nix flake check --no-write-lock-file ~/.config/home-manager
 # 已加载本配置的交互式 Zsh
 hms
 
-# Bash 等其他 shell 使用原生命令；桌面主机换为 oevery-desktop
+# Bash 等其他 shell 使用原生命令
 home-manager switch --flake "$HOME/.config/home-manager#oevery-homelab"
 ```
 

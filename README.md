@@ -1,6 +1,6 @@
 # nix-config
 
-这份配置管理三台主机：两台 Linux 使用独立的 Home Manager，一台 Mac 由 nix-darwin 同时管理系统和用户环境。第一次安装从下文开始；已安装的主机直接看[日常命令速查](docs/commands-cheatsheet.md)。
+这份配置管理 Linux homelab 和 Mac：homelab 使用独立的 Home Manager，Mac 由 nix-darwin 同时管理系统和用户环境。第一次安装从下文开始；已安装的主机直接看[日常命令速查](docs/commands-cheatsheet.md)。
 
 ## 快速开始
 
@@ -29,11 +29,10 @@ cd ~/.config/home-manager
 
 在仓库根目录执行对应平台的命令，重建工具和主机配置均使用本仓库的 `flake.lock`。
 
-**Linux（Home Manager）：** 若尚未启用 flakes，在 `/etc/nix/nix.conf` 中加入 `extra-experimental-features = nix-command flakes`。按机器选择 `oevery-homelab` 或 `oevery-desktop`：
+**Linux homelab（Home Manager）：** 若尚未启用 flakes，在 `/etc/nix/nix.conf` 中加入 `extra-experimental-features = nix-command flakes`，然后运行：
 
 ```bash
-host=oevery-homelab
-nix run ".#homeConfigurations.$host.config.programs.home-manager.package" -- switch --flake ".#$host"
+nix run .#homeConfigurations.oevery-homelab.config.programs.home-manager.package -- switch --flake .#oevery-homelab
 ```
 
 **macOS（nix-darwin）：** 先以当前桌面用户登录 Mac App Store，激活时会从商店安装 Xcode 和 AndroMeld。下面的命令仅为本次调用启用 flakes，无需先修改 `/etc/nix/nix.conf`；首次激活成功后由 nix-darwin 管理该文件。
@@ -74,7 +73,7 @@ Git 默认使用主机声明的 `gitName` 和 `email`，无需解密密钥。需
 
 ## 新增主机
 
-1. 以 [homelab](hosts/oevery-homelab.nix)、[Linux 桌面](hosts/oevery-desktop.nix)或 [Mac](hosts/oevery-mac.nix) 为范本，在 `hosts/` 用 `mkHost` 声明主机。选择匹配会话的 `pinentryPackage`：无图形会话用 `pinentry-curses`，GNOME 用 `pinentry-gnome3`，macOS 用 `pinentry_mac`。
+1. 以 [homelab](hosts/oevery-homelab.nix) 或 [Mac](hosts/oevery-mac.nix) 为范本，在 `hosts/` 用 `mkHost` 声明主机。选择匹配会话的 `pinentryPackage`：无图形会话用 `pinentry-curses`，GNOME 用 `pinentry-gnome3`，macOS 用 `pinentry_mac`。
 2. 在 [主机注册表](hosts/default.nix) 注册。`homeConfigurationName` 必须唯一；Mac 还需要唯一的 `darwinName`。`modules` 只接受[模块注册表](lib/default.nix)中的键。
 3. 将新主机文件加入 Git 跟踪后，按[验证命令](docs/commands-cheatsheet.md#core)先做全平台求值，再在目标平台构建。主机与模块的分工见[项目设计](.rsp/specs/design.md)。
 
