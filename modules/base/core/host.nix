@@ -1,28 +1,36 @@
 {
+  config,
   host,
+  inputs,
   lib,
   pkgs,
   ...
 }:
 
 let
-  homeDirectory =
-    if pkgs.stdenv.isDarwin then "/Users/${host.username}" else "/home/${host.username}";
-  localGitConfigDir = "${homeDirectory}/.config/git";
-  localGitConfigPath = "~/.config/git/local.gitconfig";
-  workGitConfigPath = "~/.config/git/work.gitconfig";
-  workGitDirPattern = "gitdir:~/Developer/work/";
+  privateGit = host.enablePrivateGit or false;
 in
 {
+  imports = [ inputs.sops-nix.homeManagerModules.sops ];
   home.username = host.username;
-  home.homeDirectory = homeDirectory;
+  home.homeDirectory =
+    if pkgs.stdenv.isDarwin then "/Users/${host.username}" else "/home/${host.username}";
+
+  home.packages = lib.optionals privateGit [
+    pkgs.age
+    pkgs.sops
+  ];
+  sops = lib.mkIf privateGit {
+    age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
+    defaultSopsFile = ../../../secrets/git.yaml;
+    secrets."git/routing.inc".key = "routing";
+    secrets."git/profile-01.inc".key = "profile_01";
+  };
 
   programs.git = {
-    includes = [
-      {
-        path = localGitConfigPath;
-      }
-    ];
+    includes = lib.optional privateGit {
+      path = config.sops.secrets."git/routing.inc".path;
+    };
 
     settings = {
       user = {
@@ -36,29 +44,4 @@ in
       signByDefault = (host.gpgKey or null) != null;
     };
   };
-
-  home.activation.ensureLocalGitIncludes = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        mkdir -p "${localGitConfigDir}"
-        chmod 700 "${localGitConfigDir}"
-
-        if [ ! -e "${localGitConfigDir}/local.gitconfig" ]; then
-          cat > "${localGitConfigDir}/local.gitconfig" <<EOF
-    # Local Git include rules.
-
-    [includeIf "${workGitDirPattern}"]
-    	path = ${workGitConfigPath}
-    EOF
-          chmod 600 "${localGitConfigDir}/local.gitconfig"
-        fi
-
-        if [ ! -e "${localGitConfigDir}/work.gitconfig" ]; then
-          cat > "${localGitConfigDir}/work.gitconfig" <<'EOF'
-    # [user]
-    #   name = Your Work Name
-    #   email = you@company.com
-    EOF
-          chmod 600 "${localGitConfigDir}/work.gitconfig"
-        fi
-  '';
-
 }

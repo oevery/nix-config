@@ -10,6 +10,10 @@
       url = "git+https://github.com/nix-community/home-manager.git?ref=release-26.05&shallow=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "git+https://github.com/Mic92/sops-nix.git?ref=master&shallow=1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-darwin = {
       url = "git+https://github.com/nix-darwin/nix-darwin.git?ref=nix-darwin-26.05&shallow=1";
       inputs.nixpkgs.follows = "nixpkgs-darwin";

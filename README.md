@@ -62,9 +62,13 @@ Linux 在已加载本配置的交互式 Zsh 中用 `hms`；Bash 等其他 shell 
 - Linux 多用户 Nix 的 daemon 设置：见 [Linux 配置参考](docs/linux-nix-conf.md)。Mac 对应设置在 [nix-darwin 系统模块](modules/darwin/nix-darwin/core.nix)。
 - macOS 提示应用“已损坏”：先按 [Quarantine 排障](docs/quarantine.md)检查来源和签名。
 
-### Git 本地身份
+### Git 身份
 
-默认使用主机声明的个人身份。需要工作身份时，编辑 `~/.config/git/work.gitconfig`；默认由 `~/.config/git/local.gitconfig` 的 `includeIf` 对 `~/Developer/work/` 下的仓库生效。激活只创建缺失的文件，不覆盖已有配置。可在目标仓库运行 `git config --show-origin --get user.email` 确认实际来源。
+Git 默认使用主机声明的 `gitName` 和 `email`，无需解密密钥。需要按目录切换身份时，在主机声明中设置 `enablePrivateGit = true`。目录规则和对应身份保存在同一份 [SOPS 密文](secrets/git.yaml) 中，不写入明文 Nix 配置。
+
+- **准备密钥**：激活前，将已获授权的 age 私钥保存在 `~/.config/sops/age/keys.txt`，权限设为 `0600`。私钥在仓库外备份，并用备份验证密文可解。
+- **编辑配置**：在仓库根目录运行 `SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt" sops edit secrets/git.yaml`。`routing` 保存 Git 的 `includeIf` 规则，以相对路径 `profile-01.inc` 引用 `profile_01` 中的身份设置。修改后重新激活。
+- **验证身份**：在匹配和不匹配规则的仓库中分别运行 `git config --show-origin --get user.email`。前者应来自 `profile-01.inc`，后者应保留默认身份。若仓库另设了 `user.email`，它会覆盖上述配置。
 
 ## 新增主机
 

@@ -7,6 +7,7 @@ mkHost (
     homeConfigurationName = "oevery-mac";
     darwinName = "oevery-mac";
     enableMihomo = true;
+    enablePrivateGit = true;
     gpgKey = "FF2F947EF8595DC8";
     pinentryPackage = "pinentry_mac";
     modules = [
