@@ -1,3 +1,5 @@
 creation_rules:
+  - path_regex: ^secrets/git-signing/mac\.yaml$
+    age: age1aypk0qs33fqw7hwss57l0v99ngxd099fj0lj77fkhlwqueyt8e8sf50qh9
   - path_regex: ^secrets/git\.yaml$
     age: age1aypk0qs33fqw7hwss57l0v99ngxd099fj0lj77fkhlwqueyt8e8sf50qh9

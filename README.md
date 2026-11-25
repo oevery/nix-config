@@ -78,18 +78,13 @@ Git 默认使用主机声明的 `gitName` 和 `email`，无需解密密钥。需
 2. 在 [主机注册表](hosts/default.nix) 注册。`homeConfigurationName` 必须唯一；Mac 还需要唯一的 `darwinName`。`modules` 只接受[模块注册表](lib/default.nix)中的键。
 3. 将新主机文件加入 Git 跟踪后，按[验证命令](docs/commands-cheatsheet.md#core)先做全平台求值，再在目标平台构建。主机与模块的分工见[项目设计](.rsp/specs/design.md)。
 
-### 生成 hosts gpgKey
+### 按设备恢复 Git 签名
 
-需要默认签名且尚无密钥时，先生成签名密钥（`0` 表示不过期）；已有密钥则跳过此命令。
+GPG 签名材料与共享 Git 身份分开保存。设备文件为 `secrets/git-signing/<设备>.yaml`：设备名取 `homeConfigurationName` 去掉 `<username>-` 前缀，例如 `oevery-mac` 对应 `mac.yaml`。新设备先在 [SOPS 规则](.sops.yaml) 中为自己的文件单独指定接收者，不要沿用共享凭据的授权范围。只有密文加入 Git 跟踪后，Git flake 才能发现它。
 
-```bash
-gpg --quick-generate-key "Your Name <you@example.com>" ed25519 sign 0
-```
+- `gpg.default`：个人签名钥的 ASCII-armored 私钥导出包，已包含公钥。激活时自动导入用户的 GnuPG 密钥环，以完整指纹启用签名，不需要另填 `gpgKey`。没有设备文件或省略此字段时，普通提交和标签默认不签名。
+- `gpg.profile_01`：可选的独立工作签名钥，不能复用个人钥。省略时工作身份显式关闭签名并清空 `signingKey`；普通提交不签名，仅加 `-S` 也不会误用个人钥。SSH 远端认证不受影响。
+- 激活只为有钥匙的身份生成签名覆盖文件。撤掉某个字段或整个设备密文后，下次激活会清理对应的覆盖文件，回到该身份默认不签名的设置，不会删除或撤销密钥环中的钥匙。
+- 恢复前先备好设备的 age 私钥及原 GPG 口令。激活时从密文直接导入，不在仓库或 Nix store 写入私钥明文；已配置的密文解不开或钥匙不可用时会报错。
 
-查看 Key ID，将输出写入主机声明的 `gpgKey`：
-
-```bash
-gpg --list-secret-keys --keyid-format LONG --with-colons you@example.com | awk -F: '$1=="sec"{print $5}'
-```
-
-不设置 `gpgKey` 时，该配置不会默认签名。
+激活后可在个人和工作仓库分别运行 `git config --get --bool commit.gpgSign` 和 `git config --get user.signingKey`。签名提交可用 `git verify-commit HEAD` 验证；它与 SSH 远端读取是两项独立检查。

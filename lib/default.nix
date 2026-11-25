@@ -38,7 +38,6 @@ let
       username,
       email,
       gitName,
-      gpgKey ? null,
       modules ? [
         "base/core"
       ],
@@ -57,7 +56,6 @@ let
     in
     assert lib.assertMsg baseRequired
       "mkHost: system/homeConfigurationName/username/email/gitName must be strings.";
-    assert lib.assertMsg (gpgKey == null || isStr gpgKey) "mkHost: gpgKey must be null or string.";
     assert lib.assertMsg validModules "mkHost: modules contains unsupported value.";
     host;
 in

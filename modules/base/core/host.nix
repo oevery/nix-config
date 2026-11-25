@@ -9,6 +9,14 @@
 
 let
   privateGit = host.enablePrivateGit or false;
+  device = lib.removePrefix "${host.username}-" host.homeConfigurationName;
+  signingFile = ../../../secrets + "/git-signing/${device}.yaml";
+  hasSigningFile = builtins.pathExists signingFile;
+  signingDir = "${config.home.homeDirectory}/.config/git/signing";
+  signingTools = lib.makeBinPath [
+    pkgs.sops
+    config.programs.gpg.package
+  ];
 in
 {
   imports = [ inputs.sops-nix.homeManagerModules.sops ];
@@ -29,9 +37,9 @@ in
   };
 
   programs.git = {
-    includes = lib.optional privateGit {
-      path = config.sops.secrets."git/routing.inc".path;
-    };
+    includes =
+      lib.optional hasSigningFile { path = "${signingDir}/default.inc"; }
+      ++ lib.optional privateGit { path = config.sops.secrets."git/routing.inc".path; };
 
     settings = {
       user = {
@@ -41,8 +49,23 @@ in
     };
 
     signing = {
-      key = host.gpgKey or null;
-      signByDefault = (host.gpgKey or null) != null;
+      key = "";
+      signByDefault = false;
     };
   };
+
+  home.activation.gitSigning = lib.hm.dag.entryAfter [ "writeBoundary" ] (
+    if hasSigningFile then
+      ''
+        run env PATH="${signingTools}:$PATH" \
+          SOPS_AGE_KEY_FILE="${config.xdg.configHome}/sops/age/keys.txt" \
+          ${pkgs.python3}/bin/python3 ${./git-signing.py} "${signingDir}" "${signingFile}"
+      ''
+    else
+      ''
+        if [[ -d "${signingDir}" ]]; then
+          run ${pkgs.python3}/bin/python3 ${./git-signing.py} "${signingDir}"
+        fi
+      ''
+  );
 }
