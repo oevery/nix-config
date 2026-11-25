@@ -25,6 +25,7 @@ in
     defaultSopsFile = ../../../secrets/git.yaml;
     secrets."git/routing.inc".key = "routing";
     secrets."git/profile-01.inc".key = "profile_01";
+    secrets."git/ssh-key-01".key = "ssh_key_01";
   };
 
   programs.git = {

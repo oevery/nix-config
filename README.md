@@ -64,11 +64,13 @@ Linux 在已加载本配置的交互式 Zsh 中用 `hms`；Bash 等其他 shell 
 
 ### Git 身份
 
-Git 默认使用主机声明的 `gitName` 和 `email`，无需解密密钥。需要按目录切换身份时，在主机声明中设置 `enablePrivateGit = true`。目录规则和对应身份保存在同一份 [SOPS 密文](secrets/git.yaml) 中，不写入明文 Nix 配置。
+Git 默认使用主机声明的 `gitName` 和 `email`，无需解密密钥。需要按目录切换身份时，在主机声明中设置 `enablePrivateGit = true`。目录规则、身份设置和对应的 SSH 私钥保存在同一份 [SOPS 密文](secrets/git.yaml) 中；只向应当持有该私钥的设备授权解密。
 
 - **准备密钥**：激活前，将已获授权的 age 私钥保存在 `~/.config/sops/age/keys.txt`，权限设为 `0600`。私钥在仓库外备份，并用备份验证密文可解。
 - **编辑配置**：在仓库根目录运行 `SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt" sops edit secrets/git.yaml`。`routing` 保存 Git 的 `includeIf` 规则，以相对路径 `profile-01.inc` 引用 `profile_01` 中的身份设置。修改后重新激活。
+- **SSH 认证**：`profile_01` 的 `core.sshCommand` 使用 `ssh_key_01` 解密生成的 `~/.config/sops-nix/secrets/git/ssh-key-01`。这把密钥用于访问 SSH 远端，不改变提交签名配置。对应公钥需在 Git 平台保持授权。
 - **验证身份**：在匹配和不匹配规则的仓库中分别运行 `git config --show-origin --get user.email`。前者应来自 `profile-01.inc`，后者应保留默认身份。若仓库另设了 `user.email`，它会覆盖上述配置。
+- **验证远端**：在匹配规则且 `origin` 使用 SSH 的仓库中，运行 `git config --show-origin --get core.sshCommand` 确认密钥路径，再运行 `git ls-remote origin HEAD` 验证只读访问。
 
 ## 新增主机
 
