@@ -7,6 +7,7 @@ let
     "darwin/core" = ../modules/darwin/core/default.nix;
     "darwin/gui" = ../modules/darwin/gui/default.nix;
     "linux/core" = ../modules/linux/core/default.nix;
+    "linux/agent-runner" = ../modules/linux/agent-runner/default.nix;
     "linux/gui" = ../modules/linux/gui/default.nix;
   };
 

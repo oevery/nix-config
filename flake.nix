@@ -6,6 +6,7 @@
     nixpkgs-darwin.url = "git+https://github.com/NixOS/nixpkgs.git?ref=nixpkgs-26.05-darwin&shallow=1";
     # 按需为个别工具提供新版包，默认仍使用 26.05 稳定包集。
     nixpkgs-unstable.url = "git+https://github.com/NixOS/nixpkgs.git?ref=nixpkgs-unstable&shallow=1";
+    oh-my-pi.url = "git+https://github.com/can1357/oh-my-pi.git?ref=refs/tags/v19.1.1&shallow=1";
     home-manager = {
       url = "git+https://github.com/nix-community/home-manager.git?ref=release-26.05&shallow=1";
       inputs.nixpkgs.follows = "nixpkgs";
