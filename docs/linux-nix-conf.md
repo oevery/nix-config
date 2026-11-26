@@ -7,13 +7,9 @@
 | 配置项与取值 | 为什么这样设置 |
 | --- | --- |
 | `extra-experimental-features = nix-command flakes` | `nix-command` 启用 `nix` 子命令，`flakes` 让这些命令能读取仓库的 `flake.nix`。使用 `extra-` 是为了追加所需功能，而不是覆盖宿主已有的列表。 |
-| `sandbox = true` | 构建进程不能随意读取宿主文件，例如不能碰巧借用 `/usr/bin` 下未声明的工具。这约束的是构建环境，不是登录 Shell；也不等于禁止所有下载。 |
 | `auto-optimise-store = true` | Nix 用硬链接让 store 中内容相同的文件只占一份磁盘空间。去重不会删除任何一代环境，与 GC 是两种操作。 |
-| `keep-outputs = false` | GC 不会仅仅因为构建说明（`.drv`）还在，就保留它的全部输出。当前环境或保留的旧代仍引用的程序和库不会因此被回收。 |
-| `keep-derivations = true` | 反方向则保留：只要构建产物仍被保留，GC 就保留生成它的 `.drv`，便于追查构建输入和参数。保留说明不等于为下次离线重建备齐依赖。 |
-| `fallback = false` | 缓存已有二进制替代品、但获取失败时，不因这次失败而自动改为源码构建。**缓存根本没有该产物**是另一种情况，仍可正常从源码构建。 |
 
-缓存源、构建用户组、信任范围和并行度沿用宿主设置。这两个 `keep-` 选项决定 GC **保留什么**，不决定**何时运行**；用户 registry 和每周 GC 由 [Linux Home Manager 模块](../modules/linux/core/nix.nix)管理。
+其余选项沿用宿主设置。没有额外覆盖时，Linux 上的 Nix 2.33 默认启用构建沙箱（`sandbox = true`），获取已有二进制替代品失败时不自动转为源码构建（`fallback = false`）。GC 默认保留仍在使用的产物对应的 `.drv`（`keep-derivations = true`），但不会仅因 `.drv` 仍在就保留它的全部输出（`keep-outputs = false`）。用户 registry 和每周 GC 由 [Linux Home Manager 模块](../modules/linux/core/nix.nix) 管理。
 
 ## 首次接入
 
@@ -61,10 +57,13 @@ backup=$(sudo mktemp -d /etc/nix/backup.XXXXXXXX) &&
 ```bash
 cmp config/nix/linux-daemon.conf /etc/nix/linux-daemon.conf
 env -u NIX_CONFIG NIX_CONF_DIR=/etc/nix NIX_USER_CONF_FILES=/dev/null nix config show experimental-features
-env -u NIX_CONFIG NIX_CONF_DIR=/etc/nix NIX_USER_CONF_FILES=/dev/null nix config show fallback
+for key in auto-optimise-store sandbox fallback keep-derivations keep-outputs; do
+  printf '%s: ' "$key"
+  env -u NIX_CONFIG NIX_CONF_DIR=/etc/nix NIX_USER_CONF_FILES=/dev/null nix config show "$key" || break
+done
 ```
 
-第一条应无输出；后两条应分别包含 `nix-command`、`flakes` 和显示 `false`。这些只是新启动的客户端读取结果，不能证明旧 daemon 已加载。确认后重启，再以普通用户测试连接：
+`cmp` 应无输出，功能列表应包含 `nix-command` 和 `flakes`。循环的预期值依次为 `true`、`true`、`false`、`true`、`false`。若不同，先检查主配置及其 `include`：例如其他文件仍写着 `keep-outputs = true` 时，精简后的片段不会把它改回 `false`。这些只是新启动的客户端读取结果，不能证明旧 daemon 已加载。确认后重启，再以普通用户测试连接：
 
 ```bash
 sudo systemctl restart nix-daemon.service &&
