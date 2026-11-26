@@ -55,7 +55,7 @@ Nix 安装 mise，但不在激活时下载 Rust。mise 首次安装 Rust 需要�
 
 ## 日常使用
 
-Linux 在已加载本配置的交互式 Zsh 中用 `hms`；Bash 等其他 shell 使用[速查中的 `home-manager switch` 命令](docs/commands-cheatsheet.md#linux-home-manager)。Mac 用 `drs` 做日常维护，包括 Homebrew 升级和清理。`hms` 和 `drs` 都会先检查当前主机，不必手动再跑一次 `hc`。
+Linux 用 `hms` 切换当前用户的 Home Manager 环境；它是可执行命令，不依赖交互式 Zsh。Mac 用 `drs` 做日常维护，包括 Homebrew 升级和清理。两者都会先运行 `hc`；需要查看切换错误的调用栈时，Linux 用 `hmst`，Mac 用 `drst`。
 
 - 更新依赖、只验证不激活、管理 Mihomo 或清理旧代：见[命令速查](docs/commands-cheatsheet.md)。
 - Linux 多用户 Nix 的 daemon 设置：见 [Linux 配置参考](docs/linux-nix-conf.md)。Mac 对应设置在 [nix-darwin 系统模块](modules/darwin/nix-darwin/core.nix)。

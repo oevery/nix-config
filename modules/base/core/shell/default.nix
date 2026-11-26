@@ -42,9 +42,6 @@ let
     bgrep = "batgrep";
 
     nix-gc-delete-all-old-generations = "nix-collect-garbage -d";
-  }
-  // lib.optionalAttrs pkgs.stdenv.isLinux {
-    hms = "${checkScript}/bin/hc && home-manager switch --flake ~/.config/home-manager#${host.homeConfigurationName}";
   };
 in
 

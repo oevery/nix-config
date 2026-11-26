@@ -18,11 +18,16 @@ nix flake check --no-write-lock-file ~/.config/home-manager
 
 ## Linux (Home Manager)
 
+`hms` 和 `hmst` 都先运行 `hc`，成功后才切换当前用户的 Home Manager 环境。只要用户 profile 在 `PATH` 中，任何 shell 都能调用；不需要 `sudo`，也不会更新 Debian 软件包。
+
 ```bash
-# 已加载本配置的交互式 Zsh
+# 日常切换
 hms
 
-# Bash 等其他 shell 使用原生命令
+# 调试切换
+hmst
+
+# 原生命令（不含 hc 预检）
 home-manager switch --flake "$HOME/.config/home-manager#oevery-homelab"
 ```
 
