@@ -6,23 +6,18 @@
 }:
 
 {
-  home.packages =
-    with pkgs;
-    (
-      [
-        # 跨平台 CLI 统一交给 Nix 管理。
-        sqlite
-        android-tools # adb / fastboot。
-        cmake # 原生模块和桌面应用构建工具。
-        ninja # CMake 等构建系统使用的构建执行器。
-        ccache # C/C++ 编译缓存，减少重复编译耗时。
-        pkg-config # 本地库编译参数发现工具。
+  home.packages = with pkgs; [
+    # 跨平台 CLI 统一交给 Nix 管理。
+    sqlite
+    android-tools # adb / fastboot。
+    cmake # 原生模块和桌面应用构建工具。
+    ninja # CMake 等构建系统使用的构建执行器。
+    ccache # C/C++ 编译缓存，减少重复编译耗时。
+    pkg-config # 本地库编译参数发现工具。
 
-        nixd # Nix 语言服务器。
-        nixfmt # Nix 格式化工具。
-      ]
-      ++ lib.optional stdenv.isDarwin pinentry_mac
-    );
+    nixd # Nix 语言服务器。
+    nixfmt # Nix 格式化工具。
+  ];
 
   programs.git = {
     enable = true;
