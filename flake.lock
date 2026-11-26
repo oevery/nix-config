@@ -20,10 +20,10 @@
     "brewforge-chinese": {
       "flake": false,
       "locked": {
-        "lastModified": 1795534147,
-        "narHash": "sha256-3/4fMoIQILvgK5qQasm9x3iyv1+eJzQ6Ftj4qjk0U14=",
+        "lastModified": 1795639511,
+        "narHash": "sha256-DwMrzScE+FkBWF5wGL4BWaxIciRx0FltP+aWbLnnds8=",
         "ref": "refs/heads/main",
-        "rev": "ebc6df1d49f37ebb8b54947a60bc06d4beb01216",
+        "rev": "930a509455034263126e3f562def940abb66546d",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/Brewforge/homebrew-chinese.git"
@@ -59,10 +59,10 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1795580636,
-        "narHash": "sha256-2b4HqBx2QugOpaR7WVSe8usY96dfFVSmee8o/9qFyrQ=",
+        "lastModified": 1795700008,
+        "narHash": "sha256-a/KmbvSCEuxXaG/1FGy1WkhOSdGBMXwPI75xMW/aRYc=",
         "ref": "refs/heads/main",
-        "rev": "3e252b0dbc2c28dbf392345d0d77e0458760e2d8",
+        "rev": "9019e178649ffee5255c8a2417eda37c91fcc14e",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-cask.git"
@@ -76,10 +76,10 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1795581816,
-        "narHash": "sha256-ofkYpE0JHKhE3JyBay7QsQlQufRherdjntqsdF1F/L8=",
+        "lastModified": 1795699840,
+        "narHash": "sha256-tyTvpr10eZW0uDtVgbBneyuDe/xT+zWsL9PccpzC5Y8=",
         "ref": "refs/heads/main",
-        "rev": "81d5c3b048e123387ab75f17a1f7a98277662b05",
+        "rev": "d3d11d419fe31dc4c82f1d4413845ea8a97de953",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/homebrew/homebrew-core.git"
@@ -170,10 +170,10 @@
     },
     "nixpkgs-darwin": {
       "locked": {
-        "lastModified": 1795387764,
-        "narHash": "sha256-c2VS34FJxgjfNbfKgh837LzPzx9S2FXTez+Th1iKDZ8=",
+        "lastModified": 1795548719,
+        "narHash": "sha256-JBEgYBIuOlup7DBbXC6B1liz98eNSgtOKoFGqKryXU4=",
         "ref": "nixpkgs-26.05-darwin",
-        "rev": "f0b41a99f28c34ffeaff61d4b419afff0516a923",
+        "rev": "b79fb186802610f5363769394ba4a4b921ea15c9",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/NixOS/nixpkgs.git"
