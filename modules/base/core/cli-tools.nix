@@ -10,6 +10,7 @@
     btop # 现代化的 top 替代品
 
     # 命令行效率工具
+    tmux
     ripgrep # 快速递归文本搜索工具 (rg)
     fd # 快速文件查找工具（fzf 默认命令依赖）
     # 使用独立锁定的 unstable 包，获取新版结构导航、搜索与改写能力。
@@ -19,6 +20,10 @@
     # 磁盘工具
     duf # Rust 实现的更友好 df
     gdu # 磁盘占用分析器（du 替代）
+
+    zip
+    unzip
+    zstd
 
     # 其他常用工具
     fastfetch # 系统信息展示工具
