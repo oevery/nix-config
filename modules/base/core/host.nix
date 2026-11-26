@@ -24,16 +24,22 @@ in
   home.homeDirectory =
     if pkgs.stdenv.isDarwin then "/Users/${host.username}" else "/home/${host.username}";
 
-  home.packages = lib.optionals privateGit [
+  home.packages = [
     pkgs.age
     pkgs.sops
   ];
-  sops = lib.mkIf privateGit {
+  sops = {
     age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
-    defaultSopsFile = ../../../secrets/git.yaml;
-    secrets."git/routing.inc".key = "routing";
-    secrets."git/profile-01.inc".key = "profile_01";
-    secrets."git/ssh-key-01".key = "ssh_key_01";
+    secrets = lib.mkIf privateGit (
+      lib.mapAttrs (_: key: {
+        inherit key;
+        sopsFile = ../../../secrets/git.yaml;
+      }) {
+        "git/routing.inc" = "routing";
+        "git/profile-01.inc" = "profile_01";
+        "git/ssh-key-01" = "ssh_key_01";
+      }
+    );
   };
 
   programs.git = {
@@ -58,7 +64,7 @@ in
     if hasSigningFile then
       ''
         run env PATH="${signingTools}:$PATH" \
-          SOPS_AGE_KEY_FILE="${config.xdg.configHome}/sops/age/keys.txt" \
+          SOPS_AGE_KEY_FILE=${lib.escapeShellArg config.sops.age.keyFile} \
           ${pkgs.python3}/bin/python3 ${./git-signing.py} "${signingDir}" "${signingFile}"
       ''
     else
