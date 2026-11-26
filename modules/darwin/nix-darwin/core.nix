@@ -19,13 +19,8 @@
       experimental-features = "nix-command flakes";
       # 原生架构无需重复声明；启用 Rosetta 时允许本机构建 Intel 派生。
       extra-platforms = lib.optionals config.nix-homebrew.enableRosetta [ "x86_64-darwin" ];
-      substituters = [
-        # "https://mirror.sjtu.edu.cn/nix-channels/store"
-        "https://cache.nixos.org/"
-      ];
       keep-outputs = false;
       keep-derivations = true;
-      builders-use-substitutes = true;
       connect-timeout = 10;
       fallback = true;
       max-jobs = "auto";
