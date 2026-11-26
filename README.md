@@ -1,89 +1,84 @@
 # nix-config
 
-这份配置管理 Linux homelab 和 Mac：homelab 使用独立的 Home Manager，Mac 由 nix-darwin 同时管理系统和用户环境。第一次安装从下文开始；已安装的主机直接看[日常命令速查](docs/commands-cheatsheet.md)。
+这份 Nix flake 让 Linux 和 macOS 共用 Shell、开发工具和用户配置。Linux 由 Home Manager 管理当前用户的环境，不接管宿主系统；macOS 由 nix-darwin 一次应用系统设置和 Home Manager 配置。已完成安装的用户可直接查看[日常命令速查](docs/commands-cheatsheet.md)。
 
-## 快速开始
+## 首次安装
 
-### 1. 安装 Nix
+### 1. 安装 Nix 并获取配置
 
-推荐使用清华镜像（多用户模式）：
-
-```bash
-sh <(curl -L https://mirrors.tuna.tsinghua.edu.cn/nix/latest/install) --daemon
-```
-
-官方安装脚本：
+需要 Git 和多用户模式的 Nix。若尚未安装 Nix，可以使用官方安装脚本；也可将脚本地址换为[清华镜像](https://mirrors.tuna.tsinghua.edu.cn/nix/latest/install)。
 
 ```bash
 sh <(curl -L https://nixos.org/nix/install) --daemon
 ```
 
-### 2. 拉取仓库
+新开终端，确认 `nix --version` 可用，再获取仓库。日常维护命令按以下路径查找配置：
 
 ```bash
 git clone https://github.com/oevery/nix-config ~/.config/home-manager
 cd ~/.config/home-manager
 ```
 
-### 3. 首次应用
+### 2. 选择主机配置
 
-在仓库根目录执行对应平台的命令，重建工具和主机配置均使用本仓库的 `flake.lock`。
+从[主机注册表](hosts/default.nix)选择与目标系统、架构和用户名匹配的配置。命令里的名称是 **flake 输出名**，不必与系统 hostname 相同。以下是仓库当前的示例；如果目标设备不匹配，请先[新增主机](#新增主机)。
 
-**Linux homelab（Home Manager）：** 若尚未启用 flakes，在 `/etc/nix/nix.conf` 中加入 `extra-experimental-features = nix-command flakes`，然后运行：
+| 平台 | 配置声明 | Home Manager 输出名 | nix-darwin 输出名 |
+| --- | --- | --- | --- |
+| Linux x86_64 | [Linux 示例](hosts/oevery-homelab.nix) | `oevery-homelab` | — |
+| macOS Apple Silicon | [macOS 示例](hosts/oevery-mac.nix) | `oevery-mac` | `oevery-mac` |
 
-```bash
-nix run .#homeConfigurations.oevery-homelab.config.programs.home-manager.package -- switch --flake .#oevery-homelab
-```
+首次激活前，检查所选配置的两个条件：
 
-**macOS（nix-darwin）：** 先以当前桌面用户登录 Mac App Store，激活时会从商店安装 Xcode 和 AndroMeld。下面的命令仅为本次调用启用 flakes，无需先修改 `/etc/nix/nix.conf`；首次激活成功后由 nix-darwin 管理该文件。
+- **私有 Git 或设备签名：** 如果主机启用了 `enablePrivateGit`，或有专属的 GPG 签名密文，先按 [Git 身份与设备授权](docs/git-identity.md)准备 age 身份，并确认目标用户能解密对应文件。两项都未配置时，可以跳过。
+- **Mac App Store 应用：** 如果 macOS 配置声明了 `masApps`，先以目标桌面用户登录 App Store。
 
-```bash
-sudo nix --extra-experimental-features 'nix-command flakes' run .#darwin-rebuild -- switch --flake .#oevery-mac
-```
+### 3. 验证并激活
 
-### 4. 检查首装结果，按需安装 Rust
-
-切换成功后新开终端，运行 `hc`。Linux 应输出一个 `.drv` 路径，Mac 应输出两个；这说明当前主机的配置能够求值。需要 Rust 时，在仓库目录运行：
+以下命令均在仓库根目录运行。可先在目标平台构建检查项，**不激活**：
 
 ```bash
-mise install rust
-mise exec -- rustc --version
-mise exec -- cargo --version
+nix --extra-experimental-features 'nix-command flakes' flake check --no-write-lock-file
 ```
 
-Nix 安装 mise，但不在激活时下载 Rust。mise 首次安装 Rust 需要联网，已有的 `~/.cargo` 和 `~/.rustup` 保留。
+检查通过不代表凭据可解密。确认已满足上一步的条件后，按平台选择一条激活命令，将示例输出名替换为所选配置的名称：
+
+**Linux：** homelab 的系统设置由管理员按 [Linux daemon 接入教程](docs/linux-nix-conf.md)单独安装。下面的命令只切换目标用户的环境，无需 `sudo`，也不会安装或更新 daemon 配置：
+
+```bash
+home_name=oevery-homelab
+nix --extra-experimental-features 'nix-command flakes' run ".#homeConfigurations.${home_name}.config.programs.home-manager.package" -- switch --flake ".#${home_name}"
+```
+
+**macOS：** 使用 `darwinName` 对应的输出，一次激活系统和用户配置，无需再单独运行 `home-manager switch`：
+
+```bash
+darwin_name=oevery-mac
+sudo nix --extra-experimental-features 'nix-command flakes' run .#darwin-rebuild -- switch --flake ".#${darwin_name}"
+```
+
+激活后新开终端，运行 `hc`。Linux 应输出一个 `.drv` 路径，macOS 应输出两个；这表示所选配置可以求值。私有 Git 的身份匹配、SSH 访问和提交签名需[分别验证](docs/git-identity.md)。
 
 ## 日常使用
 
-Linux 用 `hms` 切换当前用户的 Home Manager 环境；它是可执行命令，不依赖交互式 Zsh。Mac 用 `drs` 做日常维护，包括 Homebrew 升级和清理。两者都会先运行 `hc`；需要查看切换错误的调用栈时，Linux 用 `hmst`，Mac 用 `drst`。
+| 任务 | Linux | macOS |
+| --- | --- | --- |
+| 只检查当前主机，不激活 | `hc` | `hc` |
+| 检查后应用配置 | `hms` | `drs` |
+| 切换时显示错误调用栈 | `hmst` | `drst` |
 
-- 更新依赖、只验证不激活、管理 Mihomo 或清理旧代：见[命令速查](docs/commands-cheatsheet.md)。
-- Linux 多用户 Nix 的 daemon 设置：见 [Linux 配置参考](docs/linux-nix-conf.md)。Mac 对应设置在 [nix-darwin 系统模块](modules/darwin/nix-darwin/core.nix)。
-- macOS 提示应用“已损坏”：先按 [Quarantine 排障](docs/quarantine.md)检查来源和签名。
+`hms` 只切换用户环境；`drs` 还会执行配置中声明的 Homebrew 升级和清理。仅需验证时不要运行切换命令。
 
-### Git 身份
+Rust 由 mise 按需安装，而不是在激活时下载。需要时运行 `mise install rust`，再用 `mise exec -- rustc --version` 和 `mise exec -- cargo --version` 检查。首次安装需要联网，已有的 `~/.cargo` 和 `~/.rustup` 会保留。
 
-Git 默认使用主机声明的 `gitName` 和 `email`，无需解密密钥。需要按目录切换身份时，在主机声明中设置 `enablePrivateGit = true`。目录规则、身份设置和对应的 SSH 私钥保存在同一份 [SOPS 密文](secrets/git.yaml) 中；只向应当持有该私钥的设备授权解密。
-
-- **准备密钥**：激活前，将已获授权的 age 私钥保存在 `~/.config/sops/age/keys.txt`，权限设为 `0600`。私钥在仓库外备份，并用备份验证密文可解。
-- **编辑配置**：在仓库根目录运行 `SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt" sops edit secrets/git.yaml`。`routing` 保存 Git 的 `includeIf` 规则，以相对路径 `profile-01.inc` 引用 `profile_01` 中的身份设置。修改后重新激活。
-- **SSH 认证**：`profile_01` 的 `core.sshCommand` 使用 `ssh_key_01` 解密生成的 `~/.config/sops-nix/secrets/git/ssh-key-01`。这把密钥用于访问 SSH 远端，不改变提交签名配置。对应公钥需在 Git 平台保持授权。
-- **验证身份**：在匹配和不匹配规则的仓库中分别运行 `git config --show-origin --get user.email`。前者应来自 `profile-01.inc`，后者应保留默认身份。若仓库另设了 `user.email`，它会覆盖上述配置。
-- **验证远端**：在匹配规则且 `origin` 使用 SSH 的仓库中，运行 `git config --show-origin --get core.sshCommand` 确认密钥路径，再运行 `git ls-remote origin HEAD` 验证只读访问。
+- [命令速查](docs/commands-cheatsheet.md)：更新 flake、构建检查和清理旧代。
+- [macOS Mihomo 运维](docs/mihomo.md)：设置完整配置源、管理进程与开机自启、检查更新和日志。
+- [Linux Nix daemon 配置](docs/linux-nix-conf.md)和 [macOS 系统模块](modules/darwin/nix-darwin/core.nix)：区分用户设置与系统设置。
+- [macOS Quarantine 排障](docs/quarantine.md)：应用提示“已损坏”时，先检查来源和签名。
 
 ## 新增主机
 
-1. 以 [homelab](hosts/oevery-homelab.nix) 或 [Mac](hosts/oevery-mac.nix) 为范本，在 `hosts/` 用 `mkHost` 声明主机。选择匹配会话的 `pinentryPackage`：无图形会话用 `pinentry-curses`，GNOME 用 `pinentry-gnome3`，macOS 用 `pinentry_mac`。
-2. 在 [主机注册表](hosts/default.nix) 注册。`homeConfigurationName` 必须唯一；Mac 还需要唯一的 `darwinName`。`modules` 只接受[模块注册表](lib/default.nix)中的键。
-3. 将新主机文件加入 Git 跟踪后，按[验证命令](docs/commands-cheatsheet.md#core)先做全平台求值，再在目标平台构建。主机与模块的分工见[项目设计](.rsp/specs/design.md)。
-
-### 按设备恢复 Git 签名
-
-GPG 签名材料与共享 Git 身份分开保存。设备文件为 `secrets/git-signing/<设备>.yaml`：设备名取 `homeConfigurationName` 去掉 `<username>-` 前缀，例如 `oevery-mac` 对应 `mac.yaml`。新设备先在 [SOPS 规则](.sops.yaml) 中为自己的文件单独指定接收者，不要沿用共享凭据的授权范围。只有密文加入 Git 跟踪后，Git flake 才能发现它。
-
-- `gpg.default`：个人签名钥的 ASCII-armored 私钥导出包，已包含公钥。激活时自动导入用户的 GnuPG 密钥环，以完整指纹启用签名，不需要另填 `gpgKey`。没有设备文件或省略此字段时，普通提交和标签默认不签名。
-- `gpg.profile_01`：可选的独立工作签名钥，不能复用个人钥。省略时工作身份显式关闭签名并清空 `signingKey`；普通提交不签名，仅加 `-S` 也不会误用个人钥。SSH 远端认证不受影响。
-- 激活只为有钥匙的身份生成签名覆盖文件。撤掉某个字段或整个设备密文后，下次激活会清理对应的覆盖文件，回到该身份默认不签名的设置，不会删除或撤销密钥环中的钥匙。
-- 恢复前先备好设备的 age 私钥及原 GPG 口令。激活时从密文直接导入，不在仓库或 Nix store 写入私钥明文；已配置的密文解不开或钥匙不可用时会报错。
-
-激活后可在个人和工作仓库分别运行 `git config --get --bool commit.gpgSign` 和 `git config --get user.signingKey`。签名提交可用 `git verify-commit HEAD` 验证；它与 SSH 远端读取是两项独立检查。
+1. 在 `hosts/` 中参考同平台示例，用 `mkHost` 声明系统、用户和模块组。`modules` 只接受[模块注册表](lib/default.nix)中的名称。
+2. 按使用场景选择 `pinentryPackage`：无图形会话用 `pinentry-curses`，GNOME 可用 `pinentry-gnome3`，macOS 用 `pinentry_mac`。仅在设备应持有共享 Git SSH 私钥时启用 `enablePrivateGit`。
+3. 在[主机注册表](hosts/default.nix)注册。`homeConfigurationName` 必须唯一；macOS 还需在 Darwin 输出中唯一的 `darwinName`。将新文件加入 Git 跟踪，否则 Git flake 看不到它们。
+4. 按[验证命令](docs/commands-cheatsheet.md#验证配置)先对所有平台求值，再在目标平台构建，最后按首次安装步骤激活。主机与模块的职责见[项目设计](.rsp/specs/design.md)。
