@@ -8,7 +8,15 @@
 
 ## 当前实现：Multica + OMP
 
-当前打包的 Multica CLI 适用于 `x86_64-linux`。Home Manager 安装 Multica CLI 和 OMP，并通过 `multica-daemon.service` 运行 Multica daemon。Multica 接到任务后启动 OMP。无需额外部署 Compose worker，也不要执行 `multica daemon enable` 注册第二个服务。
+当前实现适用于 `x86_64-linux`。OMP 由 Nix 安装，Multica CLI 由 Home Manager 在激活时维护。`multica-daemon.service` 运行 Multica daemon，接到任务后启动 OMP。无需额外部署 Compose worker，也不要执行 `multica daemon enable` 注册第二个服务。
+
+### 安装与更新
+
+首次运行 `hms`（或直接激活此主机配置）时，从官方 GitHub 最新正式 release 下载 Linux amd64 CLI，核对发布资产的 SHA256 并试运行 `--version` 后才安装到 `~/.local/bin/multica`。首次失败会中止激活。之后每次激活调用该文件的 `multica update`；检查或下载失败但旧 CLI 仍可运行时，会提示并继续激活。`hc`、构建和 dry-run 不会安装或更新 CLI。
+
+systemd 使用 `--no-auto-update` 启动 daemon，只禁用定时自更新。日常更新随 `hms` 执行；runtime 所有者或工作区管理员仍可在 Multica 网页上手动发起更新。
+
+日常 `hms` 更新不会主动重启服务。已有 Nix 版节点应在没有任务时做首次切换，因为服务的启动路径发生变化。保留 `~/.multica`，无需重新登录或登记。CLI 不再属于 Nix generation，回滚 Home Manager 不会回滚 `~/.local/bin/multica`。
 
 ### 首次登记
 

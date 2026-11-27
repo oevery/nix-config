@@ -67,7 +67,7 @@ sudo nix --extra-experimental-features 'nix-command flakes' run .#darwin-rebuild
 | 检查后应用配置 | `hms` | `drs` |
 | 切换时显示错误调用栈 | `hmst` | `drst` |
 
-`hms` 只切换用户环境；`drs` 还会执行配置中声明的 Homebrew 升级和清理。仅需验证时不要运行切换命令。
+`hms` 只切换用户环境；启用[任务执行节点](docs/agent-runner.md#安装与更新)的主机会在激活时安装或更新 Multica CLI。`drs` 还会执行配置中声明的 Homebrew 升级和清理。仅需验证时不要运行切换命令。
 
 Rust 由 mise 按需安装，而不是在激活时下载。需要时运行 `mise install rust`，再用 `mise exec -- rustc --version` 和 `mise exec -- cargo --version` 检查。首次安装需要联网，已有的 `~/.cargo` 和 `~/.rustup` 会保留。
 
