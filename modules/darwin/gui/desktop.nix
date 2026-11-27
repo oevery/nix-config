@@ -13,6 +13,7 @@ let
     "/Applications/Google Chrome.app"
     "/Applications/Zed.app"
     "/Applications/ChatGPT.app"
+    "/Applications/Multica.app"
     "/Applications/Obsidian.app"
     "/Applications/Spark Desktop.app"
     "/Applications/Telegram.app"
