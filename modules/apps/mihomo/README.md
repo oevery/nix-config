@@ -1,6 +1,6 @@
 # 在 macOS 管理 Mihomo
 
-适用于启用 `enableMihomo` 的 nix-darwin 主机。首次激活会安装内核、LaunchDaemon 和占位配置，不会自动启动代理。`mihomoctl` 按操作需要调用 `sudo`。
+适用于选择 `apps/mihomo` 的 nix-darwin 主机。首次激活会安装内核、LaunchDaemon 和占位配置，不会自动启动代理。`mihomoctl` 按操作需要调用 `sudo`。
 
 ## 首次使用
 

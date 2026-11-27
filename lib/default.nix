@@ -1,17 +1,42 @@
 { lib }:
 
 let
-  moduleRegistry = {
+  homeGroups = {
     "base/core" = ../modules/base/core/default.nix;
     "base/gui" = ../modules/base/gui/default.nix;
     "darwin/core" = ../modules/darwin/core/default.nix;
     "darwin/gui" = ../modules/darwin/gui/default.nix;
     "linux/core" = ../modules/linux/core/default.nix;
-    "linux/agent-runner" = ../modules/linux/agent-runner/default.nix;
     "linux/gui" = ../modules/linux/gui/default.nix;
   };
 
+  apps = {
+    "apps/magpie" = ../modules/apps/magpie;
+    "apps/mihomo" = ../modules/apps/mihomo;
+    "apps/multica" = ../modules/apps/multica;
+    "apps/omp" = ../modules/apps/omp;
+  };
+  moduleRegistry =
+    lib.mapAttrs (_: path: _: { home = path; }) homeGroups
+    // lib.mapAttrs (
+      name: path: system:
+      let
+        parts = builtins.match "([^-]+)-([^-]+)" system;
+        unsupported = throw "${name} 暂不支持 ${system}";
+        platform = (import path).${builtins.elemAt parts 1} or unsupported;
+      in
+      if parts != null && builtins.elem (builtins.head parts) platform.architectures then
+        platform
+      else
+        unsupported
+    ) apps;
   allowedModules = builtins.attrNames moduleRegistry;
+  resolveHostModules =
+    settings: layer:
+    let
+      entries = map (name: moduleRegistry.${name} settings.system) settings.modules;
+    in
+    map (entry: entry.${layer}) (builtins.filter (builtins.hasAttr layer) entries);
 
   mkAutoImports =
     {
@@ -46,7 +71,7 @@ let
     }@host:
     let
       isStr = builtins.isString;
-      validModules = lib.all (group: builtins.elem group allowedModules) modules;
+      unknownModules = builtins.filter (name: !(builtins.elem name allowedModules)) modules;
       baseRequired = lib.all (v: v) [
         (isStr system)
         (isStr homeConfigurationName)
@@ -56,8 +81,8 @@ let
       ];
     in
     assert lib.assertMsg baseRequired
-      "mkHost: system/homeConfigurationName/username/email/gitName must be strings.";
-    assert lib.assertMsg validModules "mkHost: modules contains unsupported value.";
+      "mkHost：system、homeConfigurationName、username、email 和 gitName 必须是字符串。";
+    assert lib.assertMsg (unknownModules == [ ]) "未知模块：${lib.concatStringsSep "、" unknownModules}";
     host;
 in
 {
@@ -66,5 +91,6 @@ in
     mkHost
     allowedModules
     moduleRegistry
+    resolveHostModules
     ;
 }

@@ -1,20 +1,20 @@
+assets:
 {
   config,
-  inputs,
   lib,
   pkgs,
   ...
 }:
 let
-  ensureMultica = pkgs.callPackage ../../../pkgs/multica { };
-  omp = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.omp;
+  ensureMultica = pkgs.callPackage ./installer.nix {
+    assetPlatform = assets.${pkgs.stdenv.hostPlatform.parsed.cpu.name};
+  };
   hasToken = pkgs.writeShellScript "multica-has-token" ''
     exec ${lib.getExe pkgs.jq} -es 'length == 1 and (.[0].token | type == "string" and length > 0)' "$1" >/dev/null 2>&1
   '';
   taskPath = lib.concatStringsSep ":" [
-    "${omp}/bin"
-    "${config.home.homeDirectory}/.local/bin"
     "${config.home.profileDirectory}/bin"
+    "${config.home.homeDirectory}/.local/bin"
     "${config.xdg.dataHome}/mise/shims"
     "/nix/var/nix/profiles/default/bin"
     "/usr/local/bin"
@@ -23,14 +23,6 @@ let
   ];
 in
 {
-  assertions = [
-    {
-      assertion = pkgs.stdenv.hostPlatform.system == "x86_64-linux";
-      message = "linux/agent-runner requires the Multica CLI for x86_64-linux.";
-    }
-  ];
-  home.packages = [ omp ];
-
   home.activation.ensureMultica =
     lib.hm.dag.entryBetween [ "installPackages" "linkGeneration" ] [ "writeBoundary" ]
       ''
@@ -39,7 +31,7 @@ in
 
   systemd.user.services.multica-daemon = {
     Unit = {
-      Description = "Multica agent runner";
+      Description = "Multica 任务执行节点";
       ConditionPathExists = "%h/.multica/config.json";
     };
     Service = {

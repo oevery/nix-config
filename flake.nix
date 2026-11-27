@@ -67,7 +67,6 @@
       myLib = import ./lib { lib = nixpkgs.lib; };
       hosts = import ./hosts { inherit myLib; };
       systems = hostSystems hosts;
-      resolveHostModules = modules: map (name: myLib.moduleRegistry.${name}) modules;
       makeSpecialArgs = settings: {
         inherit inputs myLib;
         host = removeAttrs settings [ "system" ];
@@ -91,7 +90,7 @@
         assert nixpkgs.lib.assertMsg (
           builtins.all (name: builtins.isString name && name != "") values
           && builtins.length values == builtins.length (nixpkgs.lib.unique values)
-        ) "${attrName} must be a non-empty unique string across all hosts.";
+        ) "${attrName} 必须是非空字符串，且不能与其他主机重复。";
         true;
       renderNamedOutputs =
         attrName: hostSet: transform:
@@ -108,7 +107,7 @@
         "libracoder/homebrew-kiri" = libracoder-kiri;
       };
 
-      mkHostModules = settings: [ ./home.nix ] ++ resolveHostModules settings.modules;
+      mkHostModules = settings: [ ./home.nix ] ++ myLib.resolveHostModules settings "home";
 
       mkHome =
         settings:
@@ -138,7 +137,6 @@
           specialArgs = makeSpecialArgs settings;
           modules = [
             ./modules/darwin/nix-darwin/core.nix
-            ./modules/darwin/nix-darwin/mihomo.nix
             nix-homebrew.darwinModules.nix-homebrew
             {
               nix-homebrew = {
@@ -170,6 +168,7 @@
             )
             ./modules/darwin/nix-darwin/homebrew.nix
           ]
+          ++ myLib.resolveHostModules settings "darwin"
           ++ nixpkgs.lib.optionals enableDarwinGuiModules [
             ./modules/darwin/nix-darwin/desktop.nix
             ./modules/darwin/nix-darwin/homebrew-gui.nix

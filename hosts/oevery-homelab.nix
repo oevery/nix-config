@@ -10,7 +10,9 @@ mkHost (
     modules = [
       "base/core"
       "linux/core"
-      "linux/agent-runner"
+      "apps/omp"
+      "apps/multica"
+      "apps/magpie"
     ];
   }
 )

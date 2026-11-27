@@ -26,7 +26,7 @@ nix eval --raw --no-write-lock-file '.#darwinConfigurations.oevery-mac.config.sy
 
 **`drs` 和 `drst` 不只是检查：** 切换会按锁定的 taps 升级 Homebrew 软件，并按 `zap` 规则清理已移出清单的 cask，可能删除应用偏好。只想检查配置时用 `hc` 或 `nix flake check`。
 
-首次安装、尚无这些命令时，使用 [README 中的原生切换命令](../README.md#首次安装)。系统级操作另见 [Linux daemon 配置](linux-nix-conf.md)与 [macOS Mihomo 运维](mihomo.md)。
+首次安装、尚无这些命令时，使用 [README 中的原生切换命令](../README.md#首次安装)。系统级操作另见 [Linux daemon 配置](linux-nix-conf.md)与 [macOS Mihomo 运维](../modules/apps/mihomo/README.md)。
 
 ## 清理旧代
 

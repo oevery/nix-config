@@ -67,19 +67,19 @@ sudo nix --extra-experimental-features 'nix-command flakes' run .#darwin-rebuild
 | 检查后应用配置 | `hms` | `drs` |
 | 切换时显示错误调用栈 | `hmst` | `drst` |
 
-`hms` 只切换用户环境；启用[任务执行节点](docs/agent-runner.md#安装与更新)的主机会在激活时安装或更新 Multica CLI。`drs` 还会执行配置中声明的 Homebrew 升级和清理。仅需验证时不要运行切换命令。
+`hms` 只切换用户环境。主机选用了 [`apps/multica`](modules/apps/multica/README.md) 或 [`apps/magpie`](modules/apps/magpie/README.md) 时，激活会安装或更新对应的 CLI。`drs` 还会执行配置中声明的 Homebrew 升级和清理。仅需验证时不要运行切换命令。
 
 Rust 由 mise 按需安装，而不是在激活时下载。需要时运行 `mise install rust`，再用 `mise exec -- rustc --version` 和 `mise exec -- cargo --version` 检查。首次安装需要联网，已有的 `~/.cargo` 和 `~/.rustup` 会保留。
 
 - [命令速查](docs/commands-cheatsheet.md)：更新 flake、构建检查和清理旧代。
-- [Linux 任务执行节点](docs/agent-runner.md)：按主机启用 `linux/agent-runner`，登记 Multica 节点并验证 OMP 任务。
-- [macOS Mihomo 运维](docs/mihomo.md)：设置完整配置源、管理进程与开机自启、检查更新和日志。
+- [Linux 任务执行节点](docs/agent-runner.md)：组合 `apps/multica` 和 `apps/omp`，登记节点并验证 OMP 任务。
+- [macOS Mihomo 运维](modules/apps/mihomo/README.md)：设置完整配置源、管理进程与开机自启、检查更新和日志。
 - [Linux Nix daemon 配置](docs/linux-nix-conf.md)和 [macOS 系统模块](modules/darwin/nix-darwin/core.nix)：区分用户设置与系统设置。
 - [macOS Quarantine 排障](docs/quarantine.md)：应用提示“已损坏”时，先检查来源和签名。
 
 ## 新增主机
 
-1. 在 `hosts/` 中参考同平台示例，用 `mkHost` 声明系统、用户和模块组。`modules` 只接受[模块注册表](lib/default.nix)中的名称。
+1. 在 `hosts/` 中参考同平台示例，用 `mkHost` 声明系统、用户和模块组。`modules` 只接受[模块注册表](lib/default.nix)中的名称；选入 `apps/<应用>` 即启用，无需第二个开关。每个应用的 `default.nix` 按操作系统声明实现和支持的架构。主机只填完整 `system`；例如在 Mac 选择 Linux 网关模块会报 `apps/magpie 暂不支持 aarch64-darwin`，并不影响现有桌面 cask。
 2. 按使用场景选择 `pinentryPackage`：无图形会话用 `pinentry-curses`，GNOME 可用 `pinentry-gnome3`，macOS 用 `pinentry_mac`。仅在设备应持有共享 Git SSH 私钥时启用 `enablePrivateGit`。
 3. 在[主机注册表](hosts/default.nix)注册。`homeConfigurationName` 必须唯一；macOS 还需在 Darwin 输出中唯一的 `darwinName`。将新文件加入 Git 跟踪，否则 Git flake 看不到它们。
 4. 按[验证命令](docs/commands-cheatsheet.md#验证配置)先对所有平台求值，再在目标平台构建，最后按首次安装步骤激活。主机与模块的职责见[项目设计](.rsp/specs/design.md)。

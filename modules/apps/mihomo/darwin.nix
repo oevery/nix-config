@@ -1,5 +1,4 @@
 {
-  host,
   inputs,
   lib,
   pkgs,
@@ -39,7 +38,7 @@ let
     dns:
       enable: false
   '';
-  mihomoctl = pkgs.callPackage ../../../pkgs/mihomoctl {
+  mihomoctl = pkgs.callPackage ./ctl {
     inherit stateDir configFile;
     mihomoPath = lib.getExe mihomo;
     serviceName = label;
@@ -47,7 +46,7 @@ let
   };
   mihomoctlExe = lib.getExe mihomoctl;
 in
-lib.mkIf (host.enableMihomo or false) {
+{
   environment.systemPackages = [
     mihomo
     mihomoctl
