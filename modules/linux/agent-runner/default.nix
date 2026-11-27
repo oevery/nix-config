@@ -7,7 +7,7 @@
 }:
 let
   multica = pkgs.callPackage ../../../pkgs/multica { };
-  omp = inputs.oh-my-pi.packages.${pkgs.stdenv.hostPlatform.system}.omp;
+  omp = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.omp;
   hasToken = pkgs.writeShellScript "multica-has-token" ''
     exec ${lib.getExe pkgs.jq} -es 'length == 1 and (.[0].token | type == "string" and length > 0)' "$1" >/dev/null 2>&1
   '';
