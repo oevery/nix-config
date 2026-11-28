@@ -67,8 +67,9 @@
       myLib = import ./lib { lib = nixpkgs.lib; };
       hosts = import ./hosts { inherit myLib; };
       systems = hostSystems hosts;
+      configurationRevision = self.rev or self.dirtyRev or null;
       makeSpecialArgs = settings: {
-        inherit inputs myLib;
+        inherit inputs myLib configurationRevision;
         host = removeAttrs settings [ "system" ];
       };
       isDarwinSystem = system: system == "aarch64-darwin" || system == "x86_64-darwin";
@@ -139,6 +140,7 @@
             ./modules/darwin/nix-darwin/core.nix
             nix-homebrew.darwinModules.nix-homebrew
             {
+              system.configurationRevision = configurationRevision;
               nix-homebrew = {
                 enable = true;
                 package = brew-src // {

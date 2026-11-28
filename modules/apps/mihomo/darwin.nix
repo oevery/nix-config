@@ -6,13 +6,9 @@
 }:
 
 let
-  mihomo = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.mihomo;
-  label = "org.nixos.mihomo";
-  stateDir = "/Library/Application Support/Mihomo";
-  logDir = "/Library/Logs/Mihomo";
+  inherit (import ./packages.nix { inherit inputs lib pkgs; })
+    mihomo label stateDir logDir runMarker configFile placeholder ctl;
   serviceLog = "${logDir}/mihomo.log";
-  runMarker = "/private/var/run/${label}.running";
-  configFile = "${stateDir}/config.yaml";
   quote = lib.escapeShellArg;
   logrotateConfig = pkgs.writeText "mihomo-logrotate.conf" ''
     "${serviceLog}" {
@@ -27,33 +23,12 @@ let
     test -f ${quote runMarker} || exit 0
     exec ${lib.getExe mihomo} -d ${quote stateDir} -f ${quote configFile}
   '';
-  placeholder = pkgs.writeText "mihomo-placeholder.yaml" ''
-    mode: rule
-    log-level: warning
-    port: 0
-    socks-port: 0
-    redir-port: 0
-    tproxy-port: 0
-    mixed-port: 0
-    allow-lan: false
-    external-controller: ""
-    tun:
-      enable: false
-    dns:
-      enable: false
-  '';
-  mihomoctl = pkgs.callPackage ./ctl {
-    inherit stateDir configFile logDir runMarker;
-    mihomoPath = lib.getExe mihomo;
-    serviceName = label;
-    placeholderPath = "${placeholder}";
-  };
-  mihomoctlExe = lib.getExe mihomoctl;
+  mihomoctlExe = lib.getExe ctl;
 in
 {
   environment.systemPackages = [
     mihomo
-    mihomoctl
+    ctl
   ];
 
   system.activationScripts.preActivation.text = ''

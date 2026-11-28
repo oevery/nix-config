@@ -108,10 +108,30 @@ class ControllerTest(unittest.TestCase):
                 self.cli.main()
         return out.getvalue()
 
+    def test_public_status_never_opens_subscription_sources(self):
+        legacy = self.root / "config-source"
+        legacy.write_text("https://example.invalid/legacy\n")
+        original_open = Path.open
+
+        def public_open(path, *args, **kwargs):
+            self.assertNotIn(path, (self.registry, legacy))
+            return original_open(path, *args, **kwargs)
+
+        for source in (legacy, self.registry):
+            with self.subTest(source=source.name):
+                if source == self.registry:
+                    self.run_cli("subscription", "list", "--json")
+                self.assertTrue(source.is_file())
+                with patch.object(Path, "open", public_open):
+                    state = json.loads(self.run_cli("status", "--json"))
+                    self.assertIsNone(state["active_id"])
+                    self.assertIsNone(state["source_set"])
+                    self.assertIn("需授权查看", self.run_cli("status"))
+
     def test_migration_and_monotonic_selection(self):
         legacy = self.root / "config-source"
         legacy.write_text("https://example.invalid/legacy\n")
-        self.assertTrue(json.loads(self.run_cli("status", "--json"))["source_set"])
+        self.assertIsNone(json.loads(self.run_cli("status", "--json"))["source_set"])
         self.assertTrue(legacy.exists())
         result = json.loads(self.run_cli("subscription", "list", "--json"))
         self.assertEqual(result, {"active_id": 1, "subscriptions": [{"id": 1, "name": "default"}]})

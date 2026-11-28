@@ -15,9 +15,11 @@
 
 ## Structure
 - `flake.nix` 组合 `hosts/` 的声明与 `lib/` 的装配逻辑。`home.nix` 保持为薄入口；公共实现放在 `modules/base/`，`modules/linux/` 与 `modules/darwin/` 只负责平台差异。
-- 基础模块组可使用 `myLib.mkAutoImports` 聚合。应用集中在 `modules/apps/<应用>/`：`default.nix` 先按 `host.system` 的操作系统选择实现，再校验架构是否在该平台的 `architectures` 中；任一项不支持都以完整 `system` 报错。校验通过后，`home` 和 `darwin` 分别由 Home Manager 和 nix-darwin 导入，缺少当前管理层入口时跳过该层。私有安装助手、包和运维说明与应用同目录，不自动导入。
+- 基础模块组可使用 `myLib.mkAutoImports` 聚合。应用集中在 `modules/apps/<应用>/`：应用的 `default.nix` 声明各平台的入口和 `architectures`，`lib.moduleRegistry` 按主机的操作系统选择入口并校验架构；任一项不支持都以完整 `system` 报错。校验通过后，`home` 和 `darwin` 分别由 Home Manager 和 nix-darwin 导入，缺少当前管理层入口时跳过该层。私有安装助手、包和运维说明与应用同目录，不自动导入。
 
 ## Constraints
 - Linux 与 Darwin 使用各自的稳定 nixpkgs 输入，以匹配平台的二进制缓存；nix-darwin 跟随 Darwin 输入。`nixpkgs-unstable` 独立锁定，只供显式选择的软件使用，不替换默认包集。具体分支以 [flake inputs](../../flake.nix) 为准。
-- `apps/mihomo` 由 nix-darwin 管理内核与 LaunchDaemon；`mihomoctl` 保留 systemd 后端，但没有 Linux 服务适配。可变配置、订阅凭据和状态不写入 Nix store。
+- `apps/hmops` 是用户层运维入口，主机清单来自显式选入的模块；不负责安装或模拟被管理服务。检查、同步、更新、实际连接验证是不同操作。
+- 正式 TUI 以稳定动作标识连接首页、模块和搜索；查看状态、跟随日志、预览更新不借用管理员权限。Mihomo 的配置与服务操作交给配套的 `mihomoctl`。详情展示服务与配置状态，不自动验证出口；只有用户主动诊断才显示该次接口验证的回执。
+- `apps/mihomo` 在 macOS 由 nix-darwin 管理 LaunchDaemon；Linux 的用户模块只提供控制器和 systemd 单元产物，由管理员审阅、固定引用并单独安装系统服务。可变配置、源凭据和状态不写入 Nix store。
 - `apps/multica` 与 `apps/omp` 可单独启用；同选时 runner 通过用户 profile 发现 OMP。Linux 的 Magpie 网关和 Multica runner 不接管 Mac 的桌面 cask。

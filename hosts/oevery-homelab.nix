@@ -8,6 +8,8 @@ mkHost (
     enablePrivateGit = true;
     pinentryPackage = "pinentry-curses";
     modules = [
+      "apps/hmops"
+      "apps/mihomo"
       "base/core"
       "linux/core"
       "apps/omp"

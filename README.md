@@ -72,6 +72,7 @@ sudo nix --extra-experimental-features 'nix-command flakes' run .#darwin-rebuild
 Rust 由 mise 按需安装，而不是在激活时下载。需要时运行 `mise install rust`，再用 `mise exec -- rustc --version` 和 `mise exec -- cargo --version` 检查。首次安装需要联网，已有的 `~/.cargo` 和 `~/.rustup` 会保留。
 
 - [命令速查](docs/commands-cheatsheet.md)：更新 flake、构建检查和清理旧代。
+- [hmops 控制台](modules/apps/hmops/README.md)：按本机模块使用交互终端或非交互命令，同步已锁定配置或分阶段更新。
 - [Linux 任务执行节点](docs/agent-runner.md)：组合 `apps/multica` 和 `apps/omp`，登记节点并验证 OMP 任务。
 - [macOS Mihomo 运维](modules/apps/mihomo/README.md)：设置完整配置源、管理进程与开机自启、检查更新和日志。
 - [Linux Nix daemon 配置](docs/linux-nix-conf.md)和 [macOS 系统模块](modules/darwin/nix-darwin/core.nix)：区分用户设置与系统设置。

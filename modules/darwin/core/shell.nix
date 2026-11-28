@@ -27,6 +27,9 @@ let
             fi
 
             hc
+            if [ "''${HMOPS_NONINTERACTIVE:-}" = 1 ]; then
+              sudo_cmd="$sudo_cmd -n"
+            fi
 
             # 始终通过当前 flake 暴露的 app 调用 `darwin-rebuild`，避免 PATH 中旧版本工具与本仓库输出结构不匹配。
             exec $sudo_cmd nix run "$flake_path#darwin-rebuild" -- switch ${traceFlag}--flake "$flake_path#${host.darwinName}"

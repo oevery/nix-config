@@ -11,6 +11,7 @@ let
   };
 
   apps = {
+    "apps/hmops" = ../modules/apps/hmops;
     "apps/magpie" = ../modules/apps/magpie;
     "apps/mihomo" = ../modules/apps/mihomo;
     "apps/multica" = ../modules/apps/multica;

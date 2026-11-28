@@ -62,12 +62,6 @@ def snapshot(service):
                 return "private"
         return "installed"
 
-    def selection():
-        if not REGISTRY.exists() and LEGACY_SOURCE.exists():
-            return True, None
-        active = subscriptions.load(REGISTRY)["active_id"]
-        return active is not None, active
-
     def tun_device():
         if CONFIG.stat().st_size > 10485760:
             return None
@@ -84,12 +78,11 @@ def snapshot(service):
         return None
 
     state, pid = read(service.inspect) or ("unknown", None)
-    source_set, active = read(selection) or (None, None)
     return {
-        "state": state, "pid": pid, "active_id": active,
+        "state": state, "pid": pid, "active_id": None,
         "running": {"running": True, "stopped": False, "failed": False}.get(state),
         "autostart": read(service.autostart_enabled),
-        "config": read(config_state), "source_set": source_set,
+        "config": read(config_state), "source_set": None,
         "tun_device": read(tun_device), "exit_verified": None,
     }
 
@@ -329,10 +322,8 @@ def main():
             configs = {"installed": "已安装", "private": "存在（受保护）", "missing": "不存在", "placeholder": "占位配置", None: "不可读取"}
             states = {"running": "运行中", "stopped": "已停止", "not-installed": "未安装",
                       "failed": "启动或运行失败", "starting": "启动中", "stopping": "停止中", "unknown": "未知"}
-            active = (f"#{state['active_id']}" if state["active_id"] is not None else
-                      {True: "待迁移", False: "未选择", None: "未知（可用 subscription list 查询）"}[state["source_set"]])
             print(f"服务：{states[state['state']]}；开机自启：{flags[state['autostart']]}；"
-                  f"配置：{configs[state['config']]}；当前订阅：{active}；出口：未验证")
+                  f"配置：{configs[state['config']]}；当前订阅：需授权查看；出口：未验证")
         return
     if args.command == "probe":
         return probe(args.interface)

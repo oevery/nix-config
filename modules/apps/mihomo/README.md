@@ -16,7 +16,7 @@
 
 | 命令 | 语义 |
 | --- | --- |
-| `mihomoctl status [--json]` | 分开显示服务状态、配置和开机自启；无权限或无法判断时报告未知，不视作已停止。JSON 中受保护的订阅信息可能为 `null`。 |
+| `mihomoctl status [--json]` | 分开显示服务状态、配置和开机自启；无法判断时报告未知，不视作已停止。不读取订阅表或旧来源；没有公开摘要时显示「需授权查看」，JSON 保留 `active_id` 和 `source_set`，值均为 `null`。 |
 | `mihomoctl start` / `stop` / `restart` | 操作当前服务，不改变开机自启。 |
 | `mihomoctl reload` | 向正在运行的内核请求 `SIGHUP` 重载，不启动已停止的服务，也不下载或切换订阅。信号送达不等于配置已成功加载。 |
 | `mihomoctl enable` / `disable` | 只修改开机自启。显式 `stop` 后不会被自动恢复；不改变下次开机设置。 |
