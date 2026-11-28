@@ -11,8 +11,11 @@
   configFile,
   controlDir ? stateDir,
   placeholderPath ? null,
+  logDir ? "/Library/Logs/Mihomo",
+  runMarker ? null,
   sudoPath ? "/usr/bin/sudo",
   systemctlPath ? "/usr/bin/systemctl",
+  validationUnit ? null,
 }:
 
 let
@@ -34,8 +37,11 @@ let
       configFile
       controlDir
       placeholderPath
+      logDir
+      runMarker
       sudoPath
       systemctlPath
+      validationUnit
       pythonPath
       ;
     curlPath = lib.getExe curl;
@@ -50,8 +56,8 @@ assert lib.assertMsg (lib.all (lib.hasPrefix "/") [
   systemctlPath
 ]) "mihomoctl：运行路径必须是绝对路径。";
 assert lib.assertMsg (
-  !platform.isLinux || builtins.match "[a-zA-Z0-9_.@:-]+\\.service" serviceName != null
-) "mihomoctl：Linux 上需要指定单个已存在的 .service 单元名。";
+  !platform.isLinux || (serviceName == "mihomo.service" && validationUnit != null)
+) "mihomoctl：Linux 需要 mihomo.service 和配套的校验 unit。";
 runCommand "mihomoctl"
   {
     nativeBuildInputs = [ makeWrapper ];
@@ -64,6 +70,8 @@ runCommand "mihomoctl"
     cp ${backend} "$appDir/backend.py"
     cp ${./errors.py} "$appDir/errors.py"
     cp ${./paths.py} "$appDir/paths.py"
+    cp ${./subscriptions.py} "$appDir/subscriptions.py"
+    cp ${./logs.py} "$appDir/logs.py"
     printf '%s\n' ${lib.escapeShellArg settings} > "$appDir/settings.json"
     makeWrapper ${pythonPath} "$out/bin/mihomoctl" --add-flag -I --add-flag "$appDir"
   ''

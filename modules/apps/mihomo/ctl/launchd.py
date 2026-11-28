@@ -16,6 +16,7 @@ class Backend:
         self.target = f"system/{self.label}"
         self.plist = f"/Library/LaunchDaemons/{self.label}.plist"
         self.autostart_file = Path(settings["controlDir"]) / "autostart"
+        self.run_marker = Path(settings["runMarker"])
 
     def run(self, *args, capture=False):
         return subprocess.run(
@@ -27,10 +28,27 @@ class Backend:
 
     def info(self):
         result = self.run("print", self.target, capture=True)
-        return result.stdout if result.returncode == 0 else None
+        if not result.returncode:
+            return result.stdout
+        if "could not find service" in result.stderr.lower():
+            return None
+        raise ControlError("无法查询 launchd 服务。")
 
     def pid(self):
         return self.pid_from_info(self.info())
+
+    def inspect(self):
+        info = self.info()
+        if info is None:
+            return ("stopped" if Path(self.plist).is_file() else "not-installed"), None
+        pid = self.pid_from_info(info)
+        if pid:
+            return "running", pid
+        if self.run_marker.exists():
+            return "starting", None
+        if re.search(r"^\s*last exit code = (?!0\s*$)-?\d+\s*$", info, re.M):
+            return "failed", None
+        return "stopped", None
 
     @staticmethod
     def pid_from_info(info):
@@ -63,33 +81,33 @@ class Backend:
             staged.chmod(0o644)
             staged.replace(self.autostart_file)
 
-    def status(self):
-        print(f"开机自启：{'开启' if self.autostart_enabled() else '关闭'}")
-        info = self.info()
-        pid = self.pid_from_info(info)
-        print(f"服务状态：{'运行中' if pid is not None else '未运行'}")
-        if info:
-            print(info, end="\n")
-
     def start(self):
-        if self.info() is None:
-            try:
+        existing = require_root_owned(self.run_marker, stat.S_ISREG, missing_ok=True)
+        if existing is None:
+            self.run_marker.touch(mode=0o600, exist_ok=False)
+        try:
+            if self.info() is None:
                 self.run("bootstrap", "system", self.plist)
-            except subprocess.CalledProcessError:
-                if self.info() is None:
-                    raise
-        if self.pid() is None:
-            self.run("kickstart", self.target)
+            if self.pid() is None:
+                self.run("kickstart", self.target)
+        except (OSError, ControlError, subprocess.SubprocessError, KeyboardInterrupt):
+            if existing is None:
+                self.run_marker.unlink(missing_ok=True)
+            raise
 
     def stop(self):
+        self.run_marker.unlink(missing_ok=True)
         if self.info() is not None:
             self.run("bootout", self.target)
 
     def restart(self):
-        if self.info() is None:
+        if not self.run_marker.exists() or self.info() is None:
             self.start()
         else:
             self.run("kickstart", "-k", self.target)
+
+    def reload(self):
+        self.run("kill", "SIGHUP", self.target)
 
     def enable(self):
         self.autostart_enabled()

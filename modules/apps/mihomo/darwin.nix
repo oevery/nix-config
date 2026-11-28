@@ -10,18 +10,22 @@ let
   label = "org.nixos.mihomo";
   stateDir = "/Library/Application Support/Mihomo";
   logDir = "/Library/Logs/Mihomo";
-  stdoutLog = "${logDir}/stdout.log";
-  stderrLog = "${logDir}/stderr.log";
+  serviceLog = "${logDir}/mihomo.log";
+  runMarker = "/private/var/run/${label}.running";
   configFile = "${stateDir}/config.yaml";
   quote = lib.escapeShellArg;
   logrotateConfig = pkgs.writeText "mihomo-logrotate.conf" ''
-    "${stdoutLog}" "${stderrLog}" {
+    "${serviceLog}" {
       size 10M
       rotate 5
       compress
       copytruncate
       missingok
     }
+  '';
+  launcher = pkgs.writeShellScript "mihomo-system-launch" ''
+    test -f ${quote runMarker} || exit 0
+    exec ${lib.getExe mihomo} -d ${quote stateDir} -f ${quote configFile}
   '';
   placeholder = pkgs.writeText "mihomo-placeholder.yaml" ''
     mode: rule
@@ -39,7 +43,7 @@ let
       enable: false
   '';
   mihomoctl = pkgs.callPackage ./ctl {
-    inherit stateDir configFile;
+    inherit stateDir configFile logDir runMarker;
     mihomoPath = lib.getExe mihomo;
     serviceName = label;
     placeholderPath = "${placeholder}";
@@ -53,7 +57,7 @@ in
   ];
 
   system.activationScripts.preActivation.text = ''
-    for path in ${quote stateDir} ${quote logDir} ${quote configFile} ${quote stdoutLog} ${quote stderrLog}; do
+    for path in ${quote stateDir} ${quote logDir} ${quote configFile} ${quote serviceLog}; do
       if [ -L "$path" ]; then
         printf 'Mihomo：不允许使用符号链接：%s\n' "$path" >&2
         exit 1
@@ -67,19 +71,23 @@ in
     if [ ! -e ${quote configFile} ]; then
       /usr/bin/install -o root -g admin -m 0644 ${placeholder} ${quote configFile} || exit 1
     fi
+    if [ ! -e ${quote serviceLog} ]; then
+      /usr/bin/install -o root -g admin -m 0640 /dev/null ${quote serviceLog} || exit 1
+    fi
     ${mihomoctlExe} --skip-boot-autostart || exit 1
   '';
 
   launchd.daemons.mihomo = {
-    command = "${lib.getExe mihomo} -d ${quote stateDir} -f ${quote configFile}";
     serviceConfig = {
       Label = label;
+      ProgramArguments = [ "${launcher}" ];
       UserName = "root";
       GroupName = "admin";
       ThrottleInterval = 10;
-      Umask = 18;
-      StandardOutPath = stdoutLog;
-      StandardErrorPath = stderrLog;
+      KeepAlive.PathState.${runMarker} = true;
+      Umask = 63;
+      StandardOutPath = serviceLog;
+      StandardErrorPath = serviceLog;
     };
   };
 
@@ -91,7 +99,7 @@ in
       GroupName = "admin";
       RunAtLoad = true;
       Umask = 18;
-      StandardErrorPath = stderrLog;
+      StandardErrorPath = serviceLog;
     };
   };
 
